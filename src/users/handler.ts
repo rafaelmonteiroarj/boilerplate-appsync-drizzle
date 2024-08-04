@@ -18,7 +18,7 @@ export const getUsers = async (event: AppSyncEvent) => {
   }
 };
 
-export const addUser = async (event: AppSyncEvent) => {
+export const addUser = async (event: any) => {
   const payload = event["arguments"]["input"];
   console.debug("payload -> ", payload["name"]);
 
