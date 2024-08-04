@@ -1,12 +1,38 @@
 {
-  "name": "aws-appsync-example",
+  "name": "tela-vermelha-appsync",
   "version": "1.0.0",
-  "description": "AWS AppSync ToDo APIs with AWS Lambda Resolvers using Serverless Framework",
-  "repository": "git@github.com:alvaroseparovich/AWSappsyncExample.git",
-  "author": "Alvaro Separovich <alvasepro@gmail.com>",
-  "license": "GPL3",
+  "description": "AWS AppSync with AWS Lambda Resolvers using Serverless Framework",
+  "repository": {
+    "type": "gitlab",
+    "url": "https://gitdev.clarobrasil.mobi/coe-digital-tecnologia/tela-vermelha-appsync"
+  },
+  "author": "Code Busters | Tech Blinders",
+  "license": "MIT",
+  "scripts": {
+    "build": "rimraf ./build && tsc",
+    "deploy": "npm run build && sls deploy --stage pet",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "npm run lint --fix",
+    "format": "prettier --write 'src/**/*.ts'"
+  },
   "devDependencies": {
+    "@eslint/js": "^9.8.0",
+    "@tsconfig/node20": "^20.1.4",
+    "@types/node": "^22.1.0",
+    "eslint": "^9.8.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "globals": "^15.9.0",
+    "prettier": "^3.3.3",
+    "rimraf": "^6.0.1",
+    "serverless": "^4.1.19",
     "serverless-appsync-plugin": "^1.12.1",
-    "serverless-pseudo-parameters": "^2.6.1"
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.0.0"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.623.0",
+    "@aws-sdk/client-s3": "^3.623.0"
   }
 }

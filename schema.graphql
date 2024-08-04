@@ -4,17 +4,24 @@ schema {
 }
 
 type Query {
-    getTodos: [ToDo!]!
+    getUsers: [User!]!
 }
 
 type Mutation {
-    createTodo(id: ID!, name: String!, description: String!): ToDo
-    updateTodo(id: ID!, name: String!, description: String!): ToDo
-    deleteTodo(id: ID!): ToDo
+    addUser(input: UserInput!): User!
 }
 
-type ToDo {
+type User {
     id: ID!
-    name: String
-    description: String 
+    name: String!
+    email: String!
+    status: Boolean!
+    createdAt: AWSDateTime!
+    updatedAt: AWSDateTime!
+}
+
+input UserInput {
+    name: String!
+    email: String!
+    status: Boolean!
 }

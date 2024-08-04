@@ -1,0 +1,22 @@
+name: ${self:service}-${self:provider.stage}-appsync
+authenticationType: API_KEY
+mappingTemplates:      
+  - type: Query
+    field: getUsers
+    dataSource: getUsersFunction
+    request: false
+    response: false
+  - type: Mutation
+    field: addUser
+    dataSource: addUserFunction
+    request: false
+    response: false      
+dataSources:        
+  - type: AWS_LAMBDA
+    name: getUsersFunction
+    config:
+      functionName: getUsers
+  - type: AWS_LAMBDA
+    name: addUserFunction
+    config:
+      functionName: addUser                

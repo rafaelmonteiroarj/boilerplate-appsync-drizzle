@@ -1,0 +1,21 @@
+statements:
+  - Effect: "Allow"
+    Action:            
+      - "dynamodb:PutItem"
+      - "dynamodb:DeleteItem"
+      - "dynamodb:UpdateItem"
+      - "dynamodb:GetItem"
+      - "dynamodb:Scan"
+    Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.USERS_TABLE}"
+  - Effect: "Allow"
+    Action:
+      - "secretsmanager:GetSecretValue"
+      - "secretsmanager:DescribeSecret"
+    Resource: 
+      - "arn:aws:secretsmanager:${self:provider.region}:*:secret:${self:service}-redis-auth-token-*"
+  - Effect: "Allow"
+    Action:
+      - "elasticache:DescribeCacheClusters"
+      - "elasticache:DescribeReplicationGroups"
+      - "logs:*"
+    Resource: "*"

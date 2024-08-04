@@ -1,18 +1,5 @@
-# AWS AppSync ToDo APIs with AWS Lambda Resolvers using Serverless Framework
+# Tela Vermelha
 
-[Tutorial followed](https://dev.to/aws-builders/aws-appsync-todo-apis-with-aws-lambda-resolvers-using-serverless-framework-ob2)
+AWS AppSync APIs with AWS Lambda Resolvers using Serverless Framework
 
-Implement basic ToDo APIs using AWS AppSync with AWS Lambda Resolvers by using Serverless Framework
 
-- Application Stack:
-- Serverless Framework
-- AWS AppSync
-- AWS Lambda
-- AWS DynamoDB
-- AWS IAM
-- NodeJs
-- GraphQL
-
------
-
-[Authenticated request](https://docs.aws.amazon.com/appsync/latest/devguide/security-authz.html)

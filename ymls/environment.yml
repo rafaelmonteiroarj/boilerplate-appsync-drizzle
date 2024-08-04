@@ -1,0 +1,8 @@
+dev:
+  STAGE: "dev"
+  REGION: "us-east-1"
+  ACCOUNT_ID: "769533000303"
+pet:
+  STAGE: "pet"
+  REGION: "us-east-1"
+  ACCOUNT_ID: "769533000303"
