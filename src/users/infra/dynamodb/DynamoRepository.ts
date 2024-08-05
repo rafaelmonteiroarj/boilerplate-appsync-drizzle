@@ -4,7 +4,6 @@ import {
   ScanCommand,
 } from "@aws-sdk/client-dynamodb";
 import { v4 as uuidv4 } from "uuid";
-import { sign } from "jsonwebtoken";
 
 import { IUserRepository } from "../../domain/repositories/IUserRepository";
 import { User } from "../../domain/entities/User";
@@ -14,6 +13,7 @@ import { Session } from "../../domain/entities/Session";
 import { ValidationRequestError } from "../../../@common/errors/ValidationRequestError";
 
 const CryptoJS = require("crypto-js");
+const { sign } = require("jsonwebtoken");
 
 export class DynamoRepository implements IUserRepository {
   private dynamoDBClient: DynamoDBClient;
@@ -89,8 +89,8 @@ export class DynamoRepository implements IUserRepository {
       const originalText = bytes.toString(CryptoJS.enc.Utf8);
 
       if (originalText === password) {
-        const token = sign(user, `${process.env.JWT_SECRET}`, {
-          expiresIn: "1m",
+        const token = sign(user, process.env.JWT_SECRET, {
+          expiresIn: "10m",
         });
         return { token, user };
       } else {
