@@ -2,7 +2,8 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  status: boolean;
+  active: boolean;
+  isAdmin: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

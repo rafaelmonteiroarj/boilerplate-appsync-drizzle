@@ -1,11 +1,11 @@
 GetUsers:
-  handler: dist/users/handler.getUsers
+  handler: dist/users/infra/adapter/input/handler.getUsers
   name: ${self:service}-${self:provider.stage}-getUsers
   environment:
     DYNAMODB_TABLE: { "Ref": "UserTable"}
 
 AddUser:
-  handler: dist/users/handler.addUser
+  handler: dist/users/infra/adapter/input/handler.addUser
   name: ${self:service}-${self:provider.stage}-addUser
   environment:
     DYNAMODB_TABLE: { "Ref": "UserTable"}
