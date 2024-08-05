@@ -2,26 +2,26 @@ service: tela-vermelha
 
 build:
   esbuild:
-  # Enable or Disable bundling the function code and dependencies. (Default: true) 
+  # Enable or Disable bundling the function code and dependencies. (Default: true)
   bundle: true
-  # Enable minifying function code. (Default: false) 
+  # Enable minifying function code. (Default: false)
   minify: false
-  # NPM packages to not be bundled 
+  # NPM packages to not be bundled
   external:
-    - "@aws-sdk/client-s3" 
-  # NPM packages to not be bundled, as well as not included in node_modules 
-  # in the zip file uploaded to Lambda. By default this will be set to aws-sdk 
-  # if the runtime is set to nodejs16.x or lower or set to @aws-sdk/* if set to nodejs18.x or higher. 
+    - "@aws-sdk/client-s3"
+  # NPM packages to not be bundled, as well as not included in node_modules
+  # in the zip file uploaded to Lambda. By default this will be set to aws-sdk
+  # if the runtime is set to nodejs16.x or lower or set to @aws-sdk/* if set to nodejs18.x or higher.
   exclude:   
-    - "@aws-sdk/*" 
-  # The packages config, this can be set to override the behavior of external 
+    - "@aws-sdk/*"
+  # The packages config, this can be set to override the behavior of external
   # If this is set then all dependencies will be treated as external and not bundled.
   packages: external
   # By default Framework will attempt to build and package all functions concurrently.
   # This property can bet set to a different number if you wish to limit the
   # concurrency of those operations.
   buildConcurrency: 3
-  # Enable or configure sourcemaps, can be set to true or to an object with further configuration. 
+  # Enable or configure sourcemaps, can be set to true or to an object with further configuration.
   sourcemap:
     # The sourcemap type to use, options are (inline, linked, or external)
     type: linked
@@ -30,7 +30,7 @@ build:
 
 plugins:
    - serverless-appsync-plugin
-   
+
 provider:
   name: aws
   runtime: nodejs20.x
@@ -41,24 +41,24 @@ provider:
   iam:
     role:
       ${file(ymls/roles.yml)}
-    
+
   stackTags:
       projectName: ${self:service}-${self:provider.stage}
       project: ${self:service}-${self:provider.stage}
       stage: ${sls:stage}
       env: ${opt:stage, 'pet'}
       version: ${file(./package.json):version}
-  
+
   environment:
     STAGE: ${file(./ymls/environment.yml):${opt:stage}.STAGE}
     REGION: ${file(./ymls/environment.yml):${opt:stage}.REGION}
 
-custom:      
+custom:
   stage: ${self:provider.stage}
   USERS_TABLE: ${self:service}-users
 
   appSync:
-    ${file(ymls/appsync.yml)}   
+    ${file(ymls/appsync.yml)}
 
 functions: ${file(ymls/functions.yml)}
 

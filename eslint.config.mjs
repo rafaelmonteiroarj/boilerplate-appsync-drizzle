@@ -29,6 +29,7 @@ export default [
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/explicit-module-boundary-types": "off",
       "@typescript-eslint/no-unused-vars": "error",
+      "@typescript-eslint/no-require-imports": "off",
     },
   },
   {

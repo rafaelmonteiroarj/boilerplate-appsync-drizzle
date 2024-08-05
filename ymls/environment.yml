@@ -2,7 +2,9 @@ dev:
   STAGE: "dev"
   REGION: "us-east-1"
   ACCOUNT_ID: "769533000303"
+  JWT_SECRET: "0P1PCymb2IwpXaJSte"
 pet:
   STAGE: "pet"
   REGION: "us-east-1"
   ACCOUNT_ID: "769533000303"
+  JWT_SECRET: "Tel@-Vermelh@"

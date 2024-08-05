@@ -9,3 +9,11 @@ AddUser:
   name: ${self:service}-${self:provider.stage}-addUser
   environment:
     DYNAMODB_TABLE: { "Ref": "UserTable"}
+    JWT_SECRET: ${file(./ymls/environment.yml):${opt:stage}.JWT_SECRET}
+
+Login:
+  handler: dist/users/infra/adapter/input/handler.login
+  name: ${self:service}-${self:provider.stage}-login
+  environment:
+    DYNAMODB_TABLE: { "Ref": "UserTable"}
+    JWT_SECRET: ${file(./ymls/environment.yml):${opt:stage}.JWT_SECRET}

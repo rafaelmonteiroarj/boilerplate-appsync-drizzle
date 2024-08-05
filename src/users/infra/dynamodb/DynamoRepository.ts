@@ -4,11 +4,16 @@ import {
   ScanCommand,
 } from "@aws-sdk/client-dynamodb";
 import { v4 as uuidv4 } from "uuid";
+import { sign } from "jsonwebtoken";
 
 import { IUserRepository } from "../../domain/repositories/IUserRepository";
 import { User } from "../../domain/entities/User";
 import { UserDto } from "../../application/dtos/UserDto";
 import { userMapper } from "../adapter/output/UserMapper";
+import { Session } from "../../domain/entities/Session";
+import { ValidationRequestError } from "../../../@common/errors/ValidationRequestError";
+
+const CryptoJS = require("crypto-js");
 
 export class DynamoRepository implements IUserRepository {
   private dynamoDBClient: DynamoDBClient;
@@ -55,6 +60,12 @@ export class DynamoRepository implements IUserRepository {
         email: { S: user.email },
         active: { BOOL: false },
         isAdmin: { BOOL: false },
+        password: {
+          S: CryptoJS.AES.encrypt(
+            user.password,
+            process.env.JWT_SECRET,
+          ).toString(),
+        },
         createdAt: { S: new Date().toISOString() },
         updatedAt: { S: new Date().toISOString() },
       },
@@ -63,11 +74,30 @@ export class DynamoRepository implements IUserRepository {
     await this.dynamoDBClient.send(putCommand);
 
     const userCreated = await this.getByEmail(user.email);
+    delete userCreated?.password;
 
-    if (!userCreated) {
-      throw new Error("User not created.");
-    }
+    if (!userCreated) throw new Error("User not created.");
 
     return userCreated;
+  }
+
+  async login(email: string, password: string): Promise<Session> {
+    const user = await this.getByEmail(email);
+
+    if (user) {
+      const bytes = CryptoJS.AES.decrypt(user.password, process.env.JWT_SECRET);
+      const originalText = bytes.toString(CryptoJS.enc.Utf8);
+
+      if (originalText === password) {
+        const token = sign(user, `${process.env.JWT_SECRET}`, {
+          expiresIn: "1m",
+        });
+        return { token, user };
+      } else {
+        throw new ValidationRequestError("Usuário ou senha inválidos.");
+      }
+    } else {
+      throw new ValidationRequestError("Usuário ou senha não encontrado.");
+    }
   }
 }

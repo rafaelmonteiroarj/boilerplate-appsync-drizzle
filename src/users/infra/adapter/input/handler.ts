@@ -1,7 +1,7 @@
 import { DynamoRepository } from "../../dynamodb/DynamoRepository";
 import { AppSyncEvent } from "../../../../@common/types/appsync-event";
 import { UserUseCase } from "../../../application/useCases/UserUseCase";
-import { validationRegisterSchema } from "./validations";
+import { validationLoginSchema, validationRegisterSchema } from "./validations";
 import { ValidationRequestError } from "../../../../@common/errors/ValidationRequestError";
 
 const userRepository = new DynamoRepository(`${process.env.DYNAMODB_TABLE}`);
@@ -48,7 +48,35 @@ export const addUser = async (event: AppSyncEvent) => {
     });
   } catch (error) {
     if (error instanceof ValidationRequestError) {
-      throw new Error(`Validation error: ${error.message}`);
+      throw new ValidationRequestError(`Validation error: ${error.message}`);
+    } else {
+      throw new Error(`${error}`);
+    }
+  }
+};
+
+export const login = async (event: AppSyncEvent) => {
+  try {
+    console.log("event -> ", event);
+    const payload = event["arguments"]["input"];
+    const { error } = validationLoginSchema.validate(payload);
+
+    if (error) {
+      throw new ValidationRequestError(
+        "Usuário ou senha inválidos. Verifique os dados e tente novamente.",
+      );
+    }
+
+    const result = await getUsersUseCase.login(
+      payload["email"],
+      payload["password"],
+    );
+    console.debug("result -> ", result);
+
+    return result;
+  } catch (error) {
+    if (error instanceof ValidationRequestError) {
+      throw new ValidationRequestError(`Validation error: ${error.message}`);
     } else {
       throw new Error(`${error}`);
     }

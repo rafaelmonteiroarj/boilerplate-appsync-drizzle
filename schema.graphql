@@ -9,6 +9,7 @@ type Query {
 
 type Mutation {
     addUser(input: UserInput!): User!
+    login(input: SessionInput!): Session!
 }
 
 type User {
@@ -19,6 +20,16 @@ type User {
     isAdmin: Boolean!
     createdAt: AWSDateTime!
     updatedAt: AWSDateTime!
+}
+
+type Session {
+    token: String!
+    user: User!
+}
+
+input SessionInput {
+    email: String!
+    password: String!
 }
 
 input UserInput {
