@@ -59,7 +59,6 @@ export const addUser = async (event: AppSyncEvent) => {
 
 export const login = async (event: AppSyncEvent) => {
   try {
-    console.log("event -> ", event);
     const payload = event["arguments"]["input"];
     const { error } = validationLoginSchema.validate(payload);
 
