@@ -90,7 +90,7 @@ export class DynamoRepository implements IUserRepository {
 
       if (originalText === password) {
         const token = sign(user, process.env.JWT_SECRET, {
-          expiresIn: "10m",
+          expiresIn: "1h",
         });
         return { token, user };
       } else {

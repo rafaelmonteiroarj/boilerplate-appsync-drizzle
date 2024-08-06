@@ -1,8 +1,3 @@
-import {
-  APIGatewayProxyEvent,
-  APIGatewayTokenAuthorizerEvent,
-  AuthResponse,
-} from "aws-lambda";
 import { verify, JwtPayload } from "jsonwebtoken";
 
 import { DynamoRepository } from "../../dynamodb/DynamoRepository";
@@ -78,8 +73,6 @@ export const login = async (event: AppSyncEvent) => {
       payload["email"],
       payload["password"],
     );
-    console.debug("result -> ", result);
-
     return result;
   } catch (error) {
     if (error instanceof ValidationRequestError) {
@@ -90,65 +83,19 @@ export const login = async (event: AppSyncEvent) => {
   }
 };
 
-export const authorizer = async (
-  event: APIGatewayTokenAuthorizerEvent,
-): Promise<AuthResponse> => {
+export const authorizer = async (event: any) => {
   try {
     const token = event.authorizationToken?.split(" ")[1];
-    console.debug("token -> ", token);
-    const decoded = verify(token, `${process.env.JWT_SECRET}`) as JwtPayload;
-    console.debug("decoded -> ", decoded);
-
-    if (decoded.exp) {
-      const expirationTime = new Date(decoded.exp * 1000);
-      console.log("Token expired at: ", expirationTime);
-    }
+    verify(token, `${process.env.JWT_SECRET}`) as JwtPayload;
 
     return {
-      principalId: decoded.id,
-      policyDocument: {
-        Version: "2012-10-17",
-        Statement: [
-          {
-            Action: "execute-api:Invoke",
-            Effect: "Allow",
-            Resource: event.methodArn,
-          },
-        ],
-      },
+      isAuthorized: true, // ou false se a autorização falhar
+      resolverContext: {}, // Qualquer contexto adicional que você deseja passar
+      deniedFields: [], // Campos específicos que podem ser negados para o usuário
+      ttlOverride: 300, // Opcional: TTL em segundos para o cache da autorização
     };
   } catch (err) {
-    console.error("Error validating token: ", err);
-    return {
-      principalId: "user",
-      policyDocument: {
-        Version: "2012-10-17",
-        Statement: [
-          {
-            Action: "execute-api:Invoke",
-            Effect: "Deny",
-            Resource: event.methodArn,
-          },
-        ],
-      },
-    };
-  }
-};
-
-export const invoke = async (event: APIGatewayProxyEvent) => {
-  console.log(event);
-  try {
-    return {
-      statusCode: 200,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: "Usuário autorizado." }),
-    };
-  } catch (err) {
-    return {
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        message: err || "Internal server error.",
-      }),
-    };
+    console.error("Error: ", err);
+    throw new Error("Unauthorized");
   }
 };

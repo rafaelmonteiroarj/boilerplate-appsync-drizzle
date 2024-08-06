@@ -40,7 +40,27 @@ provider:
     lambda: true
   iam:
     role:
-      ${file(ymls/roles.yml)}
+      statements:
+      - Effect: "Allow"
+        Action:
+          - "dynamodb:PutItem"
+          - "dynamodb:DeleteItem"
+          - "dynamodb:UpdateItem"
+          - "dynamodb:GetItem"
+          - "dynamodb:Scan"
+        Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.USERS_TABLE}"
+      - Effect: "Allow"
+        Action:
+          - "secretsmanager:GetSecretValue"
+          - "secretsmanager:DescribeSecret"
+        Resource:
+          - "arn:aws:secretsmanager:${self:provider.region}:*:secret:${self:service}-redis-auth-token-*"
+      - Effect: "Allow"
+        Action:
+          - "elasticache:DescribeCacheClusters"
+          - "elasticache:DescribeReplicationGroups"
+          - "logs:*"
+        Resource: "*"
 
   stackTags:
       projectName: ${self:service}-${self:provider.stage}
@@ -52,6 +72,7 @@ provider:
   environment:
     STAGE: ${file(./ymls/environment.yml):${opt:stage}.STAGE}
     REGION: ${file(./ymls/environment.yml):${opt:stage}.REGION}
+    ACCOUNT_ID: ${file(./ymls/environment.yml):${opt:stage}.ACCOUNT_ID}
 
 custom:
   stage: ${self:provider.stage}

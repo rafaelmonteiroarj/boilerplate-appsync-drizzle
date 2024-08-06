@@ -1,6 +1,7 @@
 schema {
     query: Query
     mutation: Mutation
+    subscription: Subscription
 }
 
 type Query {
@@ -8,11 +9,15 @@ type Query {
 }
 
 type Mutation {
-    addUser(input: UserInput!): User!
-    login(input: SessionInput!): Session!
+    addUser(input: UserInput!): User! @aws_api_key @aws_subscribe(mutations: ["addUser"])
+    login(input: SessionInput!): Session! @aws_api_key
 }
 
-type User {
+type Subscription {
+    onAddUser: User @aws_api_key @aws_subscribe(mutations: ["addUser"])
+}
+
+type User @aws_api_key @aws_lambda {
     id: ID!
     name: String!
     email: String!
@@ -22,12 +27,12 @@ type User {
     updatedAt: AWSDateTime!
 }
 
-type Session {
+type Session @aws_api_key {
     token: String!
     user: User!
 }
 
-input SessionInput {
+input SessionInput  {
     email: String!
     password: String!
 }

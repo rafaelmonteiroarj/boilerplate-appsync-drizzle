@@ -15,7 +15,7 @@ Resources:
     Type: "AWS::ElastiCache::SubnetGroup"
     Properties:
       Description: "Subnet group for Redis cache"
-      SubnetIds: 
+      SubnetIds:
         - subnet-0e9b52de102484a9c
         - subnet-09ab289855719824b
 
@@ -29,7 +29,7 @@ Resources:
         - IpProtocol: tcp
           FromPort: "6379"
           ToPort: "6379"
-          CidrIp: "0.0.0.0/0" 
+          CidrIp: "0.0.0.0/0"
 
   MyCacheCluster:
     Type: "AWS::ElastiCache::ReplicationGroup"

@@ -1,5 +1,11 @@
 name: ${self:service}-${self:provider.stage}-appsync
-authenticationType: API_KEY
+authenticationType: AWS_LAMBDA
+additionalAuthenticationProviders:
+  - authenticationType: API_KEY
+lambdaAuthorizerConfig:
+  lambdaFunctionArn: arn:aws:lambda:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:function:${self:service}-${self:provider.stage}-authorizer
+  authorizerResultTtlInSeconds: 300
+
 mappingTemplates:
   - type: Query
     field: getUsers
@@ -16,6 +22,11 @@ mappingTemplates:
     dataSource: loginFunction
     request: false
     response: false
+  # - type: Subscription
+  #   field: onUserAdded
+  #   dataSource: addUserFunction
+  #   request: false
+  #   response: false
 dataSources:
   - type: AWS_LAMBDA
     name: getUsersFunction
@@ -29,3 +40,7 @@ dataSources:
     name: loginFunction
     config:
       functionName: login
+  - type: AWS_LAMBDA
+    name: authorizerFunction
+    config:
+      functionName: authorizer

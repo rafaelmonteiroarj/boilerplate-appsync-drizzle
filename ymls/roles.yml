@@ -1,6 +1,6 @@
 statements:
   - Effect: "Allow"
-    Action:            
+    Action:
       - "dynamodb:PutItem"
       - "dynamodb:DeleteItem"
       - "dynamodb:UpdateItem"
@@ -11,11 +11,15 @@ statements:
     Action:
       - "secretsmanager:GetSecretValue"
       - "secretsmanager:DescribeSecret"
-    Resource: 
+    Resource:
       - "arn:aws:secretsmanager:${self:provider.region}:*:secret:${self:service}-redis-auth-token-*"
   - Effect: "Allow"
     Action:
       - "elasticache:DescribeCacheClusters"
       - "elasticache:DescribeReplicationGroups"
       - "logs:*"
+    Resource: "*"
+  - Effect: "Allow"
+    Action:
+      - "lambda:InvokeFunction"
     Resource: "*"

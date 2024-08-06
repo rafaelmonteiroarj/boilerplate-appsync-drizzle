@@ -18,17 +18,8 @@ Login:
     DYNAMODB_TABLE: { "Ref": "UserTable"}
     JWT_SECRET: ${file(./ymls/environment.yml):${opt:stage}.JWT_SECRET}
 
-
-Invoke:
-  handler: dist/users/infra/adapter/input/handler.invoke
-  name: ${self:service}-${self:provider.stage}-invoke
-  events:
-    - http:
-        path: /invoke
-        method: post
-        authorizer: authorizer
-
-authorizer:
+Authorizer:
   handler: dist/users/infra/adapter/input/handler.authorizer
+  name: ${self:service}-${self:provider.stage}-authorizer
   environment:
     JWT_SECRET: ${file(./ymls/environment.yml):${opt:stage}.JWT_SECRET}
