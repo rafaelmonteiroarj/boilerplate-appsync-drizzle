@@ -11,40 +11,40 @@ Resources:
       BillingMode: PAY_PER_REQUEST
       TableName: ${self:custom.USERS_TABLE}
 
-  MyRedisSubnetGroup:
-    Type: "AWS::ElastiCache::SubnetGroup"
-    Properties:
-      Description: "Subnet group for Redis cache"
-      SubnetIds:
-        - subnet-0e9b52de102484a9c
-        - subnet-09ab289855719824b
+  # MyRedisSubnetGroup:
+  #   Type: "AWS::ElastiCache::SubnetGroup"
+  #   Properties:
+  #     Description: "Subnet group for Redis cache"
+  #     SubnetIds:
+  #       - subnet-0e9b52de102484a9c
+  #       - subnet-09ab289855719824b
 
-  MyCacheSecurityGroup:
-    Type: "AWS::EC2::SecurityGroup"
-    Properties:
-      GroupDescription: "Allow Redis access"
-      Name: ${self:service}-redis-security-group
-      VpcId: "vpc-028fdb0c180e77d69"
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: "6379"
-          ToPort: "6379"
-          CidrIp: "0.0.0.0/0"
+  # MyCacheSecurityGroup:
+  #   Type: "AWS::EC2::SecurityGroup"
+  #   Properties:
+  #     GroupDescription: "Allow Redis access"
+  #     Name: ${self:service}-redis-security-group
+  #     VpcId: "vpc-028fdb0c180e77d69"
+  #     SecurityGroupIngress:
+  #       - IpProtocol: tcp
+  #         FromPort: "6379"
+  #         ToPort: "6379"
+  #         CidrIp: "0.0.0.0/0"
 
-  MyCacheCluster:
-    Type: "AWS::ElastiCache::ReplicationGroup"
-    Properties:
-      ReplicationGroupDescription: "My Redis replication group"
-      ReplicationGroupId:  ${self:service}-redis-replication-group
-      CacheNodeType: "cache.t2.micro"
-      Engine: "redis"
-      EngineVersion: "6.x"
-      NumCacheClusters: 2
-      AtRestEncryptionEnabled: true
-      TransitEncryptionEnabled: true
-      AutomaticFailoverEnabled: true
-      SecurityGroupIds:
-        - Ref: MyCacheSecurityGroup
-      CacheSubnetGroupName:
-        Ref: MyRedisSubnetGroup
+  # MyCacheCluster:
+  #   Type: "AWS::ElastiCache::ReplicationGroup"
+  #   Properties:
+  #     ReplicationGroupDescription: "My Redis replication group"
+  #     ReplicationGroupId:  ${self:service}-redis-replication-group
+  #     CacheNodeType: "cache.t2.micro"
+  #     Engine: "redis"
+  #     EngineVersion: "6.x"
+  #     NumCacheClusters: 2
+  #     AtRestEncryptionEnabled: true
+  #     TransitEncryptionEnabled: true
+  #     AutomaticFailoverEnabled: true
+  #     SecurityGroupIds:
+  #       - Ref: MyCacheSecurityGroup
+  #     CacheSubnetGroupName:
+  #       Ref: MyRedisSubnetGroup
 
