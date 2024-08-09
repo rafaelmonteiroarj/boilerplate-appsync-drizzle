@@ -90,8 +90,15 @@ export class DynamoRepository implements IUserRepository {
 
       if (originalText === password) {
         const token = sign(user, process.env.JWT_SECRET, {
-          expiresIn: "1h",
+          expiresIn: "30m",
         });
+
+        if (user.active === false) {
+          throw new ValidationRequestError(
+            "Usuário inativo. Entre em contato com o Administrador.",
+          );
+        }
+
         return { token, user };
       } else {
         throw new ValidationRequestError("Usuário ou senha inválidos.");
