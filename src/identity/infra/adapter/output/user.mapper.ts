@@ -1,5 +1,5 @@
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
-import { User } from "../../../domain/entities/User";
+import { User } from "../../../domain/entities/user.entity";
 
 export const userMapper = (item: Record<string, AttributeValue>): User => {
   return {

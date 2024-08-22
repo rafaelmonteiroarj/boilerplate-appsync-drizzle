@@ -5,16 +5,30 @@ schema {
 }
 
 type Query {
-    getUsers: [User!]!
+    getUsers: [User!]! @aws_lambda
 }
 
 type Mutation {
     addUser(input: UserInput!): User! @aws_api_key @aws_subscribe(mutations: ["addUser"])
     login(input: SessionInput!): Session! @aws_api_key
+    addGeniaTrendsAlert(id: ID!, dtRef: String!): GeniaTrendsAlert
 }
 
 type Subscription {
     onAddUser: User @aws_api_key @aws_subscribe(mutations: ["addUser"])
+    onGeniaTrendsAlertAdded: GeniaTrendsAlert
+    @aws_api_key @aws_subscribe(mutations: ["addGeniaTrendsAlert"])
+}
+
+type GeniaTrendsAlert @aws_api_key {
+    id: ID!
+    dtRef: String!
+    advertiser: String!
+    city: String!
+    createdAt: AWSDateTime!
+    message: String!
+    speed: String!
+    type: String!
 }
 
 type User @aws_api_key @aws_lambda {

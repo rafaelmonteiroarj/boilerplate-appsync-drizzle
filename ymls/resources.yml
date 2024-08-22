@@ -9,7 +9,7 @@ Resources:
         - AttributeName: id
           AttributeType: S
       BillingMode: PAY_PER_REQUEST
-      TableName: ${self:custom.USERS_TABLE}
+      TableName: ${self:service}-users
 
   # MyRedisSubnetGroup:
   #   Type: "AWS::ElastiCache::SubnetGroup"

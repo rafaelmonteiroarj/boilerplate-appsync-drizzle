@@ -5,11 +5,11 @@ import {
 } from "@aws-sdk/client-dynamodb";
 import { v4 as uuidv4 } from "uuid";
 
-import { IUserRepository } from "../../domain/repositories/IUserRepository";
-import { User } from "../../domain/entities/User";
-import { UserDto } from "../../application/dtos/UserDto";
-import { userMapper } from "../adapter/output/UserMapper";
-import { Session } from "../../domain/entities/Session";
+import { IUserRepository } from "../../domain/repositories/user.repository";
+import { User } from "../../domain/entities/user.entity";
+import { UserDto } from "../../application/dtos/user.dto";
+import { userMapper } from "../adapter/output/user.mapper";
+import { Session } from "../../domain/entities/session.entity";
 import { ValidationRequestError } from "../../../@common/errors/ValidationRequestError";
 
 const CryptoJS = require("crypto-js");
@@ -89,9 +89,7 @@ export class DynamoRepository implements IUserRepository {
       const originalText = bytes.toString(CryptoJS.enc.Utf8);
 
       if (originalText === password) {
-        const token = sign(user, process.env.JWT_SECRET, {
-          expiresIn: "30m",
-        });
+        const token = sign(user, process.env.JWT_SECRET, { expiresIn: "30m" });
 
         if (user.active === false) {
           throw new ValidationRequestError(

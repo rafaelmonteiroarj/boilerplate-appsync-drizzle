@@ -1,6 +1,6 @@
-import { UserDto } from "../../application/dtos/UserDto";
-import { Session } from "../entities/Session";
-import { User } from "../entities/User";
+import { UserDto } from "../../application/dtos/user.dto";
+import { Session } from "../entities/session.entity";
+import { User } from "../entities/user.entity";
 
 export interface IUserRepository {
   list(): Promise<User[]>;

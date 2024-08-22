@@ -6,7 +6,7 @@ statements:
       - "dynamodb:UpdateItem"
       - "dynamodb:GetItem"
       - "dynamodb:Scan"
-    Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.USERS_TABLE}"
+    Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:service}-users"
   - Effect: "Allow"
     Action:
       - "secretsmanager:GetSecretValue"

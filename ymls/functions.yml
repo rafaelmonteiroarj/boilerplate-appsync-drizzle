@@ -1,25 +1,25 @@
 GetUsers:
-  handler: dist/users/infra/adapter/input/handler.getUsers
+  handler: dist/identity/infra/adapter/input/handlers/get-users.handler
   name: ${self:service}-${self:provider.stage}-getUsers
   environment:
     DYNAMODB_TABLE: { "Ref": "UserTable"}
 
 AddUser:
-  handler: dist/users/infra/adapter/input/handler.addUser
+  handler: dist/identity/infra/adapter/input/handlers/add-user.handler
   name: ${self:service}-${self:provider.stage}-addUser
   environment:
     DYNAMODB_TABLE: { "Ref": "UserTable"}
     JWT_SECRET: ${file(./ymls/environment.yml):${opt:stage}.JWT_SECRET}
 
 Login:
-  handler: dist/users/infra/adapter/input/handler.login
+  handler: dist/identity/infra/adapter/input/handlers/login.handler
   name: ${self:service}-${self:provider.stage}-login
   environment:
     DYNAMODB_TABLE: { "Ref": "UserTable"}
     JWT_SECRET: ${file(./ymls/environment.yml):${opt:stage}.JWT_SECRET}
 
 Authorizer:
-  handler: dist/users/infra/adapter/input/handler.authorizer
+  handler: dist/identity/infra/adapter/input/handlers/authorizer.handler
   name: ${self:service}-${self:provider.stage}-authorizer
   environment:
     JWT_SECRET: ${file(./ymls/environment.yml):${opt:stage}.JWT_SECRET}
