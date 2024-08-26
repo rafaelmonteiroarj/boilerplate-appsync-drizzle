@@ -12,6 +12,11 @@ mappingTemplates:
     dataSource: getUsersFunction
     request: false
     response: false
+  - type: Query
+    field: getAlerts
+    dataSource: getAlertsDynamo
+    request: click-alert/alerts/request.vtl
+    response: click-alert/alerts/response.vtl
   - type: Mutation
     field: addUser
     dataSource: addUserFunction
@@ -22,9 +27,9 @@ mappingTemplates:
     dataSource: loginFunction
     request: false
     response: false
-  - type: Subscription
-    field: onGeniaTrendsAlertAdded
-    dataSource: alertSubscriptionFunction
+  - type: Mutation
+    field: answers
+    dataSource: answersFunction
     request: false
     response: false
 
@@ -45,7 +50,12 @@ dataSources:
     name: authorizerFunction
     config:
       functionName: authorizer
-  - type: AWS_LAMBDA
-    name: alertSubscriptionFunction
+  - type: AMAZON_DYNAMODB
+    name: getAlertsDynamo
     config:
-      lambdaFunctionArn: arn:aws:lambda:us-east-1:769533000303:function:click-alert-serverless-alerts-subscription
+      tableName: click-alert-serverless-alerts
+      region: us-east-1
+  - type: AWS_LAMBDA
+    name: answersFunction
+    config:
+      lambdaFunctionArn: arn:aws:lambda:us-east-1:769533000303:function:click-alert-serverless-chat

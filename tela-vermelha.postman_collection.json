@@ -1,0 +1,326 @@
+{
+	"info": {
+		"_postman_id": "0285cc77-8b91-46e2-a376-5d7f95bffbcf",
+		"name": "tela-vermelha",
+		"description": "Tela Vermelha - Projeto usando AppSync para integrar em nossas Pocs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34147716",
+		"_collection_link": "https://dddd00-7283.postman.co/workspace/Claro-SA~b1e992c1-8f12-4c1c-8fa9-116e2669d868/collection/34147716-0285cc77-8b91-46e2-a376-5d7f95bffbcf?action=share&source=collection_link&creator=34147716"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Add User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "insomnia/9.3.3"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{api_key_tela_vermelha}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation ($name: String!, $email: String!, $password: String!) {\n  addUser(input: {\n    name: $name,\n    email: $email,\n    password: $password\n  }) {\n    id\n    name\n    email\n    active\n\t\tisAdmin\n    createdAt\n    updatedAt\n  }\n}\n",
+								"variables": "{\n\t\"name\": \"Rafael Monteiro Arjonas\",\n\t\"email\": \"rafaelmonteiroarj@gmail.com\",\n\t\"password\": \"test250\"\n}"
+							}
+						},
+						"url": {
+							"raw": "{{uri_tela_vermelha}}/",
+							"host": [
+								"{{uri_tela_vermelha}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "insomnia/9.3.3"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{api_key_tela_vermelha}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation ($email: String!, $password: String!) {\n  login(input: {\n    email: $email,\n    password: $password\n  }) {\n    token,\n\t\tuser {\n\t\t\tid\n\t\t\tname\n\t\t}\n  }\n}\n",
+								"variables": "{\n\t\"name\": \"Rafael Monteiro Arjonas\",\n\t\"email\": \"rafaelmonteiroarj@gmail.com\",\n\t\"password\": \"R@rjonas250\"\n}"
+							}
+						},
+						"url": {
+							"raw": "{{uri_tela_vermelha}}/",
+							"host": [
+								"{{uri_tela_vermelha}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token-tela-vermelha}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "insomnia/9.3.3"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  getUsers {\n    id\n    name\n    email\n    active\n    isAdmin\n    createdAt\n    updatedAt\n  }\n}"
+							}
+						},
+						"url": {
+							"raw": "{{uri_tela_vermelha}}/",
+							"host": [
+								"{{uri_tela_vermelha}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Click Alert",
+			"item": [
+				{
+					"name": "Answers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token-tela-vermelha}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "insomnia/9.3.3"
+							},
+							{
+								"key": "",
+								"value": ""
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation ($query: String!, $sessionId: String!) {\n  answers(input: {query: $query, sessionId: $sessionId}) {\n\t\tquery\n    reasoning {\n      action\n      observation\n    }\n    response\n\t}\n}",
+								"variables": "{\n\t\"query\": \"Em que mes ocorreu o maior anuncio\",\n\t\"sessionId\": \"89798797\"\n}"
+							}
+						},
+						"url": {
+							"raw": "{{uri_tela_vermelha}}/",
+							"host": [
+								"{{uri_tela_vermelha}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Alerts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token-tela-vermelha}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "insomnia/9.3.3"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  getAlerts {\n    advertiser\n    city\n    createdAt\n    dtRef\n    id\n    message\n    speed\n    type\n  }\n}"
+							}
+						},
+						"url": {
+							"raw": "{{uri_tela_vermelha}}/",
+							"host": [
+								"{{uri_tela_vermelha}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "uri_tela_vermelha",
+			"value": "https://ydzbboffgrb7xaykf56ucn2vku.appsync-api.us-east-1.amazonaws.com/graphql"
+		},
+		{
+			"key": "api_key_tela_vermelha",
+			"value": "da2-cnc27kjtujcsvpx6vw47nnzkg4"
+		},
+		{
+			"key": "token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU2NDVmOWMwLWU5NzItNGExOS1iZWZhLTNjNGU4YjVmZGY2NiIsIm5hbWUiOiJSYWZhZWwgTW9udGVpcm8gQXJqb25hcyIsImVtYWlsIjoicmFmYWVsbW9udGVpcm9hcmpAZ21haWwuY29tIiwiYWN0aXZlIjp0cnVlLCJpc0FkbWluIjpmYWxzZSwicGFzc3dvcmQiOiJVMkZzZEdWa1gxK0psMnFlMDY3NnVkWEV5S1gyZUl2STRGcWRpdDlUREJvPSIsImNyZWF0ZWRBdCI6IjIwMjQtMDgtMjNUMTE6NDc6NDAuMTEwWiIsInVwZGF0ZWRBdCI6IjIwMjQtMDgtMjNUMTE6NDc6NDAuMTEwWiIsImlhdCI6MTcyNDU0ODQzOCwiZXhwIjoxNzI0NTUwMjM4fQ.YDYfa0TzcqlrPU7jSS-OO0-_ElIHAPbfbuRVpzh6ul4"
+		}
+	]
+}

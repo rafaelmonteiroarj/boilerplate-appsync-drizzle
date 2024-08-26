@@ -2,7 +2,7 @@
 
 O projeto Tela Vermelha é uma aplicação serverless desenvolvida com o objetivo de fornecer uma API GraphQL robusta e escalável, utilizando a arquitetura hexagonal para promover a separação de preocupações e a manutenção facilitada. Este projeto faz uso de uma série de tecnologias e ferramentas modernas para garantir a eficiência, qualidade de código e melhores práticas de desenvolvimento.
 
-## Stacks Utilizadas
+### Stacks Utilizadas
 - **TypeScript:** Linguagem de programação tipada que compila para JavaScript.
 - **Node.js:** Ambiente de execução para JavaScript server-side.
 - **Serverless Framework:** Framework para desenvolvimento e implantação de aplicações serverless.
@@ -15,14 +15,61 @@ O projeto Tela Vermelha é uma aplicação serverless desenvolvida com o objetiv
 - **Prettier:** Ferramenta de formatação de código.
 - **ESLint:** Ferramenta de análise estática de código.
 
-## Funcionalidades
+### Funcionalidades
 - **APIs GraphQL com Resolvers em AWS Lambda:** A integração com o AppSync permite a criação de resolvers eficientes utilizando funções Lambda.
 - **Autenticação e Autorização com JWT:** Implementação de autenticação segura com tokens JWT.
 - **Banco de Dados DynamoDB:** Armazenamento de dados de maneira eficiente e escalável.
 - **Ferramentas de Qualidade de Código:** Uso de ESLint e Prettier para manter a qualidade e consistência do código.
 - **Desenvolvimento Colaborativo:** Utilização de Husky para garantir que os hooks de Git sejam executados, promovendo melhores práticas de desenvolvimento.
 
-## Scripts do Projeto
+### Configurar ambiente local do projeto
+
+**1. Instale o Node.js Usando NVM**
+
+Para garantir que você esteja utilizando a versão correta do Node.js, siga os passos abaixo para instalar o Node Version Manager (nvm):
+
+#### Instalação do NVM no Linux
+
+```sh
+# Instalação do NVM
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+
+# Reinicie seu terminal ou execute o seguinte comando para carregar o nvm:
+source ~/.nvm/nvm.sh
+```
+
+#### Instalação do NVM no macOS
+
+```sh
+# Instalação do NVM
+brew update
+brew install nvm
+
+# Crie o diretório do nvm:
+mkdir ~/.nvm
+
+# Adicione o nvm ao seu perfil do shell (por exemplo, .zshrc ou .bash_profile):
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"
+[ -s "/usr/local/opt/nvm/etc/bash_completion" ] && \. "/usr/local/opt/nvm/etc/bash_completion"
+
+# Reinicie seu terminal ou execute o seguinte comando para carregar o nvm:
+source ~/.nvm/nvm.sh
+```
+
+**2. Instale a versão necessária do Node.js (exemplo com a versão v20.11.0):**
+```sh
+nvm install v20.11.0
+nvm use v20.11.0
+```
+
+**3. Verifique a instalação:**
+```sh
+node -v
+npm -v
+```
+
+### Scripts do Projeto
 
 Os seguintes scripts estão disponíveis para execução de diferentes tarefas no projeto:
 
@@ -37,7 +84,7 @@ Os seguintes scripts estão disponíveis para execução de diferentes tarefas n
 }
 ```
 
-## Descrição dos Scripts
+### Descrição dos Scripts
 - **build:** Remove a pasta dist e compila o código TypeScript.
 - **deploy:** Compila o código e realiza o deploy da aplicação utilizando o Serverless Framework.
 - **lint:** Executa o ESLint para verificar a qualidade do código.
@@ -45,7 +92,7 @@ Os seguintes scripts estão disponíveis para execução de diferentes tarefas n
 - **format:** Formata o código fonte utilizando o Prettier.
 - **prepare:** Configura os hooks do Husky.
 
-##  Comandos para Invocar Funções para Testes
+###  Comandos para Invocar Funções para Testes
 
 _Listar Todos os Usuários_
 
