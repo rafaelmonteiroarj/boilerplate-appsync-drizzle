@@ -26,7 +26,7 @@ mappingTemplates:
     field: addAlert
     dataSource: addAlertFunction
     request: false
-    response: false
+    response: click-alert/response.vtl
   - type: Mutation
     field: login
     dataSource: loginFunction
@@ -36,7 +36,7 @@ mappingTemplates:
     field: answers
     dataSource: answersFunction
     request: false
-    response: false
+    response: click-alert/response.vtl
 
 dataSources:
   - type: AWS_LAMBDA

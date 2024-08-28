@@ -18,6 +18,7 @@ type Mutation {
 
 type Subscription {
     onAddUser: User @aws_api_key @aws_subscribe(mutations: ["addUser"])
+    onAddAlert: GeniaTrendsAlert @aws_api_key @aws_subscribe(mutations: ["addAlert"])
 }
 
 type GeniaTrendsAlert @aws_api_key @aws_lambda {
