@@ -11,6 +11,7 @@ type Query {
 
 type Mutation {
     addUser(input: UserInput!): User! @aws_api_key @aws_subscribe(mutations: ["addUser"])
+    addAlert(input: AlertInput!): GeniaTrendsAlert! @aws_api_key
     login(input: SessionInput!): Session! @aws_api_key
     answers(input: ChatInput!): Answers! @aws_lambda
 }
@@ -59,6 +60,15 @@ type Answers {
 input SessionInput  {
     email: String!
     password: String!
+}
+
+input AlertInput {
+    dtRef: String
+    advertiser: String
+    city: String
+    message: String
+    speed: String
+    typeAlert: String
 }
 
 input UserInput {

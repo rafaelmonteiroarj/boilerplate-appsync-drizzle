@@ -23,6 +23,11 @@ mappingTemplates:
     request: false
     response: false
   - type: Mutation
+    field: addAlert
+    dataSource: addAlertFunction
+    request: false
+    response: false
+  - type: Mutation
     field: login
     dataSource: loginFunction
     request: false
@@ -56,6 +61,10 @@ dataSources:
       tableName: click-alert-serverless-alerts
       region: us-east-1
   - type: AWS_LAMBDA
+    name: addAlertFunction
+    config:
+      lambdaFunctionArn: arn:aws:lambda:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:function:click-alert-serverless-pet-addAlert
+  - type: AWS_LAMBDA
     name: answersFunction
     config:
-      lambdaFunctionArn: arn:aws:lambda:us-east-1:769533000303:function:click-alert-serverless-chat
+      lambdaFunctionArn: arn:aws:lambda:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:function:click-alert-serverless-chat
