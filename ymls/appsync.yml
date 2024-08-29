@@ -28,6 +28,11 @@ mappingTemplates:
     request: false
     response: click-alert/response.vtl
   - type: Mutation
+    field: addFeedback
+    dataSource: addFeedbackFunction
+    request: false
+    response: click-alert/response.vtl
+  - type: Mutation
     field: login
     dataSource: loginFunction
     request: false
@@ -64,6 +69,10 @@ dataSources:
     name: addAlertFunction
     config:
       lambdaFunctionArn: arn:aws:lambda:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:function:click-alert-serverless-pet-addAlert
+  - type: AWS_LAMBDA
+    name: addFeedbackFunction
+    config:
+      lambdaFunctionArn: arn:aws:lambda:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:function:click-alert-serverless-pet-addFeedback
   - type: AWS_LAMBDA
     name: answersFunction
     config:

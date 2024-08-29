@@ -12,6 +12,7 @@ type Query {
 type Mutation {
     addUser(input: UserInput!): User! @aws_api_key @aws_subscribe(mutations: ["addUser"])
     addAlert(input: AlertInput!): GeniaTrendsAlert! @aws_api_key
+    addFeedback(input: FeedbackInput!): GeniaTrendsFeedback! @aws_lambda
     login(input: SessionInput!): Session! @aws_api_key
     answers(input: ChatInput!): Answers! @aws_lambda
 }
@@ -30,6 +31,17 @@ type GeniaTrendsAlert @aws_api_key @aws_lambda {
     message: String
     speed: String
     type: String
+}
+
+type GeniaTrendsFeedback @aws_api_key @aws_lambda {
+    id: ID
+    sessionId: String
+    questionId: String
+    question: String
+    answer: String
+    feedback: Boolean
+    comment: String
+    createdAt: String
 }
 
 type User @aws_api_key @aws_lambda {
@@ -70,6 +82,15 @@ input AlertInput {
     message: String
     speed: String
     typeAlert: String
+}
+
+input FeedbackInput {
+    sessionId: String
+    questionId: String
+    question: String
+    answer: String
+    feedback: Boolean
+    comment: String
 }
 
 input UserInput {
