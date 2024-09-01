@@ -15,8 +15,13 @@ mappingTemplates:
   - type: Query
     field: getAlerts
     dataSource: getAlertsDynamo
-    request: click-alert/alerts/request.vtl
-    response: click-alert/alerts/response.vtl
+    request: click-alert/dynamo/request.vtl
+    response: click-alert/dynamo/response.vtl
+  - type: Query
+    field: getFeedbacks
+    dataSource: getFeedbacksDynamo
+    request: click-alert/dynamo/request.vtl
+    response: click-alert/dynamo/response.vtl
   - type: Mutation
     field: addUser
     dataSource: addUserFunction
@@ -64,6 +69,11 @@ dataSources:
     name: getAlertsDynamo
     config:
       tableName: click-alert-serverless-alerts
+      region: us-east-1
+  - type: AMAZON_DYNAMODB
+    name: getFeedbacksDynamo
+    config:
+      tableName: click-alert-serverless-feedbacks
       region: us-east-1
   - type: AWS_LAMBDA
     name: addAlertFunction

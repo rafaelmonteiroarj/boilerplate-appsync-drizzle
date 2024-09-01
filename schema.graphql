@@ -7,6 +7,7 @@ schema {
 type Query {
     getUsers: [User!]! @aws_lambda
     getAlerts: [GeniaTrendsAlert!]! @aws_lambda
+    getFeedbacks: [GeniaTrendsFeedback!]! @aws_lambda
 }
 
 type Mutation {
@@ -42,6 +43,8 @@ type GeniaTrendsFeedback @aws_api_key @aws_lambda {
     feedback: Boolean
     comment: String
     createdAt: String
+    userId: String
+    userName: String
 }
 
 type User @aws_api_key @aws_lambda {
@@ -91,6 +94,8 @@ input FeedbackInput {
     answer: String
     feedback: Boolean
     comment: String
+    userId: String
+    userName: String
 }
 
 input UserInput {
@@ -102,4 +107,5 @@ input UserInput {
 input ChatInput {
     query: String!
     sessionId: String!
+    additionalInformation: Boolean
 }
