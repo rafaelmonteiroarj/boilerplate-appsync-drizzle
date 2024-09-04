@@ -16,6 +16,7 @@ type Mutation {
     addFeedback(input: FeedbackInput!): GeniaTrendsFeedback! @aws_lambda
     login(input: SessionInput!): Session! @aws_api_key
     answers(input: ChatInput!): Answers! @aws_lambda
+    removeChatSession(input: RemoveChatSessionInput!): String! @aws_lambda
 }
 
 type Subscription {
@@ -108,4 +109,8 @@ input ChatInput {
     query: String!
     sessionId: String!
     additionalInformation: Boolean
+}
+
+input RemoveChatSessionInput {
+    threadId: String!
 }

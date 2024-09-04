@@ -48,6 +48,12 @@ mappingTemplates:
     request: false
     response: click-alert/response.vtl
 
+  - type: Mutation
+    field: removeChatSession
+    dataSource: removeChatSessionFunction
+    request: false
+    response: click-alert/response.vtl
+
 dataSources:
   - type: AWS_LAMBDA
     name: getUsersFunction
@@ -87,3 +93,7 @@ dataSources:
     name: answersFunction
     config:
       lambdaFunctionArn: arn:aws:lambda:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:function:click-alert-serverless-chat
+  - type: AWS_LAMBDA
+    name: removeChatSessionFunction
+    config:
+      lambdaFunctionArn: arn:aws:lambda:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:function:click-alert-serverless-remove-session-chat
