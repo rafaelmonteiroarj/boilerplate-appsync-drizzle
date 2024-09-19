@@ -1,10 +1,10 @@
-dev:
-  STAGE: "dev"
+prd:
+  STAGE: "prd"
   REGION: "us-east-1"
   ACCOUNT_ID: "769533000303"
-  JWT_SECRET: "0P1PCymb2IwpXaJSte"
+  JWT_SECRET: "Tel@-Vermelh@-pet"
 pet:
   STAGE: "pet"
   REGION: "us-east-1"
   ACCOUNT_ID: "769533000303"
-  JWT_SECRET: "Tel@-Vermelh@"
+  JWT_SECRET: "Tel@-Vermelh@-pet"
