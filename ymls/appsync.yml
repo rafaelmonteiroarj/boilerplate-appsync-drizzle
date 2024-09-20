@@ -74,12 +74,12 @@ dataSources:
   - type: AMAZON_DYNAMODB
     name: getAlertsDynamo
     config:
-      tableName: click-alert-serverless-alerts
+      tableName: click-alert-serverless-${self:provider.stage}-alerts
       region: us-east-1
   - type: AMAZON_DYNAMODB
     name: getFeedbacksDynamo
     config:
-      tableName: click-alert-serverless-feedbacks
+      tableName: click-alert-serverless-${self:provider.stage}-feedbacks
       region: us-east-1
   - type: AWS_LAMBDA
     name: addAlertFunction
@@ -96,4 +96,4 @@ dataSources:
   - type: AWS_LAMBDA
     name: removeChatSessionFunction
     config:
-      lambdaFunctionArn: arn:aws:lambda:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:function:click-alert-serverless-remove-session-${self:provider.stage}-chat
+      lambdaFunctionArn: arn:aws:lambda:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:function:click-alert-serverless-${self:provider.stage}-remove-session-chat

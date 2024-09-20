@@ -92,6 +92,12 @@ Os seguintes scripts estão disponíveis para execução de diferentes tarefas n
 - **format:** Formata o código fonte utilizando o Prettier.
 - **prepare:** Configura os hooks do Husky.
 
+### Instalar dependencias do projeto.
+
+```sh
+npm install
+```
+
 ###  Comandos para Invocar Funções para Testes
 
 _Listar Todos os Usuários_

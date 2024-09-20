@@ -10,14 +10,12 @@
   "license": "MIT",
   "scripts": {
     "build": "rimraf ./dist && tsc",
-    "deploy:pet": "npm run build && sls deploy --stage pet",
-    "deploy:prd": "npm run build && sls deploy --stage prd",
-    "destroy:pet": "sls remove --stage pet",
-    "destroy:prd": "sls remove --stage prd",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "npm run lint --fix",
     "format": "prettier --write 'src/**/*.ts'",
-    "prepare": "husky"
+    "prepare": "husky",
+    "deploy": "node iac/deploy.js",
+    "destroy": "node iac/destroy.js"
   },
   "lint-staged": {
     "src/**/*.ts": [

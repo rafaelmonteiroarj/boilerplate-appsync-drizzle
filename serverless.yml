@@ -51,8 +51,8 @@ provider:
 
   environment:
     STAGE: ${file(./ymls/environment.yml):${opt:stage}.STAGE}
-    REGION: ${file(./ymls/environment.yml):${opt:stage}.REGION}
-    ACCOUNT_ID: ${file(./ymls/environment.yml):${opt:stage}.ACCOUNT_ID}
+    REGION: ${file(./ymls/environment.yml):REGION}
+    ACCOUNT_ID: ${file(./ymls/environment.yml):ACCOUNT_ID}
 
 custom:
   stage: ${self:provider.stage}
