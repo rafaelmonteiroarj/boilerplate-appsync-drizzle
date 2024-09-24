@@ -73,6 +73,7 @@ type Costs {
     promptTokens: Int!
     completionTokens: Int!
     totalCost: Float!
+    totalCostBRL: String!
     totalRequests: Int!
 }
 
