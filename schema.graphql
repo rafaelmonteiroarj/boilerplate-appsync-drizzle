@@ -68,10 +68,19 @@ type Reasoning {
     observation: String!
 }
 
+type Costs {
+    totalTokens: Int!
+    promptTokens: Int!
+    completionTokens: Int!
+    totalCost: Float!
+    totalRequests: Int!
+}
+
 type Answers {
     query: String!
     response: String!
     reasoning: [Reasoning!]!
+    costs: Costs!
 }
 
 input SessionInput  {
