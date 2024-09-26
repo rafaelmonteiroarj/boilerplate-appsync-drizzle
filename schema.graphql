@@ -8,6 +8,7 @@ type Query {
     getUsers: [User!]! @aws_lambda
     getAlerts: [GeniaTrendsAlert!]! @aws_lambda
     getFeedbacks: [GeniaTrendsFeedback!]! @aws_lambda
+    getCosts: [AnswersCosts!]! @aws_lambda
 }
 
 type Mutation {
@@ -78,6 +79,15 @@ type Costs {
 }
 
 type Answers {
+    query: String!
+    response: String!
+    reasoning: [Reasoning!]!
+    costs: Costs!
+}
+
+type AnswersCosts {
+    id: String!
+    createdAt: String!
     query: String!
     response: String!
     reasoning: [Reasoning!]!

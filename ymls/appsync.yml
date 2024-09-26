@@ -22,6 +22,11 @@ mappingTemplates:
     dataSource: getFeedbacksDynamo
     request: click-alert/dynamo/request.vtl
     response: click-alert/dynamo/response.vtl
+  - type: Query
+    field: getCosts
+    dataSource: getCostsDynamo
+    request: click-alert/dynamo/request.vtl
+    response: click-alert/dynamo/response.vtl
   - type: Mutation
     field: addUser
     dataSource: addUserFunction
@@ -80,6 +85,11 @@ dataSources:
     name: getFeedbacksDynamo
     config:
       tableName: click-alert-serverless-${self:provider.stage}-feedbacks
+      region: us-east-1
+  - type: AMAZON_DYNAMODB
+    name: getCostsDynamo
+    config:
+      tableName: click-alert-serverless-${self:provider.stage}-costs
       region: us-east-1
   - type: AWS_LAMBDA
     name: addAlertFunction

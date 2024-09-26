@@ -31,6 +31,22 @@ build:
 plugins:
    - serverless-appsync-plugin
 
+package:
+  exclude:
+    # - node_modules/**
+    - src/**
+    - README.md
+    - package.json
+    - package-lock.json
+    - .git/**
+    - .gitignore
+    - notebooks/**
+    - static/**
+    - .env
+    - .gitignore
+    - serverless.env.yml
+    - ymls/**
+
 provider:
   name: aws
   runtime: nodejs20.x
