@@ -12,7 +12,7 @@ build:
   # NPM packages to not be bundled, as well as not included in node_modules
   # in the zip file uploaded to Lambda. By default this will be set to aws-sdk
   # if the runtime is set to nodejs16.x or lower or set to @aws-sdk/* if set to nodejs18.x or higher.
-  exclude:   
+  exclude:
     - "@aws-sdk/*"
   # The packages config, this can be set to override the behavior of external
   # If this is set then all dependencies will be treated as external and not bundled.
@@ -64,11 +64,7 @@ provider:
       stage: ${sls:stage}
       env: ${opt:stage, 'pet'}
       version: ${file(./package.json):version}
-
-  environment:
-    STAGE: ${file(./ymls/environment.yml):${opt:stage}.STAGE}
-    REGION: ${file(./ymls/environment.yml):REGION}
-    ACCOUNT_ID: ${file(./ymls/environment.yml):ACCOUNT_ID}
+  environment: ${file(ymls/environment.yml)}
 
 custom:
   stage: ${self:provider.stage}

@@ -1,0 +1,28 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug GetUsers Function",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "--inspect",
+        "-r",
+        "tsconfig-paths/register",
+        "./node_modules/.bin/tsx",
+        "./node_modules/.bin/sls",
+        "invoke",
+        "local",
+        "-f",
+        "GetUsers"
+      ],
+      "console": "integratedTerminal",
+      "sourceMaps": true,
+      "outFiles": [
+        "${workspaceFolder}/dist/**/*.js"
+      ],
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ]
+}

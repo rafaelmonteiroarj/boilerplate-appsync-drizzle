@@ -1,9 +1,2 @@
-prd:
-  STAGE: "prd"
-  JWT_SECRET: "Tel@-Vermelh@-pet"
-pet:
-  STAGE: "pet"
-  JWT_SECRET: "Tel@-Vermelh@-pet"
-
 REGION: "us-east-1"
 ACCOUNT_ID: "769533000303"

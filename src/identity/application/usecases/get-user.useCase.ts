@@ -9,6 +9,7 @@ export class GetUserUseCase {
   }
 
   async execute(): Promise<User[]> {
+    console.log("AKII");
     return await this.userRepository.list();
   }
 }
