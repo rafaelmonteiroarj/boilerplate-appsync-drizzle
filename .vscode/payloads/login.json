@@ -1,0 +1,28 @@
+{
+  "field": "createUser",
+  "arguments": {
+    "input": {
+      "email": "ruan.barreto@hitss.com",
+      "password": "Bx3!Mnf*_FX.&"
+    }
+  },
+  "identity": {
+    "sub": "abc123",
+    "issuer": "https://cognito-idp.example.com/",
+    "username": "johndoe",
+    "claims": {
+      "email_verified": true,
+      "role": "admin"
+    },
+    "sourceIp": ["192.168.0.1"],
+    "defaultAuthStrategy": "ALLOW"
+  },
+  "source": null,
+  "request": {
+    "headers": {
+      "User-Agent": "Mozilla/5.0",
+      "Authorization": "Bearer token123"
+    }
+  },
+  "prev": null
+}

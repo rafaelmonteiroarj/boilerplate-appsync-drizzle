@@ -32,6 +32,13 @@ mappingTemplates:
     dataSource: addUserFunction
     request: false
     response: false
+
+  - type: Mutation
+    field: activateUser
+    dataSource: activateUserFunction
+    request: false
+    response: false
+
   - type: Mutation
     field: addAlert
     dataSource: addAlertFunction
@@ -68,6 +75,10 @@ dataSources:
     name: addUserFunction
     config:
       functionName: addUser
+  - type: AWS_LAMBDA
+    name: activateUserFunction
+    config:
+      functionName: activateUser
   - type: AWS_LAMBDA
     name: loginFunction
     config:

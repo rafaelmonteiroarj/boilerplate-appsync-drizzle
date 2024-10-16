@@ -11,6 +11,13 @@ AddUser:
     DYNAMODB_TABLE: { "Ref": "UserTable"}
     JWT_SECRET: "Tel@-Vermelh@-pet"
 
+ActivateUser:
+  handler: dist/identity/infrastructure/adapter/input/handlers/activate-user.handler
+  name: ${self:service}-${self:provider.stage}-activateUser
+  environment:
+    DYNAMODB_TABLE: { "Ref": "UserTable"}
+    JWT_SECRET: "Tel@-Vermelh@-pet"
+
 Login:
   handler: dist/identity/infrastructure/adapter/input/handlers/login.handler
   name: ${self:service}-${self:provider.stage}-login
