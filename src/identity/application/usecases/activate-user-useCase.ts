@@ -17,6 +17,12 @@ export class ActivateUserUseCase {
   }: ActivateUserDTO): Promise<User> {
     const sessionUser = await this.userRepository.getByEmail(sessionUserEmail);
 
+    if (!sessionUser?.active) {
+      throw new ValidationRequestError(
+        "Seu usuário não está ativo. Por favor, entre em contato com o administrador.",
+      );
+    }
+
     if (!sessionUser?.isAdmin) {
       throw new ValidationRequestError(
         "O usuário não possui permissão suficiente para realizar essa operação",

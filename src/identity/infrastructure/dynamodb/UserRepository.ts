@@ -115,6 +115,10 @@ export class DynamoRepository implements IUserRepository {
       throw new ValidationRequestError("Email nulo ou não existente.");
     }
 
+    if (user.active === true && isActive === true) {
+      throw new ValidationRequestError(`O user ${user.email} já está ativo`);
+    }
+
     const updateCommand = new UpdateItemCommand({
       TableName: this.tableName,
       Key: marshall({
