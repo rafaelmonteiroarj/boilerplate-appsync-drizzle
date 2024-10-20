@@ -13,6 +13,9 @@ type Query {
 
 type Mutation {
     addUser(input: UserInput!): User! @aws_api_key @aws_subscribe(mutations: ["addUser"])
+
+    activateUser(input: ActivateUserInput!): User! @aws_lambda
+
     addAlert(input: AlertInput!): GeniaTrendsAlert! @aws_api_key
     addFeedback(input: FeedbackInput!): GeniaTrendsFeedback! @aws_lambda
     login(input: SessionInput!): Session! @aws_api_key
@@ -123,6 +126,11 @@ input UserInput {
     name: String!
     email: String!
     password: String!
+}
+
+input ActivateUserInput {
+    userEmail: String!
+    isActive: Boolean!
 }
 
 input ChatInput {

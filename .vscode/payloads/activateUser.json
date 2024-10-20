@@ -1,0 +1,28 @@
+{
+  "field": "createUser",
+  "arguments": {
+    "input": {
+      "userEmail": "stephany.santos@claro.com.br",
+      "isActive": true
+    }
+  },
+  "identity": {
+    "sub": "abc123",
+    "issuer": "https://cognito-idp.example.com/",
+    "username": "johndoe",
+    "claims": {
+      "email_verified": true,
+      "role": "admin"
+    },
+    "sourceIp": ["192.168.0.1"],
+    "defaultAuthStrategy": "ALLOW"
+  },
+  "source": null,
+  "request": {
+    "headers": {
+      "User-Agent": "Mozilla/5.0",
+      "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQ1OThhZWViLTZkOWUtNGU5NC05MGE2LTFjZmFhMGQ2ODRlYSIsIm5hbWUiOiJSdWFuIEJhcnJldG8iLCJlbWFpbCI6InJ1YW4uYmFycmV0b0BoaXRzcy5jb20iLCJhY3RpdmUiOnRydWUsImlzQWRtaW4iOnRydWUsInBhc3N3b3JkIjoiVTJGc2RHVmtYMS9QT2ZDbVNXeHFzaXdENUhVeFpvOFh3UGEyb0tETmhxVT0iLCJjcmVhdGVkQXQiOiIyMDI0LTEwLTE1VDIyOjM1OjEwLjMxNVoiLCJ1cGRhdGVkQXQiOiIyMDI0LTEwLTE1VDIyOjM1OjEwLjMxNVoiLCJpYXQiOjE3MjkxODc5MTgsImV4cCI6MTcyOTE4OTcxOH0.G2aLeSEJmExXsQ0y_7tJSmNFINKHBDOhHcfcKxFeXOE"
+    }
+  },
+  "prev": null
+}
