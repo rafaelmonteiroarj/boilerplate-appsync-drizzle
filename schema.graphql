@@ -27,6 +27,8 @@ type Subscription {
 type GeniaTrendsAlert @aws_api_key @aws_lambda {
     id: ID
     dtRef: String
+    chatId: String
+    userId: String
     advertiser: String
     city: String
     createdAt: String
