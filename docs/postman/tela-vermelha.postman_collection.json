@@ -592,6 +592,70 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "conversation-history",
+					"item": [
+						{
+							"name": "Get Answers",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"followRedirects": true,
+								"disableUrlEncoding": false,
+								"disableCookies": false
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token_tela_vermelha}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "User-Agent",
+										"value": "insomnia/9.3.3"
+									}
+								],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "query {\n  getAnswers {\n    id\n    createdAt\n    chatId\n    userId\n    query \n    reasoning {\n        action\n        observation\n    }\n    response\n    costs {\n        completionTokens\n        promptTokens\n        totalCost\n        totalCostBRL\n        totalRequests\n        totalTokens\n    }\n  }\n}"
+									}
+								},
+								"url": {
+									"raw": "{{uri_tela_vermelha}}/",
+									"host": [
+										"{{uri_tela_vermelha}}"
+									],
+									"path": [
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		}
