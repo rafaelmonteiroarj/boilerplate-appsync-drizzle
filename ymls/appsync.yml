@@ -15,7 +15,7 @@ mappingTemplates:
   - type: Query
     field: getAlerts
     dataSource: getAlertsDynamo
-    request: click-alert/dynamo/request.vtl
+    request: click-alert/dynamo/alerts/request.vtl
     response: click-alert/dynamo/response.vtl
   - type: Query
     field: getFeedbacks
@@ -23,8 +23,8 @@ mappingTemplates:
     request: click-alert/dynamo/request.vtl
     response: click-alert/dynamo/response.vtl
   - type: Query
-    field: getCosts
-    dataSource: getCostsDynamo
+    field: getAnswers
+    dataSource: ggetAnswersDynamo
     request: click-alert/dynamo/request.vtl
     response: click-alert/dynamo/response.vtl
   - type: Mutation
@@ -38,12 +38,6 @@ mappingTemplates:
     dataSource: activateUserFunction
     request: false
     response: false
-
-  - type: Mutation
-    field: addAlert
-    dataSource: addAlertFunction
-    request: false
-    response: click-alert/response.vtl
   - type: Mutation
     field: addFeedback
     dataSource: addFeedbackFunction
@@ -98,9 +92,9 @@ dataSources:
       tableName: click-alert-serverless-${self:provider.stage}-feedbacks
       region: us-east-1
   - type: AMAZON_DYNAMODB
-    name: getCostsDynamo
+    name: ggetAnswersDynamo
     config:
-      tableName: click-alert-serverless-${self:provider.stage}-costs
+      tableName: click-alert-serverless-${self:provider.stage}-answers
       region: us-east-1
   - type: AWS_LAMBDA
     name: addAlertFunction

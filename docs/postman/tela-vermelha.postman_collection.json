@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "0285cc77-8b91-46e2-a376-5d7f95bffbcf",
-		"name": "Tela Vermelha",
+		"name": "tela-vermelha",
 		"description": "Tela Vermelha - Projeto usando AppSync para integrar em nossas Pocs",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "34147716",
@@ -31,6 +31,21 @@
 						"disableCookies": false
 					},
 					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "{{api_key_tela_vermelha}}",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "x-api-key",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -40,17 +55,73 @@
 							{
 								"key": "User-Agent",
 								"value": "insomnia/9.3.3"
-							},
-							{
-								"key": "x-api-key",
-								"value": "{{api_key_tela_vermelha}}"
 							}
 						],
 						"body": {
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation ($name: String!, $email: String!, $password: String!) {\n  addUser(input: {\n    name: $name,\n    email: $email,\n    password: $password\n  }) {\n    id\n    name\n    email\n    active\n\t\tisAdmin\n    createdAt\n    updatedAt\n  }\n}\n",
-								"variables": "{\n\t\"name\": \"Rafael Monteiro Arjonas\",\n\t\"email\": \"rafaelmonteiroarj@gmail.com\",\n\t\"password\": \"test250\"\n}"
+								"variables": "{\n\t\"name\": \"Rafael Monteiro Arjonas\",\n\t\"email\": \"rafael.arjonas@claro.com.br\",\n\t\"password\": \"F@zer250\"\n}"
+							}
+						},
+						"url": {
+							"raw": "{{uri_tela_vermelha}}/",
+							"host": [
+								"{{uri_tela_vermelha}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Active user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_tela_vermelha}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "insomnia/9.3.3"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation ($isActive: Boolean!, $userEmail: String!) {\n  activateUser(input: {\n    isActive: $isActive,\n    userEmail: $userEmail\n  }) {\n    id\n    name\n    email\n    active\n\t\tisAdmin\n    createdAt\n    updatedAt\n  }\n}\n",
+								"variables": "{\n\t\"isActive\": true,\n\t\"userEmail\": \"rafaelmonteiroarj@gmail.com\"\n}"
 							}
 						},
 						"url": {
@@ -72,6 +143,27 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"// Captura a resposta da requisição\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// Acessa o token na estrutura da resposta\r",
+									"const token = response.data.login.token;\r",
+									"\r",
+									"const userId = response.data.login.user.id;\r",
+									"\r",
+									"// Atualiza a variável do ambiente com o novo token\r",
+									"pm.environment.set(\"token_tela_vermelha\", token);\r",
+									"pm.environment.set(\"user_id\", userId)\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
 									""
 								],
 								"type": "text/javascript",
@@ -85,6 +177,21 @@
 						"disableCookies": false
 					},
 					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "{{api_key_tela_vermelha}}",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "x-api-key",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -94,26 +201,19 @@
 							{
 								"key": "User-Agent",
 								"value": "insomnia/9.3.3"
-							},
-							{
-								"key": "x-api-key",
-								"value": "{{api_key_tela_vermelha}}"
 							}
 						],
 						"body": {
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation ($email: String!, $password: String!) {\n  login(input: {\n    email: $email,\n    password: $password\n  }) {\n    token,\n\t\tuser {\n\t\t\tid\n\t\t\tname\n\t\t}\n  }\n}\n",
-								"variables": "{\n\t\"name\": \"Rafael Monteiro Arjonas\",\n\t\"email\": \"rafaelmonteiroarj@gmail.com\",\n\t\"password\": \"R@rjonas250\"\n}"
+								"variables": "{\n\t\"email\": \"rafael.arjonas@claro.com.br\",\n\t\"password\": \"F@zer250\"\n}"
 							}
 						},
 						"url": {
-							"raw": "{{uri_tela_vermelha}}/",
+							"raw": "{{uri_tela_vermelha}}",
 							"host": [
 								"{{uri_tela_vermelha}}"
-							],
-							"path": [
-								""
 							]
 						}
 					},
@@ -144,7 +244,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{token-tela-vermelha}}",
+									"value": "{{token_tela_vermelha}}",
 									"type": "string"
 								}
 							]
@@ -167,12 +267,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{uri_tela_vermelha}}/",
+							"raw": "{{uri_tela_vermelha}}",
 							"host": [
 								"{{uri_tela_vermelha}}"
-							],
-							"path": [
-								""
 							]
 						}
 					},
@@ -211,7 +308,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "{{token-tela-vermelha}}",
+											"value": "{{token_tela_vermelha}}",
 											"type": "string"
 										}
 									]
@@ -225,17 +322,13 @@
 									{
 										"key": "User-Agent",
 										"value": "insomnia/9.3.3"
-									},
-									{
-										"key": "",
-										"value": ""
 									}
 								],
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "mutation ($query: String!, $sessionId: String!, $additionalInformation: Boolean) {\n  answers(input: {query: $query, sessionId: $sessionId, additionalInformation: $additionalInformation}) {\n\t\tquery\n    reasoning {\n      action\n      observation\n    }\n    response\n\t}\n}",
-										"variables": "{\n\t\"query\": \"Em que mes ocorreu o maior anuncio\",\n\t\"sessionId\": \"89798797\",\n    \"additionalInformation\": true\n}"
+										"query": "mutation ($query: String!, $chatId: String!, $userId: String!, $additionalInformation: Boolean) {\n  answers(input: {query: $query, chatId: $chatId, userId: $userId, additionalInformation: $additionalInformation}) {\n\t\tquery\n        reasoning {\n        action\n        observation\n        }\n        response\n        costs {\n         totalCost\n         totalCostBRL\n         totalTokens\n         promptTokens\n         completionTokens\n         totalRequests\n        }\n\t}\n}",
+										"variables": "{\n\t\"query\": \"Oi\",\n\t\"chatId\": \"12309877\",\n    \"userId\": \"9eca540e-2426-4043-9599-7620a2190fc7\",\n    \"additionalInformation\": false\n}"
 									}
 								},
 								"url": {
@@ -275,7 +368,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "{{token-tela-vermelha}}",
+											"value": "{{token_tela_vermelha}}",
 											"type": "string"
 										}
 									]
@@ -289,17 +382,13 @@
 									{
 										"key": "User-Agent",
 										"value": "insomnia/9.3.3"
-									},
-									{
-										"key": "",
-										"value": ""
 									}
 								],
 								"body": {
 									"mode": "graphql",
 									"graphql": {
 										"query": "mutation ($threadId: String!) {\n  removeChatSession(input: {threadId: $threadId})\n}",
-										"variables": "{\n\t\"threadId\": \"\"\n}"
+										"variables": "{\n\t\"threadId\": \"123456\"\n}"
 									}
 								},
 								"url": {
@@ -344,7 +433,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "{{token-tela-vermelha}}",
+											"value": "{{token_tela_vermelha}}",
 											"type": "string"
 										}
 									]
@@ -358,17 +447,13 @@
 									{
 										"key": "User-Agent",
 										"value": "insomnia/9.3.3"
-									},
-									{
-										"key": "",
-										"value": ""
 									}
 								],
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "mutation ($input: FeedbackInput!) {\n  addFeedback(input: $input) {\n    answer\n    createdAt\n    comment\n    feedback\n    id\n    question\n    questionId\n    sessionId\n  }\n}\n",
-										"variables": "{\n   \"input\": {\n    \"answer\": \"FSAFDSA\",\n    \"comment\": \"FDSAFDA\",\n    \"feedback\": false,\n    \"question\": \"SAFDSAF\",\n    \"questionId\": \"FDASFDAS\",\n    \"sessionId\": \"4f5656465\"\n   }\n}"
+										"query": "mutation ($input: FeedbackInput!) {\n  addFeedback(input: $input) {\n    answer\n    createdAt\n    comment\n    feedback\n    id\n    question\n    questionId\n    chatId\n    userId\n    userName\n  }\n}\n",
+										"variables": "{\n   \"input\": {\n    \"userId\": \"9eca540e-2426-4043-9599-7620a2190fc7\",\n    \"userName\": \"Rafael Monteiro Arjonas\",\n    \"answer\": \"Test\",\n    \"comment\": \"FDSAFDA\",\n    \"feedback\": false,\n    \"question\": \"SAFDSAF\",\n    \"questionId\": \"FDASFDAS\",\n    \"chatId\": \"36df628d-bacd-4692-9d54-2d1a6a18d37f\"\n   }\n}"
 									}
 								},
 								"url": {
@@ -408,7 +493,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "{{token-tela-vermelha}}",
+											"value": "{{token_tela_vermelha}}",
 											"type": "string"
 										}
 									]
@@ -427,7 +512,7 @@
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "query {\n  getFeedbacks {\n    answer\n    comment\n    createdAt\n    feedback\n    id\n    question\n    questionId\n    sessionId\n    userId\n    userName\n  }\n}"
+										"query": "query {\n  getFeedbacks {\n    answer\n    comment\n    createdAt\n    feedback\n    id\n    question\n    questionId\n    chatId\n    userId\n    userName\n  }\n}"
 									}
 								},
 								"url": {
@@ -447,75 +532,6 @@
 				{
 					"name": "alerts",
 					"item": [
-						{
-							"name": "Add Alert",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"protocolProfileBehavior": {
-								"followRedirects": true,
-								"disableUrlEncoding": false,
-								"disableCookies": false
-							},
-							"request": {
-								"auth": {
-									"type": "apikey",
-									"apikey": [
-										{
-											"key": "value",
-											"value": "{{api_key_tela_vermelha}}",
-											"type": "string"
-										},
-										{
-											"key": "key",
-											"value": "x-api-key",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "User-Agent",
-										"value": "insomnia/9.3.3"
-									},
-									{
-										"key": "",
-										"value": ""
-									}
-								],
-								"body": {
-									"mode": "graphql",
-									"graphql": {
-										"query": "mutation ($input: AlertInput!) {\n  addAlert(input: $input) {\n    advertiser\n    city\n    createdAt\n    dtRef\n    id\n    message\n    speed\n  }\n}\n",
-										"variables": "{\n   \"input\":{\n      \"advertiser\": \"-\",\n      \"city\": \"São Paulo\",\n      \"dtRef\": \"2024-08-30\",\n      \"message\": \"Claro subiu 5 posições no Ranking.\",\n      \"speed\": \"-\",\n      \"typeAlert\": \"ranking\"\n   }\n}"
-									}
-								},
-								"url": {
-									"raw": "{{uri_tela_vermelha}}/",
-									"host": [
-										"{{uri_tela_vermelha}}"
-									],
-									"path": [
-										""
-									]
-								}
-							},
-							"response": []
-						},
 						{
 							"name": "Get Alerts",
 							"event": [
@@ -541,7 +557,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "{{token-tela-vermelha}}",
+											"value": "{{token_tela_vermelha}}",
 											"type": "string"
 										}
 									]
@@ -560,7 +576,7 @@
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "query {\n  getAlerts {\n    advertiser\n    city\n    createdAt\n    dtRef\n    id\n    message\n    speed\n    type\n  }\n}"
+										"query": "query {\n  getAlerts {\n    advertiser\n    city\n    createdAt\n    dtRef\n    id\n    message\n    speed\n    type\n    answers {\n        costs {\n            completionTokens\n            promptTokens\n            totalCost\n            totalCostBRL\n            totalRequests\n            totalTokens\n        }\n        query\n        reasoning {\n            action\n            observation\n        }\n        response\n    }\n  }\n}"
 									}
 								},
 								"url": {

@@ -8,24 +8,20 @@ type Query {
     getUsers: [User!]! @aws_lambda
     getAlerts: [GeniaTrendsAlert!]! @aws_lambda
     getFeedbacks: [GeniaTrendsFeedback!]! @aws_lambda
-    getCosts: [AnswersCosts!]! @aws_lambda
+    getAnswers: [Answers!]! @aws_lambda
 }
 
 type Mutation {
+    answers(input: ChatInput!): Answers! @aws_lambda
     addUser(input: UserInput!): User! @aws_api_key @aws_subscribe(mutations: ["addUser"])
-
     activateUser(input: ActivateUserInput!): User! @aws_lambda
-
-    addAlert(input: AlertInput!): GeniaTrendsAlert! @aws_api_key
     addFeedback(input: FeedbackInput!): GeniaTrendsFeedback! @aws_lambda
     login(input: SessionInput!): Session! @aws_api_key
-    answers(input: ChatInput!): Answers! @aws_lambda
     removeChatSession(input: RemoveChatSessionInput!): String! @aws_lambda
 }
 
 type Subscription {
     onAddUser: User @aws_api_key @aws_subscribe(mutations: ["addUser"])
-    onAddAlert: GeniaTrendsAlert @aws_api_key @aws_subscribe(mutations: ["addAlert"])
 }
 
 type GeniaTrendsAlert @aws_api_key @aws_lambda {
@@ -37,11 +33,12 @@ type GeniaTrendsAlert @aws_api_key @aws_lambda {
     message: String
     speed: String
     type: String
+    answers: Answers!
 }
 
 type GeniaTrendsFeedback @aws_api_key @aws_lambda {
     id: ID
-    sessionId: String
+    chatId: String
     questionId: String
     question: String
     answer: String
@@ -81,20 +78,15 @@ type Costs {
     totalRequests: Int!
 }
 
-type Answers {
-    query: String!
-    response: String!
-    reasoning: [Reasoning!]!
-    costs: Costs!
-}
-
-type AnswersCosts {
+type Answers @aws_lambda {
     id: String!
-    createdAt: String!
     query: String!
     response: String!
     reasoning: [Reasoning!]!
     costs: Costs!
+    chatId: String!
+    userId: String!
+    createdAt: String!
 }
 
 input SessionInput  {
@@ -112,7 +104,7 @@ input AlertInput {
 }
 
 input FeedbackInput {
-    sessionId: String
+    chatId: String
     questionId: String
     question: String
     answer: String
@@ -134,8 +126,9 @@ input ActivateUserInput {
 }
 
 input ChatInput {
+    chatId: String!
+    userId: String!
     query: String!
-    sessionId: String!
     additionalInformation: Boolean
 }
 
