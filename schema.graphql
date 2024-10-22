@@ -78,6 +78,17 @@ type Costs {
     totalCost: Float!
     totalCostBRL: String!
     totalRequests: Int!
+    usagePerModel: [ModelUsage!]!
+}
+
+type ModelUsage {
+	modelName: String
+	totalTokens: Int!
+	promptTokens: Int!
+	completionTokens: Int!
+	totalCost: Float!
+	totalCostBRL: String!
+	totalRequests: Int!
 }
 
 type Answers @aws_lambda {
