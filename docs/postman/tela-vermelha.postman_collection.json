@@ -327,7 +327,7 @@
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "mutation ($query: String!, $chatId: String!, $userId: String!, $additionalInformation: Boolean) {\n  answers(input: {query: $query, chatId: $chatId, userId: $userId, additionalInformation: $additionalInformation}) {\n\t\tquery\n        reasoning {\n        action\n        observation\n        }\n        response\n        costs {\n         totalCost\n         totalCostBRL\n         totalTokens\n         promptTokens\n         completionTokens\n         totalRequests\n        }\n\t}\n}",
+										"query": "mutation ($query: String!, $chatId: String!, $userId: String!, $additionalInformation: Boolean) {\n  answers(input: {query: $query, chatId: $chatId, userId: $userId, additionalInformation: $additionalInformation}) {\n        id\n\t\tquery\n        reasoning {\n        action\n        observation\n        }\n        response\n        costs {\n         totalCost\n         totalCostBRL\n         totalTokens\n         promptTokens\n         completionTokens\n         totalRequests\n         usagePerModel {\n          modelName\n          promptTokens\n          totalCost\n          totalCostBRL\n          totalRequests\n          completionTokens\n          totalTokens\n        }\n}",
 										"variables": "{\n\t\"query\": \"Oi\",\n\t\"chatId\": \"12309877\",\n    \"userId\": \"9eca540e-2426-4043-9599-7620a2190fc7\",\n    \"additionalInformation\": false\n}"
 									}
 								},
