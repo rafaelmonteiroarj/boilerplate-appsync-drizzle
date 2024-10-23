@@ -78,6 +78,7 @@ type Costs {
     totalCost: Float!
     totalCostBRL: String!
     totalRequests: Int!
+    dolarExchange: String!
     usagePerModel: [ModelUsage!]!
 }
 
