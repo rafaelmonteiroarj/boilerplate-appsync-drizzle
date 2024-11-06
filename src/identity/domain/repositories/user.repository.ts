@@ -7,4 +7,5 @@ export interface IUserRepository {
   create(user: UserDto): Promise<User>;
   getByEmail(email: string): Promise<User | null>;
   login(email: string, password: string): Promise<Session>;
+  update(userEmailToUpdate: string, isActive: boolean): Promise<User>;
 }

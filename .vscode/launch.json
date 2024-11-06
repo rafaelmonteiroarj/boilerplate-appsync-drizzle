@@ -1,0 +1,92 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug AddUser Function",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "--inspect",
+        "-r",
+        "tsconfig-paths/register",
+        "./node_modules/.bin/tsx",
+        "./node_modules/.bin/sls",
+        "invoke",
+        "local",
+        "-f",
+        "AddUser",
+        "--path",
+        "${workspaceFolder}/.vscode/payloads/addUser.json",
+        "--stage",
+        "pet"
+      ],
+      "console": "integratedTerminal",
+      "sourceMaps": true,
+      "outFiles": [
+        "${workspaceFolder}/dist/**/*.js"
+      ],
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Login Function",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "--inspect",
+        "-r",
+        "tsconfig-paths/register",
+        "./node_modules/.bin/tsx",
+        "./node_modules/.bin/sls",
+        "invoke",
+        "local",
+        "-f",
+        "Login",
+        "--path",
+        "${workspaceFolder}/.vscode/payloads/login.json",
+        "--stage",
+        "pet"
+      ],
+      "console": "integratedTerminal",
+      "sourceMaps": true,
+      "outFiles": [
+        "${workspaceFolder}/dist/**/*.js"
+      ],
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Activate User Function",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "--inspect",
+        "-r",
+        "tsconfig-paths/register",
+        "./node_modules/.bin/tsx",
+        "./node_modules/.bin/sls",
+        "invoke",
+        "local",
+        "-f",
+        "ActivateUser",
+        "--path",
+        "${workspaceFolder}/.vscode/payloads/activateUser.json",
+        "--stage",
+        "pet"
+      ],
+      "console": "integratedTerminal",
+      "sourceMaps": true,
+      "outFiles": [
+        "${workspaceFolder}/dist/**/*.js"
+      ],
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+    }
+  ]
+}

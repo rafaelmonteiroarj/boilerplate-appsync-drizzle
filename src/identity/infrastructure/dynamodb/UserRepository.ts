@@ -2,6 +2,7 @@ import {
   DynamoDBClient,
   PutItemCommand,
   ScanCommand,
+  UpdateItemCommand,
 } from "@aws-sdk/client-dynamodb";
 import { v4 as uuidv4 } from "uuid";
 
@@ -11,6 +12,7 @@ import { UserDto } from "../../application/dtos/user.dto";
 import { userMapper } from "../adapter/output/user.mapper";
 import { Session } from "../../domain/entities/session.entity";
 import { ValidationRequestError } from "../../../@common/errors/ValidationRequestError";
+import { marshall } from "@aws-sdk/util-dynamodb";
 
 const CryptoJS = require("crypto-js");
 const { sign } = require("jsonwebtoken");
@@ -104,5 +106,38 @@ export class DynamoRepository implements IUserRepository {
     } else {
       throw new ValidationRequestError("Usuário ou senha não encontrado.");
     }
+  }
+
+  async update(userEmailToUpdate: string, isActive: boolean): Promise<User> {
+    const user = await this.getByEmail(userEmailToUpdate);
+
+    if (!user) {
+      throw new ValidationRequestError("Email nulo ou não existente.");
+    }
+
+    if (user.active === true && isActive === true) {
+      throw new ValidationRequestError(`O user ${user.email} já está ativo`);
+    }
+
+    const updateCommand = new UpdateItemCommand({
+      TableName: this.tableName,
+      Key: marshall({
+        id: user.id,
+      }),
+      UpdateExpression: "set active = :active",
+      ExpressionAttributeValues: marshall({
+        ":active": isActive,
+      }),
+      ReturnValues: "UPDATED_NEW",
+    });
+
+    await this.dynamoDBClient.send(updateCommand);
+
+    const userUpdated = await this.getByEmail(user.email);
+    delete userUpdated?.password;
+
+    if (!userUpdated) throw new Error("User not created.");
+
+    return userUpdated;
   }
 }
