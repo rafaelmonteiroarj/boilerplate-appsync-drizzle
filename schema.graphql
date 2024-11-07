@@ -18,10 +18,15 @@ type Mutation {
     addFeedback(input: FeedbackInput!): GeniaTrendsFeedback! @aws_lambda
     login(input: SessionInput!): Session! @aws_api_key
     removeChatSession(input: RemoveChatSessionInput!): String! @aws_lambda
+    chatGenia: ChatGeniaResponse! @aws_lambda
 }
 
 type Subscription {
     onAddUser: User @aws_api_key @aws_subscribe(mutations: ["addUser"])
+}
+
+type ChatGeniaResponse @aws_lambda {
+    message: String!
 }
 
 type GeniaTrendsAlert @aws_api_key @aws_lambda {

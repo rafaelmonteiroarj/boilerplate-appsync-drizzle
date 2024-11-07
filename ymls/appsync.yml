@@ -27,12 +27,18 @@ mappingTemplates:
     dataSource: ggetAnswersDynamo
     request: click-alert/dynamo/request.vtl
     response: click-alert/dynamo/response.vtl
+
+  - type: Mutation
+    field: chatGenia
+    dataSource: chatGeniaFunction
+    request: false
+    response: false
+
   - type: Mutation
     field: addUser
     dataSource: addUserFunction
     request: false
     response: false
-
   - type: Mutation
     field: activateUser
     dataSource: activateUserFunction
@@ -61,6 +67,11 @@ mappingTemplates:
     response: click-alert/response.vtl
 
 dataSources:
+  - type: AWS_LAMBDA
+    name: chatGeniaFunction
+    config:
+      lambdaFunctionArn: arn:aws:lambda:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:function:click-alert-serverless-${self:provider.stage}-chatGenia
+
   - type: AWS_LAMBDA
     name: getUsersFunction
     config:
