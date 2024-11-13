@@ -54,6 +54,7 @@ type GeniaTrendsFeedback @aws_api_key @aws_lambda {
     createdAt: String
     userId: String
     userName: String
+    typeApplication: String
 }
 
 type User @aws_api_key @aws_lambda {
@@ -131,6 +132,7 @@ input FeedbackInput {
     comment: String
     userId: String
     userName: String
+    typeApplication: String
 }
 
 input UserInput {

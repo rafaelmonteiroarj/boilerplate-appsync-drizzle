@@ -452,7 +452,7 @@
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "mutation ($input: FeedbackInput!) {\n  addFeedback(input: $input) {\n    answer\n    createdAt\n    comment\n    feedback\n    id\n    question\n    questionId\n    chatId\n    userId\n    userName\n  }\n}\n",
+										"query": "mutation ($input: FeedbackInput!) {\n  addFeedback(input: $input) {\n    answer\n    createdAt\n    comment\n    feedback\n    id\n    question\n    questionId\n    chatId\n    userId\n    userName\n    typeApplication\n  }\n}\n",
 										"variables": "{\n   \"input\": {\n    \"userId\": \"9eca540e-2426-4043-9599-7620a2190fc7\",\n    \"userName\": \"Rafael Monteiro Arjonas\",\n    \"answer\": \"Test\",\n    \"comment\": \"FDSAFDA\",\n    \"feedback\": false,\n    \"question\": \"SAFDSAF\",\n    \"questionId\": \"FDASFDAS\",\n    \"chatId\": \"36df628d-bacd-4692-9d54-2d1a6a18d37f\"\n   }\n}"
 									}
 								},
@@ -512,7 +512,7 @@
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "query {\n  getFeedbacks {\n    answer\n    comment\n    createdAt\n    feedback\n    id\n    question\n    questionId\n    chatId\n    userId\n    userName\n  }\n}"
+										"query": "query {\n  getFeedbacks {\n    answer\n    comment\n    createdAt\n    feedback\n    id\n    question\n    questionId\n    chatId\n    userId\n    userName\n      typeApplication\n  }\n}"
 									}
 								},
 								"url": {
