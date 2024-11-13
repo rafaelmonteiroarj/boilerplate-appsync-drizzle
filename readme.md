@@ -98,6 +98,12 @@ Os seguintes scripts estão disponíveis para execução de diferentes tarefas n
 npm install
 ```
 
+### Realizar o build do projeto
+
+```sh
+npm build
+```
+
 ###  Comandos para Invocar Funções para Testes
 
 _Listar Todos os Usuários_
