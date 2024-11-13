@@ -148,6 +148,7 @@ input ChatInput {
     chatId: String!
     userId: String!
     query: String!
+    typeChat: String
     additionalInformation: Boolean
 }
 
