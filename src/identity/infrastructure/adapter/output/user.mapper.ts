@@ -9,6 +9,7 @@ export const userMapper = (item: Record<string, AttributeValue>): User => {
     active: item.active.BOOL!,
     isAdmin: item.isAdmin.BOOL!,
     password: item.password?.S,
+    questionlimitQuota: Number(item.question_limit_quota.N!),
     createdAt: new Date(item.createdAt.S!),
     updatedAt: new Date(item.updatedAt.S!),
   };

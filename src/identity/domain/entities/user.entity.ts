@@ -4,6 +4,7 @@ export interface User {
   email: string;
   active: boolean;
   password?: string;
+  questionlimitQuota: number;
   isAdmin: boolean;
   createdAt: Date;
   updatedAt: Date;

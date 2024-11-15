@@ -14,6 +14,7 @@ type Query {
 type Mutation {
     answers(input: ChatInput!): Answers! @aws_lambda
     addUser(input: UserInput!): User! @aws_api_key @aws_subscribe(mutations: ["addUser"])
+    updateQuotaUser(input: QuotaUserInput!): User! @aws_lambda
     activateUser(input: ActivateUserInput!): User! @aws_lambda
     addFeedback(input: FeedbackInput!): GeniaTrendsFeedback! @aws_lambda
     login(input: SessionInput!): Session! @aws_api_key
@@ -57,12 +58,13 @@ type GeniaTrendsFeedback @aws_api_key @aws_lambda {
     typeApplication: String
 }
 
-type User @aws_api_key @aws_lambda {
+type User @aws_api_key {
     id: ID!
     name: String!
     email: String!
     active: Boolean!
     isAdmin: Boolean!
+    questionlimitQuota: String!
     createdAt: AWSDateTime!
     updatedAt: AWSDateTime!
 }
@@ -121,6 +123,11 @@ input AlertInput {
     message: String
     speed: String
     typeAlert: String
+}
+
+input QuotaUserInput {
+    userEmail: String!
+    questionlimitQuota: String!
 }
 
 input FeedbackInput {

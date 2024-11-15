@@ -109,7 +109,7 @@ npm build
 _Listar Todos os Usuários_
 
 ```sh
-sls invoke --function GetUsers --stage pet
+sls invoke local --function GetUsers --stage pet
 ```
 
 _Efetuar Login_

@@ -61,6 +61,7 @@ export class DynamoRepository implements IUserRepository {
         name: { S: user.name },
         email: { S: user.email },
         active: { BOOL: false },
+        question_limit_quota: { N: "20" },
         isAdmin: { BOOL: false },
         password: {
           S: CryptoJS.AES.encrypt(
@@ -108,7 +109,10 @@ export class DynamoRepository implements IUserRepository {
     }
   }
 
-  async update(userEmailToUpdate: string, isActive: boolean): Promise<User> {
+  async updateActive(
+    userEmailToUpdate: string,
+    isActive: boolean,
+  ): Promise<User> {
     const user = await this.getByEmail(userEmailToUpdate);
 
     if (!user) {
@@ -136,7 +140,45 @@ export class DynamoRepository implements IUserRepository {
     const userUpdated = await this.getByEmail(user.email);
     delete userUpdated?.password;
 
-    if (!userUpdated) throw new Error("User not created.");
+    if (!userUpdated) throw new Error("User not updated.");
+
+    return userUpdated;
+  }
+
+  async updateQuota(
+    userEmailToUpdate: string,
+    questionlimitQuota: number,
+  ): Promise<User> {
+    const user = await this.getByEmail(userEmailToUpdate);
+
+    if (!user) {
+      throw new ValidationRequestError("Email nulo ou não existente.");
+    }
+
+    if (user.questionlimitQuota === questionlimitQuota) {
+      throw new ValidationRequestError(
+        `O user ${user.email} já possui essa cota.`,
+      );
+    }
+
+    const updateCommand = new UpdateItemCommand({
+      TableName: this.tableName,
+      Key: marshall({
+        id: user.id,
+      }),
+      UpdateExpression: "set questionlimitQuota = :questionlimitQuota",
+      ExpressionAttributeValues: marshall({
+        ":questionlimitQuota": questionlimitQuota,
+      }),
+      ReturnValues: "UPDATED_NEW",
+    });
+
+    await this.dynamoDBClient.send(updateCommand);
+
+    const userUpdated = await this.getByEmail(user.email);
+    delete userUpdated?.password;
+
+    if (!userUpdated) throw new Error("User not updated.");
 
     return userUpdated;
   }
