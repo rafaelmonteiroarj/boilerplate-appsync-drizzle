@@ -58,13 +58,13 @@ type GeniaTrendsFeedback @aws_api_key @aws_lambda {
     typeApplication: String
 }
 
-type User @aws_api_key {
+type User  {
     id: ID!
     name: String!
     email: String!
     active: Boolean!
     isAdmin: Boolean!
-    questionlimitQuota: String!
+    questionlimitQuota: Int!
     createdAt: AWSDateTime!
     updatedAt: AWSDateTime!
 }
@@ -127,7 +127,7 @@ input AlertInput {
 
 input QuotaUserInput {
     userEmail: String!
-    questionlimitQuota: String!
+    questionlimitQuota: Int!
 }
 
 input FeedbackInput {

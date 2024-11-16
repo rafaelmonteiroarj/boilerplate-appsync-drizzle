@@ -20,7 +20,7 @@ ActivateUser:
 
 UpdateQuotaUser:
   handler: dist/identity/infrastructure/adapter/input/handlers/update-quota-user.handler
-  name: ${self:service}-${self:provider.stage}-updateQuotaUser
+  name: ${self:service}-${self:provider.stage}-update-quota-user
   environment:
     DYNAMODB_TABLE: { "Ref": "UserTable"}
     JWT_SECRET: "Tel@-Vermelh@-pet"

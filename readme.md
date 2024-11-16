@@ -115,7 +115,7 @@ npx sls invoke local --function GetUsers --stage pet
 _Efetuar Login_
 
 ```sh
-npx sls invoke local --function Login --data '{ "arguments": { "input": { "email": "testj@gmail.com", "password": "123456" }}}' --stage pet
+npx sls invoke local --function Login --data '{ "arguments": { "input": { "email": "rafael.arjonas@claro.com.br", "password": "F@zer250" }}}' --stage pet
 ```
 
 _Adicionar um novo Usuário_
