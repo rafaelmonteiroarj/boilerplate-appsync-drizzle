@@ -61,7 +61,7 @@ export class DynamoRepository implements IUserRepository {
         name: { S: user.name },
         email: { S: user.email },
         active: { BOOL: false },
-        question_limit_quota: { N: "20" },
+        questionlimitQuota: { N: "20" },
         isAdmin: { BOOL: false },
         password: {
           S: CryptoJS.AES.encrypt(

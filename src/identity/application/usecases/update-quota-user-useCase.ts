@@ -11,10 +11,11 @@ export class UpdateQuotaUseCase {
   }
 
   async execute({
-    userEmail,
+    sessionUserEmail,
+    userEmailToUpdate,
     questionlimitQuota,
   }: UpdateQuotaUserDTO): Promise<User> {
-    const sessionUser = await this.userRepository.getByEmail(userEmail);
+    const sessionUser = await this.userRepository.getByEmail(sessionUserEmail);
 
     if (!sessionUser?.active) {
       throw new ValidationRequestError(
@@ -28,6 +29,9 @@ export class UpdateQuotaUseCase {
       );
     }
 
-    return await this.userRepository.updateQuota(userEmail, questionlimitQuota);
+    return await this.userRepository.updateQuota(
+      userEmailToUpdate,
+      questionlimitQuota,
+    );
   }
 }

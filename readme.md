@@ -109,17 +109,57 @@ npm build
 _Listar Todos os Usuários_
 
 ```sh
-sls invoke local --function GetUsers --stage pet
+npx sls invoke local --function GetUsers --stage pet
 ```
 
 _Efetuar Login_
 
 ```sh
-sls invoke local --function Login --data '{ "arguments": { "input": { "email": "testj@gmail.com", "password": "123456" }}}' --stage pet
+npx sls invoke local --function Login --data '{ "arguments": { "input": { "email": "testj@gmail.com", "password": "123456" }}}' --stage pet
 ```
 
 _Adicionar um novo Usuário_
 
 ```sh
-sls invoke local --function AddUser --data '{ "arguments": { "input": { "name": "Jubileu", "email": "test@gmail.com", "password": "Jubileu@123" }}}' --stage pet
+npx sls invoke local --function AddUser --data '{ "arguments": { "input": { "name": "Jubileu", "email": "test@gmail.com", "password": "Jubileu@123" }}}' --stage pet
+```
+
+_Ativar Usuário_
+
+```sh
+npx sls invoke local --function ActivateUser \
+--data '{
+  "arguments": {
+    "input": {
+      "isActive": true,
+      "userEmail": "francisco.rosa@claro.com.br"
+    }
+  },
+  "request": {
+    "headers": {
+      "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZTBlOTM5LWRmYzMtNDE0ZS1iZDUxLWU4YzA4MWE2OGFhZSIsIm5hbWUiOiJSYWZhZWwgTW9udGVpcm8gQXJqb25hcyIsImVtYWlsIjoicmFmYWVsLmFyam9uYXNAY2xhcm8uY29tLmJyIiwiYWN0aXZlIjp0cnVlLCJpc0FkbWluIjp0cnVlLCJwYXNzd29yZCI6IlUyRnNkR1ZrWDEvMyt1Z1hqQnk2dUJtSytpT1p5WHIrcXBnU1haRHVoK2M9IiwicXVlc3Rpb25saW1pdFF1b3RhIjoyMCwiY3JlYXRlZEF0IjoiMjAyNC0xMS0xNFQyMDo1Nzo1MS43MTFaIiwidXBkYXRlZEF0IjoiMjAyNC0xMS0xNFQyMDo1Nzo1MS43MTFaIiwiaWF0IjoxNzMxNzIwNjA5LCJleHAiOjE3MzE3MjI0MDl9.66ZfJ7Vwrk87nYeGz3dDRbaiaWT5A-7fA5ut1-Us6Iw"
+    }
+  }
+}' \
+--stage pet
+```
+
+_Aumentar cota de perguntas do usuário_
+
+```sh
+npx sls invoke local --function UpdateQuotaUser \
+--data '{
+  "arguments": {
+    "input": {
+      "questionlimitQuota": 30,
+      "userEmail": "francisco.rosa@claro.com.br"
+    }
+  },
+  "request": {
+    "headers": {
+      "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZTBlOTM5LWRmYzMtNDE0ZS1iZDUxLWU4YzA4MWE2OGFhZSIsIm5hbWUiOiJSYWZhZWwgTW9udGVpcm8gQXJqb25hcyIsImVtYWlsIjoicmFmYWVsLmFyam9uYXNAY2xhcm8uY29tLmJyIiwiYWN0aXZlIjp0cnVlLCJpc0FkbWluIjp0cnVlLCJwYXNzd29yZCI6IlUyRnNkR1ZrWDEvMyt1Z1hqQnk2dUJtSytpT1p5WHIrcXBnU1haRHVoK2M9IiwicXVlc3Rpb25saW1pdFF1b3RhIjoyMCwiY3JlYXRlZEF0IjoiMjAyNC0xMS0xNFQyMDo1Nzo1MS43MTFaIiwidXBkYXRlZEF0IjoiMjAyNC0xMS0xNFQyMDo1Nzo1MS43MTFaIiwiaWF0IjoxNzMxNzI1MzIzLCJleHAiOjE3MzE3MjcxMjN9.TtGIlQA32m3DN4AxeKriUhYaisfKftYKtAZYsyxW6kI"
+    }
+  }
+}' \
+--stage pet
 ```

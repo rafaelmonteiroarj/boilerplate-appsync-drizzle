@@ -18,6 +18,13 @@ ActivateUser:
     DYNAMODB_TABLE: { "Ref": "UserTable"}
     JWT_SECRET: "Tel@-Vermelh@-pet"
 
+UpdateQuotaUser:
+  handler: dist/identity/infrastructure/adapter/input/handlers/update-quota-user.handler
+  name: ${self:service}-${self:provider.stage}-updateQuotaUser
+  environment:
+    DYNAMODB_TABLE: { "Ref": "UserTable"}
+    JWT_SECRET: "Tel@-Vermelh@-pet"
+
 Login:
   handler: dist/identity/infrastructure/adapter/input/handlers/login.handler
   name: ${self:service}-${self:provider.stage}-login

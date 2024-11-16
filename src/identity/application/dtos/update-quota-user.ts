@@ -1,4 +1,5 @@
 export interface UpdateQuotaUserDTO {
-  userEmail: string;
+  sessionUserEmail: string;
+  userEmailToUpdate: string;
   questionlimitQuota: number;
 }

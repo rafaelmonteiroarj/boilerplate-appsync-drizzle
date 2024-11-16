@@ -5,9 +5,7 @@ import { DynamoRepository } from "../../../dynamodb/UserRepository";
 import { decode } from "jsonwebtoken";
 import { validationActivateUserSchema } from "../../validations";
 import { ValidationRequestError } from "../../../../../@common/errors/ValidationRequestError";
-
-const getToken = (event: AppSyncEvent) =>
-  event["request"]["headers"]["authorization"].split(" ")[1];
+import { getToken } from "../../../../../@common/utils/functions";
 
 export const handler = async (event: AppSyncEvent) => {
   try {
@@ -16,8 +14,6 @@ export const handler = async (event: AppSyncEvent) => {
     );
 
     const payload = event["arguments"]["input"];
-
-    console.log("TOKEN: ", event["request"]["headers"]["authorization"]);
 
     const token = getToken(event);
 
@@ -48,8 +44,6 @@ export const handler = async (event: AppSyncEvent) => {
     if (!decodedJwt) {
       throw new Error("Invalid token payload");
     }
-
-    console.debug(`Fetching users from table: ${process.env.DYNAMODB_TABLE}`);
 
     const activateUserUseCase = new ActivateUserUseCase(userRepository);
 

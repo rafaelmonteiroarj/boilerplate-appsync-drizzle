@@ -15,8 +15,6 @@ export const handler = async (event: AppSyncEvent) => {
 
     const payload = event["arguments"]["input"];
 
-    console.log("TOKEN: ", event["request"]["headers"]["authorization"]);
-
     const token = getToken(event);
 
     const { error } = validationActivateUserSchema.validate(payload);
@@ -26,17 +24,17 @@ export const handler = async (event: AppSyncEvent) => {
         detail.path.includes("userEmail"),
       );
 
-      const isActiveError = error.details.find((detail) =>
-        detail.path.includes("isActive"),
+      const isQuotaError = error.details.find((detail) =>
+        detail.path.includes("questionlimitQuota"),
       );
 
       if (emailError) {
         throw new ValidationRequestError("O e-mail deve ser válido.");
       }
 
-      if (isActiveError) {
+      if (isQuotaError) {
         throw new ValidationRequestError(
-          "Você deve informar se deseja ativar ou não o usuário",
+          "Você deve informar um limite de cota de perguntas válido.",
         );
       }
     }
@@ -47,12 +45,11 @@ export const handler = async (event: AppSyncEvent) => {
       throw new Error("Invalid token payload");
     }
 
-    console.debug(`Fetching users from table: ${process.env.DYNAMODB_TABLE}`);
-
     const activateUserUseCase = new UpdateQuotaUseCase(userRepository);
 
     const response = await activateUserUseCase.execute({
-      userEmail: payload["userEmail"],
+      sessionUserEmail: decodedJwt.email,
+      userEmailToUpdate: payload["userEmail"],
       questionlimitQuota: payload["questionlimitQuota"],
     });
 
