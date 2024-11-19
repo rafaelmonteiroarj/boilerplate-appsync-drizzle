@@ -7,3 +7,6 @@ pet:
 
 REGION: "us-east-1"
 ACCOUNT_ID: "769533000303"
+
+REDIS_HOST: "redis.dev.coedigital.clarobrasil.mobi"
+REDIS_PORT: "6379"

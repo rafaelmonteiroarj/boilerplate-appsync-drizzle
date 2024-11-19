@@ -55,6 +55,6 @@ export const handler = async (event: AppSyncEvent) => {
 
     return response;
   } catch (error) {
-    throw new Error(`Error fetching users: ${error}`);
+    throw new Error(`Error activate user: ${error}`);
   }
 };

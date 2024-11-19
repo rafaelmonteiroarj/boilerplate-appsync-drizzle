@@ -4,7 +4,9 @@ additionalAuthenticationProviders:
   - authenticationType: API_KEY
 lambdaAuthorizerConfig:
   lambdaFunctionArn: arn:aws:lambda:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:function:${self:service}-${self:provider.stage}-authorizer
-  authorizerResultTtlInSeconds: 300
+  # authorizerResultTtlInSeconds: 300
+  authorizerResultTtlInSeconds: 0
+
 
 mappingTemplates:
   - type: Query
