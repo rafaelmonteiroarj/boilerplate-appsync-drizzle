@@ -10,3 +10,4 @@ ACCOUNT_ID: "769533000303"
 
 REDIS_HOST: "redis.dev.coedigital.clarobrasil.mobi"
 REDIS_PORT: "6379"
+EXPIRATION_TIME: 12086400

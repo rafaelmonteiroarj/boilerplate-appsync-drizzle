@@ -42,5 +42,7 @@ Authorizer:
       - subnet-09d5cac19c3d5da6a
   environment:
     JWT_SECRET: "Tel@-Vermelh@-pet"
+    DYNAMODB_TABLE: { "Ref": "UserTable"}
     REDIS_HOST: ${file(./ymls/environment.yml):REDIS_HOST}
     REDIS_PORT: ${file(./ymls/environment.yml):REDIS_PORT}
+    EXPIRATION_TIME: ${file(./ymls/environment.yml):EXPIRATION_TIME}

@@ -14,7 +14,7 @@
     "lint:fix": "npm run lint --fix",
     "format": "prettier --write 'src/**/*.ts'",
     "prepare": "husky",
-    "deploy": "node iac/deploy.js",
+    "deploy": "npm run build && node iac/deploy.js",
     "destroy": "node iac/destroy.js"
   },
   "lint-staged": {

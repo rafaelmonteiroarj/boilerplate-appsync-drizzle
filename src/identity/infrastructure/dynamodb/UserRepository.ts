@@ -86,6 +86,7 @@ export class DynamoRepository implements IUserRepository {
 
   async login(email: string, password: string): Promise<Session> {
     const user = await this.getByEmail(email);
+    console.debug(user);
 
     if (user) {
       const bytes = CryptoJS.AES.decrypt(user.password, process.env.JWT_SECRET);
