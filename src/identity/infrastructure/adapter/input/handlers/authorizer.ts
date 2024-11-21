@@ -39,7 +39,12 @@ export const withPostHandlerMiddleware = (
     try {
       const response = await handler(event);
 
-      if (event.requestHeaders?.origin === process.env.URI_GENIA_COE) {
+      const allowedOrigins =
+        process.env.URI_GENIA_COE?.split(",").map((origin) => origin.trim()) ||
+        [];
+
+      if (allowedOrigins.includes(String(event.requestHeaders?.origin))) {
+        console.debug("Origin is Genia Coe");
         return response;
       }
 
@@ -48,10 +53,12 @@ export const withPostHandlerMiddleware = (
         throw new ValidationRequestError("Token não encontrado");
       }
 
-      const user = verify(
-        token,
-        `${process.env.JWT_SECRET}`,
-      ) as CustomJwtPayload;
+      const jwtSecret = process.env.JWT_SECRET;
+      if (!jwtSecret) {
+        throw new Error("JWT_SECRET is not defined");
+      }
+
+      const user = verify(token, jwtSecret) as CustomJwtPayload;
 
       const operationName = extractOperationName(
         event.requestContext.queryString,
