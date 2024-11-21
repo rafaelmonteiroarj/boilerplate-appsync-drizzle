@@ -1,11 +1,10 @@
 {
 	"info": {
-		"_postman_id": "31868136-880c-45fb-91b5-86cb76f29fdd",
+		"_postman_id": "a5b242a7-5d6e-44e9-83d6-e0931f76ba16",
 		"name": "tela-vermelha",
 		"description": "Tela Vermelha - Projeto usando AppSync para integrar em nossas Pocs",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "34147716",
-		"_collection_link": "https://dddd00-7283.postman.co/workspace/Claro-SA~b1e992c1-8f12-4c1c-8fa9-116e2669d868/collection/34147716-31868136-880c-45fb-91b5-86cb76f29fdd?action=share&source=collection_link&creator=34147716"
+		"_exporter_id": "6036888"
 	},
 	"item": [
 		{
@@ -384,8 +383,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation ($query: String!, $chatId: String!, $userId: String!, $additionalInformation: Boolean) {\n  answers(input: {query: $query, chatId: $chatId, userId: $userId, additionalInformation: $additionalInformation}) {\n        id\n\t\tquery\n        reasoning {\n        action\n        observation\n        }\n        response\n        costs {\n         totalCost\n         totalCostBRL\n         totalTokens\n         promptTokens\n         completionTokens\n         totalRequests\n         usagePerModel {\n          modelName\n          promptTokens\n          totalCost\n          totalCostBRL\n          totalRequests\n          completionTokens\n          totalTokens\n        }\n}",
-								"variables": "{\n\t\"query\": \"Oi\",\n\t\"chatId\": \"12309877\",\n    \"userId\": \"9eca540e-2426-4043-9599-7620a2190fc7\",\n    \"additionalInformation\": false\n}"
+								"query": "mutation ($query: String!, $chatId: String!, $userId: String!, $additionalInformation: Boolean, $typeChat: String) {\n  answers(input: {query: $query, chatId: $chatId, userId: $userId, additionalInformation: $additionalInformation, typeChat: $typeChat}) {\n\t\tquery\n        reasoning {\n        action\n        observation\n        }\n        response\n        costs {\n         totalCost\n         totalCostBRL\n         totalTokens\n         promptTokens\n         completionTokens\n         totalRequests\n         usagePerModel {\n            modelName\n            promptTokens\n            completionTokens\n            totalCost\n            totalCostBRL\n            totalRequests\n            totalTokens\n         }\n        }\n\t}\n}",
+								"variables": "{\n\t\"query\": \"dados sobre ranking de anuncios\",\n\t\"chatId\": \"12309877811\",\n    \"userId\": \"9eca540e-2426-4043-9599-7620a2190fc7\",\n    \"additionalInformation\": false,\n    \"typeChat\":\"trends\"\n}"
 							}
 						},
 						"url": {
@@ -569,7 +568,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "mutation ($input: FeedbackInput!) {\n  addFeedback(input: $input) {\n    answer\n    createdAt\n    comment\n    feedback\n    id\n    question\n    questionId\n    chatId\n    userId\n    userName\n    typeApplication\n  }\n}\n",
-								"variables": "{\n   \"input\": {\n    \"userId\": \"69e0e939-dfc3-414e-bd51-e8c081a68aae\",\n    \"userName\": \"Rafael Monteiro Arjonas\",\n    \"answer\": \"Test\",\n    \"comment\": \"FDSAFDA\",\n    \"feedback\": false,\n    \"question\": \"SAFDSAF\",\n    \"questionId\": \"FDASFDAS\",\n    \"chatId\": \"36df628d-bacd-4692-9d54-2d1a6a18d37f\"\n   }\n}"
+								"variables": "{\n   \"input\": {\n    \"userId\": \"9eca540e-2426-4043-9599-7620a2190fc7\",\n    \"userName\": \"Rafael Monteiro Arjonas\",\n    \"answer\": \"Test\",\n    \"comment\": \"FDSAFDA\",\n    \"feedback\": false,\n    \"question\": \"SAFDSAF\",\n    \"questionId\": \"FDASFDAS\",\n    \"typeApplication\": \"trends\",\n    \"chatId\": \"36df628d-bacd-4692-9d54-2d1a6a18d37f\"\n   }\n}"
 							}
 						},
 						"url": {
@@ -628,7 +627,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query {\n  getFeedbacks {\n    answer\n    comment\n    createdAt\n    feedback\n    id\n    question\n    questionId\n    chatId\n    userId\n    userName\n      typeApplication\n  }\n}"
+								"query": "query {\n  getFeedbacks {\n    answer\n    comment\n    createdAt\n    feedback\n    id\n    question\n    questionId\n    chatId\n    userId\n    userName\n    typeApplication\n  }\n}"
 							}
 						},
 						"url": {
