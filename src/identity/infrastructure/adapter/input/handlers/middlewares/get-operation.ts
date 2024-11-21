@@ -1,3 +1,4 @@
+import { ValidationRequestError } from "../../../../../../@common/errors/ValidationRequestError";
 import RedisRepository from "../../../../redis/RedisRepository";
 import { CustomJwtPayload } from "../../../types";
 
@@ -7,19 +8,29 @@ export const checkOperation = async (
 ) => {
   switch (operation) {
     case "answers":
-      await checkUserQuestionQuota(user);
-      break;
+      return checkUserQuestionQuota(user);
     default:
       break;
   }
 };
 
 const checkUserQuestionQuota = async (user: CustomJwtPayload) => {
+  const redisRepo = new RedisRepository();
   try {
-    const redisRepo = new RedisRepository();
-    await redisRepo.checkUserQuestionQuota(user);
+    const checkResult = await redisRepo.checkUserQuestionQuota(user);
+    if (!checkResult.isAuthorized) {
+      return checkResult;
+    }
   } catch (err) {
-    console.error(err);
-    throw err;
+    if (err instanceof ValidationRequestError) {
+      return {
+        isAuthorized: false,
+        validationMessage: err.message,
+      };
+    } else {
+      throw new Error("Erro interno ao verificar a cota de perguntas.");
+    }
   }
+
+  return { isAuthorized: true };
 };

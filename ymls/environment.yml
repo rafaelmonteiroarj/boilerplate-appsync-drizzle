@@ -1,9 +1,11 @@
 prd:
   STAGE: "prd"
   JWT_SECRET: "Tel@-Vermelh@-pet"
+  URI_GENIA_COE: "https://geniax.poc.coedigital.clarobrasil.mobi"
 pet:
   STAGE: "pet"
   JWT_SECRET: "Tel@-Vermelh@-pet"
+  URI_GENIA_COE: "https://geniax.poc.coedigital.clarobrasil.mobi"
 
 REGION: "us-east-1"
 ACCOUNT_ID: "769533000303"

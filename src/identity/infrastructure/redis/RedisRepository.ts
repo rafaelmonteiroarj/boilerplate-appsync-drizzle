@@ -1,15 +1,10 @@
 import { Redis } from "ioredis";
 import dotenv from "dotenv";
-
 import { DynamoRepository } from "../dynamodb/UserRepository";
+import { ValidationRequestError } from "../../../@common/errors/ValidationRequestError";
+import { CustomJwtPayload } from "../adapter/types";
 
 dotenv.config();
-
-interface CustomJwtPayload {
-  id: string;
-  email: string;
-  questionlimitQuota: number;
-}
 
 class RedisRepository {
   private _conn: Redis | null = null;
@@ -24,11 +19,7 @@ class RedisRepository {
           host,
           port,
         });
-        console.info(
-          `Successfully connected to Redis with host=${host}, port=${port}.`,
-        );
       } catch (error) {
-        console.error(`Error connecting to Redis: ${error}`);
         throw error;
       }
     }
@@ -71,7 +62,13 @@ class RedisRepository {
     return await this._conn.ttl(key);
   }
 
-  async checkUserQuestionQuota(userJwt: CustomJwtPayload): Promise<void> {
+  async checkUserQuestionQuota(
+    userJwt: CustomJwtPayload,
+  ): Promise<{ isAuthorized: boolean; validationMessage?: string }> {
+    if (userJwt.isAdmin) {
+      return { isAuthorized: true };
+    }
+
     const key = `question_limit_quota${userJwt.id}`;
     const EXPIRATION_TIME = Number(process.env.EXPIRATION_TIME);
 
@@ -85,7 +82,7 @@ class RedisRepository {
       const user = await userRepository.getByEmail(userJwt.email);
 
       if (!user) {
-        throw new Error("Usuário não encontrado.");
+        throw new ValidationRequestError("Usuário não encontrado.");
       }
 
       if (!redisValue) {
@@ -101,26 +98,23 @@ class RedisRepository {
           await this._conn!.expire(key, EXPIRATION_TIME);
         }
 
-        console.debug(`Valor atual da chave ${key}: ${currentQuota}`);
-        console.debug(
-          `Limite de perguntas diárias: ${user.questionlimitQuota}`,
-        );
-
         if (currentQuota > user.questionlimitQuota) {
-          // const ttl = await this.ttl(key);
-          // const minutesRemaining = Math.ceil(ttl / 60);
-          throw new Error(
-            `Cota diária excedida. Você atingiu o limite de ${user.questionlimitQuota} perguntas. ` +
+          return {
+            isAuthorized: false,
+            validationMessage:
+              `Cota diária excedida. Você atingiu o limite de ${user.questionlimitQuota} perguntas. ` +
               `Aguarde e tente novamente, mas tarde.`,
-          );
+          };
         }
       }
 
       const ttl = await this.ttl(key);
       console.debug(`TTL remanescente para a chave ${key}: ${ttl} segundos`);
+
+      return { isAuthorized: true };
     } catch (error) {
       if (error instanceof Error) {
-        throw new Error(error.message);
+        throw new ValidationRequestError(error.message);
       }
       throw error;
     } finally {

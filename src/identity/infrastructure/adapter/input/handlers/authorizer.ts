@@ -1,6 +1,7 @@
 import { verify } from "jsonwebtoken";
 import { AppSyncAuthorizerEvent, CustomJwtPayload } from "../../types";
 import { checkOperation } from "./middlewares/get-operation";
+import { ValidationRequestError } from "../../../../../@common/errors/ValidationRequestError";
 
 const extractOperationName = (queryString: string): string => {
   const cleanQuery = queryString.replace(/\s+/g, " ").trim();
@@ -21,6 +22,7 @@ const lambdaHandler = async (): Promise<{
   resolverContext: object;
   deniedFields: string[];
   ttlOverride: number;
+  validationMessage?: string;
 }> => {
   return {
     isAuthorized: true,
@@ -34,18 +36,16 @@ export const withPostHandlerMiddleware = (
   handler: (event: AppSyncAuthorizerEvent) => Promise<any>,
 ) => {
   return async (event: AppSyncAuthorizerEvent): Promise<any> => {
-    const response = await handler(event);
+    try {
+      const response = await handler(event);
 
-    if (
-      event.requestHeaders?.origin ===
-      "https://geniax.poc.coedigital.clarobrasil.mobi"
-    ) {
-      return response;
-    } else {
+      if (event.requestHeaders?.origin === process.env.URI_GENIA_COE) {
+        return response;
+      }
+
       const token = event.authorizationToken?.split(" ")[1];
-
       if (!token) {
-        throw new Error("Token não encontrado");
+        throw new ValidationRequestError("Token não encontrado");
       }
 
       const user = verify(
@@ -57,10 +57,35 @@ export const withPostHandlerMiddleware = (
         event.requestContext.queryString,
       );
 
-      await checkOperation(user, operationName);
-    }
+      const checkOperationResult = await checkOperation(user, operationName);
 
-    return response;
+      if (checkOperationResult && !checkOperationResult.isAuthorized) {
+        return {
+          isAuthorized: false,
+          resolverContext: {
+            message:
+              checkOperationResult.validationMessage || "Unauthorized access",
+          },
+          deniedFields: [],
+          ttlOverride: 0,
+        };
+      }
+
+      return response;
+    } catch (error) {
+      if (error instanceof ValidationRequestError) {
+        return {
+          isAuthorized: false,
+          resolverContext: {
+            message: `Validation error: ${error.message}`,
+          },
+          deniedFields: [],
+          ttlOverride: 0,
+        };
+      } else {
+        throw error;
+      }
+    }
   };
 };
 
