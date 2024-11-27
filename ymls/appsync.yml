@@ -4,7 +4,8 @@ additionalAuthenticationProviders:
   - authenticationType: API_KEY
 lambdaAuthorizerConfig:
   lambdaFunctionArn: arn:aws:lambda:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:function:${self:service}-${self:provider.stage}-authorizer
-  authorizerResultTtlInSeconds: 300
+  authorizerResultTtlInSeconds: 0
+
 
 mappingTemplates:
   - type: Query
@@ -24,18 +25,28 @@ mappingTemplates:
     response: click-alert/dynamo/response.vtl
   - type: Query
     field: getAnswers
-    dataSource: ggetAnswersDynamo
+    dataSource: getAnswersDynamo
     request: click-alert/dynamo/request.vtl
     response: click-alert/dynamo/response.vtl
+
+  - type: Mutation
+    field: chatGenia
+    dataSource: chatGeniaFunction
+    request: false
+    response: false
   - type: Mutation
     field: addUser
     dataSource: addUserFunction
     request: false
     response: false
-
   - type: Mutation
     field: activateUser
     dataSource: activateUserFunction
+    request: false
+    response: false
+  - type: Mutation
+    field: updateQuotaUser
+    dataSource: updateQuotaUserFunction
     request: false
     response: false
   - type: Mutation
@@ -53,7 +64,6 @@ mappingTemplates:
     dataSource: answersFunction
     request: false
     response: click-alert/response.vtl
-
   - type: Mutation
     field: removeChatSession
     dataSource: removeChatSessionFunction
@@ -61,6 +71,10 @@ mappingTemplates:
     response: click-alert/response.vtl
 
 dataSources:
+  - type: AWS_LAMBDA
+    name: chatGeniaFunction
+    config:
+      lambdaFunctionArn: arn:aws:lambda:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:function:click-alert-serverless-${self:provider.stage}-chatGenia
   - type: AWS_LAMBDA
     name: getUsersFunction
     config:
@@ -74,6 +88,10 @@ dataSources:
     config:
       functionName: activateUser
   - type: AWS_LAMBDA
+    name: updateQuotaUserFunction
+    config:
+      functionName: updateQuotaUser
+  - type: AWS_LAMBDA
     name: loginFunction
     config:
       functionName: login
@@ -81,21 +99,6 @@ dataSources:
     name: authorizerFunction
     config:
       functionName: authorizer
-  - type: AMAZON_DYNAMODB
-    name: getAlertsDynamo
-    config:
-      tableName: click-alert-serverless-${self:provider.stage}-alerts
-      region: us-east-1
-  - type: AMAZON_DYNAMODB
-    name: getFeedbacksDynamo
-    config:
-      tableName: click-alert-serverless-${self:provider.stage}-feedbacks
-      region: us-east-1
-  - type: AMAZON_DYNAMODB
-    name: ggetAnswersDynamo
-    config:
-      tableName: click-alert-serverless-${self:provider.stage}-answers
-      region: us-east-1
   - type: AWS_LAMBDA
     name: addAlertFunction
     config:
@@ -112,3 +115,18 @@ dataSources:
     name: removeChatSessionFunction
     config:
       lambdaFunctionArn: arn:aws:lambda:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:function:click-alert-serverless-${self:provider.stage}-remove-session-chat
+  - type: AMAZON_DYNAMODB
+    name: getAlertsDynamo
+    config:
+      tableName: click-alert-serverless-${self:provider.stage}-alerts
+      region: us-east-1
+  - type: AMAZON_DYNAMODB
+    name: getFeedbacksDynamo
+    config:
+      tableName: click-alert-serverless-${self:provider.stage}-feedbacks
+      region: us-east-1
+  - type: AMAZON_DYNAMODB
+    name: getAnswersDynamo
+    config:
+      tableName: click-alert-serverless-${self:provider.stage}-answers
+      region: us-east-1

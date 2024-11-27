@@ -30,6 +30,7 @@ export default [
       "@typescript-eslint/explicit-module-boundary-types": "off",
       "@typescript-eslint/no-unused-vars": "error",
       "@typescript-eslint/no-require-imports": "off",
+      "no-useless-catch": "off",
     },
   },
   {

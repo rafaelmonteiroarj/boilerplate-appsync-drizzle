@@ -14,14 +14,20 @@ type Query {
 type Mutation {
     answers(input: ChatInput!): Answers! @aws_lambda
     addUser(input: UserInput!): User! @aws_api_key @aws_subscribe(mutations: ["addUser"])
+    updateQuotaUser(input: QuotaUserInput!): User! @aws_lambda
     activateUser(input: ActivateUserInput!): User! @aws_lambda
     addFeedback(input: FeedbackInput!): GeniaTrendsFeedback! @aws_lambda
     login(input: SessionInput!): Session! @aws_api_key
     removeChatSession(input: RemoveChatSessionInput!): String! @aws_lambda
+    chatGenia: ChatGeniaResponse! @aws_lambda
 }
 
 type Subscription {
     onAddUser: User @aws_api_key @aws_subscribe(mutations: ["addUser"])
+}
+
+type ChatGeniaResponse @aws_lambda {
+    message: String!
 }
 
 type GeniaTrendsAlert @aws_api_key @aws_lambda {
@@ -35,7 +41,7 @@ type GeniaTrendsAlert @aws_api_key @aws_lambda {
     message: String
     speed: String
     type: String
-    answers: Answers!
+    answers: Answers
 }
 
 type GeniaTrendsFeedback @aws_api_key @aws_lambda {
@@ -49,63 +55,65 @@ type GeniaTrendsFeedback @aws_api_key @aws_lambda {
     createdAt: String
     userId: String
     userName: String
+    typeApplication: String
 }
 
 type User @aws_api_key @aws_lambda {
-    id: ID!
-    name: String!
-    email: String!
-    active: Boolean!
-    isAdmin: Boolean!
-    createdAt: AWSDateTime!
-    updatedAt: AWSDateTime!
+    id: ID
+    name: String
+    email: String
+    active: Boolean
+    isAdmin: Boolean
+    questionlimitQuota: Int
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
 }
 
 type Session @aws_api_key {
-    token: String!
-    user: User!
+    token: String
+    user: User
 }
 
 type Reasoning {
-    action: String!
-    observation: String!
+    action: String
+    observation: String
 }
 
 type Costs {
-    totalTokens: Int!
-    promptTokens: Int!
-    completionTokens: Int!
-    totalCost: Float!
-    totalCostBRL: String!
-    totalRequests: Int!
-    dolarExchange: String!
-    usagePerModel: [ModelUsage!]!
+    totalTokens: Int
+    promptTokens: Int
+    completionTokens: Int
+    totalCost: Float
+    totalCostBRL: String
+    totalRequests: Int
+    dolarExchange: String
+    usagePerModel: [ModelUsage]
 }
 
 type ModelUsage {
 	modelName: String
-	totalTokens: Int!
-	promptTokens: Int!
-	completionTokens: Int!
-	totalCost: Float!
-	totalCostBRL: String!
-	totalRequests: Int!
+	totalTokens: Int
+	promptTokens: Int
+	completionTokens: Int
+	totalCost: Float
+	totalCostBRL: String
+	totalRequests: Int
 }
 
 type Answers @aws_lambda {
-    id: String!
-    query: String!
-    response: String!
-    reasoning: [Reasoning!]!
-    costs: Costs!
-    chatId: String!
-    userId: String!
-    createdAt: String!
+    id: String
+    query: String
+    response: String
+    reasoning: [Reasoning]
+    costs: Costs
+    chatId: String
+    userId: String
+    createdAt: String
 }
 
 input SessionInput  {
-    email: String!
-    password: String!
+    email: String
+    password: String
 }
 
 input AlertInput {
@@ -117,6 +125,11 @@ input AlertInput {
     typeAlert: String
 }
 
+input QuotaUserInput {
+    userEmail: String
+    questionlimitQuota: Int
+}
+
 input FeedbackInput {
     chatId: String
     questionId: String
@@ -126,26 +139,28 @@ input FeedbackInput {
     comment: String
     userId: String
     userName: String
+    typeApplication: String
 }
 
 input UserInput {
-    name: String!
-    email: String!
-    password: String!
+    name: String
+    email: String
+    password: String
 }
 
 input ActivateUserInput {
-    userEmail: String!
-    isActive: Boolean!
+    userEmail: String
+    isActive: Boolean
 }
 
 input ChatInput {
-    chatId: String!
-    userId: String!
-    query: String!
+    chatId: String
+    userId: String
+    query: String
+    typeChat: String
     additionalInformation: Boolean
 }
 
 input RemoveChatSessionInput {
-    threadId: String!
+    threadId: String
 }

@@ -16,17 +16,34 @@ ActivateUser:
   name: ${self:service}-${self:provider.stage}-activateUser
   environment:
     DYNAMODB_TABLE: { "Ref": "UserTable"}
-    JWT_SECRET: "Tel@-Vermelh@-pet"
+    JWT_SECRET: ${file(./ymls/environment.yml):${opt:stage}.JWT_SECRET}
+
+UpdateQuotaUser:
+  handler: dist/identity/infrastructure/adapter/input/handlers/update-quota-user.handler
+  name: ${self:service}-${self:provider.stage}-update-quota-user
+  environment:
+    DYNAMODB_TABLE: { "Ref": "UserTable"}
+    JWT_SECRET: ${file(./ymls/environment.yml):${opt:stage}.JWT_SECRET}
 
 Login:
   handler: dist/identity/infrastructure/adapter/input/handlers/login.handler
   name: ${self:service}-${self:provider.stage}-login
   environment:
     DYNAMODB_TABLE: { "Ref": "UserTable"}
-    JWT_SECRET: "Tel@-Vermelh@-pet"
+    JWT_SECRET: ${file(./ymls/environment.yml):${opt:stage}.JWT_SECRET}
 
 Authorizer:
   handler: dist/identity/infrastructure/adapter/input/handlers/authorizer.handler
   name: ${self:service}-${self:provider.stage}-authorizer
+  vpc:
+    securityGroupIds:
+      - sg-076416d2ec61e48b2
+    subnetIds:
+      - subnet-09d5cac19c3d5da6a
   environment:
-    JWT_SECRET: "Tel@-Vermelh@-pet"
+    JWT_SECRET: ${file(./ymls/environment.yml):${opt:stage}.JWT_SECRET}
+    DYNAMODB_TABLE: { "Ref": "UserTable"}
+    REDIS_HOST: ${file(./ymls/environment.yml):REDIS_HOST}
+    REDIS_PORT: ${file(./ymls/environment.yml):REDIS_PORT}
+    EXPIRATION_TIME: ${file(./ymls/environment.yml):EXPIRATION_TIME}
+    URI_GENIA_COE: ${file(./ymls/environment.yml):${opt:stage}.URI_GENIA_COE}

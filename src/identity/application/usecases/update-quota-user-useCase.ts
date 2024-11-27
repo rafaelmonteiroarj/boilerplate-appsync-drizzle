@@ -1,9 +1,9 @@
 import { ValidationRequestError } from "../../../@common/errors/ValidationRequestError";
 import { User } from "../../domain/entities/user.entity";
 import { IUserRepository } from "../../domain/repositories/user.repository";
-import { ActivateUserDTO } from "../dtos/active-user.dto";
+import { UpdateQuotaUserDTO } from "../dtos/update-quota-user";
 
-export class ActivateUserUseCase {
+export class UpdateQuotaUseCase {
   private userRepository: IUserRepository;
 
   constructor(userRepository: IUserRepository) {
@@ -13,8 +13,8 @@ export class ActivateUserUseCase {
   async execute({
     sessionUserEmail,
     userEmailToUpdate,
-    isActive,
-  }: ActivateUserDTO): Promise<User> {
+    questionlimitQuota,
+  }: UpdateQuotaUserDTO): Promise<User> {
     const sessionUser = await this.userRepository.getByEmail(sessionUserEmail);
 
     if (!sessionUser?.active) {
@@ -29,6 +29,9 @@ export class ActivateUserUseCase {
       );
     }
 
-    return await this.userRepository.updateActive(userEmailToUpdate, isActive);
+    return await this.userRepository.updateQuota(
+      userEmailToUpdate,
+      questionlimitQuota,
+    );
   }
 }

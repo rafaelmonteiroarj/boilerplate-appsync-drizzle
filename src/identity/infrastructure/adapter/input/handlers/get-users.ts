@@ -7,8 +7,6 @@ export const handler = async () => {
       `${process.env.DYNAMODB_TABLE}`,
     );
 
-    console.debug(`Fetching users from table: ${process.env.DYNAMODB_TABLE}`);
-
     const getUsersUseCase = new GetUserUseCase(userRepository);
 
     return await getUsersUseCase.execute();

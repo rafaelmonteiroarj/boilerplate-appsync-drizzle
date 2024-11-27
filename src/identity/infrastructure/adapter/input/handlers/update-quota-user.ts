@@ -1,11 +1,11 @@
 import { AppSyncEvent } from "../../../../../@common/types/appsync-event";
 import { CustomJwtPayload } from "../../../../../@common/types/jwt.types";
-import { ActivateUserUseCase } from "../../../../application/usecases/activate-user-useCase";
 import { DynamoRepository } from "../../../dynamodb/UserRepository";
 import { decode } from "jsonwebtoken";
 import { validationActivateUserSchema } from "../../validations";
 import { ValidationRequestError } from "../../../../../@common/errors/ValidationRequestError";
 import { getToken } from "../../../../../@common/utils/functions";
+import { UpdateQuotaUseCase } from "../../../../application/usecases/update-quota-user-useCase";
 
 export const handler = async (event: AppSyncEvent) => {
   try {
@@ -24,17 +24,17 @@ export const handler = async (event: AppSyncEvent) => {
         detail.path.includes("userEmail"),
       );
 
-      const isActiveError = error.details.find((detail) =>
-        detail.path.includes("isActive"),
+      const isQuotaError = error.details.find((detail) =>
+        detail.path.includes("questionlimitQuota"),
       );
 
       if (emailError) {
         throw new ValidationRequestError("O e-mail deve ser válido.");
       }
 
-      if (isActiveError) {
+      if (isQuotaError) {
         throw new ValidationRequestError(
-          "Você deve informar se deseja ativar ou não o usuário",
+          "Você deve informar um limite de cota de perguntas válido.",
         );
       }
     }
@@ -45,16 +45,16 @@ export const handler = async (event: AppSyncEvent) => {
       throw new Error("Invalid token payload");
     }
 
-    const activateUserUseCase = new ActivateUserUseCase(userRepository);
+    const activateUserUseCase = new UpdateQuotaUseCase(userRepository);
 
     const response = await activateUserUseCase.execute({
       sessionUserEmail: decodedJwt.email,
       userEmailToUpdate: payload["userEmail"],
-      isActive: payload["isActive"],
+      questionlimitQuota: payload["questionlimitQuota"],
     });
 
     return response;
   } catch (error) {
-    throw new Error(`Error activate user: ${error}`);
+    throw new Error(`Error update quota user: ${error}`);
   }
 };

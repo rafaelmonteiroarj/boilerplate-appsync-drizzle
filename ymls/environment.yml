@@ -1,9 +1,15 @@
 prd:
   STAGE: "prd"
   JWT_SECRET: "Tel@-Vermelh@-pet"
+  URI_GENIA_COE: "https://geniax.poc.coedigital.clarobrasil.mobi, http://localhost:3000"
 pet:
   STAGE: "pet"
   JWT_SECRET: "Tel@-Vermelh@-pet"
+  URI_GENIA_COE: "https://geniax.poc.coedigital.clarobrasil.mobi, http://localhost:3000"
 
 REGION: "us-east-1"
 ACCOUNT_ID: "769533000303"
+
+REDIS_HOST: "redis.dev.coedigital.clarobrasil.mobi"
+REDIS_PORT: "6379"
+EXPIRATION_TIME: 12086400
