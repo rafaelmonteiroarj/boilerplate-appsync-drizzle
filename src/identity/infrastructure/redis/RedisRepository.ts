@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { DynamoRepository } from "../dynamodb/UserRepository";
 import { ValidationRequestError } from "../../../@common/errors/ValidationRequestError";
 import { CustomJwtPayload } from "../adapter/types";
+import { User } from "../../domain/entities/user.entity";
 
 dotenv.config();
 
@@ -61,6 +62,14 @@ class RedisRepository {
     if (!this._conn) throw new Error("Redis connection not established.");
     return await this._conn.ttl(key);
   }
+  async getUserDynamodb(email: string): Promise<User | null> {
+    const userRepository = new DynamoRepository(
+      `${process.env.DYNAMODB_TABLE}`,
+    );
+    const user = await userRepository.getByEmail(email);
+
+    return user;
+  }
 
   async checkUserQuestionQuota(
     userJwt: CustomJwtPayload,
@@ -73,42 +82,39 @@ class RedisRepository {
     const EXPIRATION_TIME = Number(process.env.EXPIRATION_TIME);
 
     try {
-      const userRepository = new DynamoRepository(
-        `${process.env.DYNAMODB_TABLE}`,
-      );
-      await this.connect();
+      const user = await this.getUserDynamodb(userJwt.email);
 
-      const redisValue = await this.get(key);
-      const user = await userRepository.getByEmail(userJwt.email);
-
+      // check exists user in DB
       if (!user) {
         throw new ValidationRequestError("Usuário não encontrado.");
       }
 
-      if (!redisValue) {
-        await this.set(key, "1");
-        await this._conn!.expire(key, EXPIRATION_TIME);
-        console.debug(
-          `Nova chave criada no Redis: ${key} com valor: 1 e expiração de ${EXPIRATION_TIME} segundos`,
-        );
-      } else {
-        const currentQuota = await this._conn!.incr(key);
+      await this.connect();
 
-        if (currentQuota === 1) {
-          await this._conn!.expire(key, EXPIRATION_TIME);
-        }
+      const rdCurrentQuota = await this.get(key);
 
-        if (currentQuota > user.questionlimitQuota) {
-          return {
-            isAuthorized: false,
-            validationMessage:
-              `Cota diária excedida. Você atingiu o limite de ${user.questionlimitQuota} perguntas. ` +
-              `Aguarde e tente novamente, mas tarde.`,
-          };
-        }
+      // Check current quota user daily
+      if (rdCurrentQuota && Number(rdCurrentQuota) >= user.questionlimitQuota) {
+        return {
+          isAuthorized: false,
+          validationMessage:
+            `Cota diária excedida. Você atingiu o limite de ${user.questionlimitQuota} perguntas. ` +
+            `Aguarde e tente novamente, mas tarde.`,
+        };
       }
 
+      const currentQuota = await this._conn!.incr(key);
+
+      if (currentQuota === 1) {
+        await this._conn!.expire(key, EXPIRATION_TIME);
+      }
+
+      console.debug(
+        `Nova chave criada no Redis: ${key} com valor: 1 e expiração de ${EXPIRATION_TIME} segundos`,
+      );
+
       const ttl = await this.ttl(key);
+
       console.debug(`TTL remanescente para a chave ${key}: ${ttl} segundos`);
 
       return { isAuthorized: true };
