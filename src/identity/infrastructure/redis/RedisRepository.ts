@@ -135,6 +135,37 @@ class RedisRepository implements IRedisRepository {
       this.close();
     }
   }
+
+  async deleteByPattern(pattern: string): Promise<boolean> {
+    try {
+      let cursor = "0";
+      await this.connect();
+
+      if (!this._conn) throw new Error("Redis connection not established.");
+
+      do {
+        // SCAN para buscar chaves com o padrão
+        const [nextCursor, keys] = await this._conn!.scan(
+          cursor,
+          "MATCH",
+          pattern,
+          "COUNT",
+          100,
+        );
+        cursor = nextCursor;
+
+        if (keys.length > 0) {
+          await this._conn!.del(...keys);
+          console.log(`Deletadas: ${keys}`);
+        }
+      } while (cursor !== "0");
+      return true;
+    } catch (error) {
+      throw error;
+    } finally {
+      this.close();
+    }
+  }
 }
 
 export default RedisRepository;
