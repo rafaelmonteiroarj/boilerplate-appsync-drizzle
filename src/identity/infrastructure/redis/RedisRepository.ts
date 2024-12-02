@@ -138,6 +138,7 @@ class RedisRepository implements IRedisRepository {
 
   async deleteByPattern(pattern: string): Promise<boolean> {
     try {
+      console.log(`Deletando chaves com o padrão ${pattern}`);
       let cursor = "0";
       await this.connect();
 
@@ -153,8 +154,11 @@ class RedisRepository implements IRedisRepository {
           100,
         );
         cursor = nextCursor;
-
+        console.log(`Cursor: ${cursor}`);
+        console.log(`Chaves encontradas: ${keys.length}`);
         if (keys.length > 0) {
+          console.log(`Encontradas: ${keys}`);
+          // Deletar as chaves
           await this._conn!.del(...keys);
           console.log(`Deletadas: ${keys}`);
         }

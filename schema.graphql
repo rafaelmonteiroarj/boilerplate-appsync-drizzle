@@ -24,6 +24,7 @@ type Mutation {
   removeChatSession(input: RemoveChatSessionInput!): String! @aws_lambda
   chatGenia: ChatGeniaResponse! @aws_lambda
   updateSchedulerQuota(input: SchedulerQuotaInput!): String @aws_lambda
+  rechargeQuota: String @aws_api_key
 }
 
 type Subscription {

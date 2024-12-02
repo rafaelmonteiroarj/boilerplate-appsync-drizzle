@@ -63,6 +63,18 @@ GetUserQuota:
 
 UpdateSchedulerQuota:
   handler: dist/identity/infrastructure/adapter/input/handlers/update-scheduler-quota.handler
-  name: ${self:service}-${self:provider.stage}-update-scheduler-quota
+  name: ${self:service}-${self:provider.stage}-updateSchedulerQuota
   environment:
     DYNAMODB_TABLE: { "Ref": "UserTable" }
+
+RechargeQuota:
+  handler: dist/identity/infrastructure/adapter/input/handlers/update-recharge-quota.handler
+  name: ${self:service}-${self:provider.stage}-updateRechargeQuota
+  vpc:
+    securityGroupIds:
+      - sg-076416d2ec61e48b2
+    subnetIds:
+      - subnet-09d5cac19c3d5da6a
+  environment:
+    REDIS_HOST: ${file(./ymls/environment.yml):REDIS_HOST}
+    REDIS_PORT: ${file(./ymls/environment.yml):REDIS_PORT}

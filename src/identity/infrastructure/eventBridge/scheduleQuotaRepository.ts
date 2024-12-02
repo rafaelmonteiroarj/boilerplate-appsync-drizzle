@@ -1,22 +1,33 @@
 import { IScheduleQuotaRepository } from "../../domain/repositories/schedule-quota.repository";
-
-const {
-  EventBridgeSchedulerClient,
+import dotenv from "dotenv";
+import {
+  SchedulerClient,
   UpdateScheduleCommand,
-} = require("@aws-sdk/client-scheduler");
+} from "@aws-sdk/client-scheduler"; // ES Modules import
 
+// const {
+//   EventBridgeSchedulerClient,
+//   UpdateScheduleCommand,
+// } = require("@aws-sdk/client-scheduler");
+
+dotenv.config();
 class ScheduleQuotaRepository implements IScheduleQuotaRepository {
-  private client;
+  private client: SchedulerClient;
+
   constructor() {
-    this.client = new EventBridgeSchedulerClient({ region: "us-east-1" }); // Altere para sua região
+    this.client = new SchedulerClient({ region: "us-east-1" });
   }
   async scheduleQuota(cron: string): Promise<boolean> {
     try {
       const params = {
-        Name: "nome-do-seu-agendamento",
+        Name: "tela-vermelha-pet-recharge-user-quota",
         ScheduleExpression: cron,
         FlexibleTimeWindow: { Mode: "OFF" },
-      };
+        Target: {
+          Arn: process.env.SCHEDULE_QUOTA_ARN,
+          RoleArn: process.env.SCHEDULE_QUOTA_ROLE_ARN,
+        },
+      } as any;
 
       const command = new UpdateScheduleCommand(params);
       const response = await this.client.send(command);

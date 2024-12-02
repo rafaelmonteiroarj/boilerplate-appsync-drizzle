@@ -6,7 +6,7 @@ class RechargeQuotaRepository implements IRechargeQuotaRepository {
     const redisRepository = new RedisRepository();
 
     redisRepository.connect();
-    await redisRepository.deleteByPattern("question_limit_quota:*");
+    await redisRepository.deleteByPattern("question_limit_quota*");
 
     return "Recharge Quota";
   }

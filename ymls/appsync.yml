@@ -78,6 +78,11 @@ mappingTemplates:
     dataSource: updateSchedulerQuotaFunction
     request: false
     response: false
+  - type: Mutation
+    field: rechargeQuota
+    dataSource: rechargeQuotaFunction
+    request: false
+    response: false
 
 dataSources:
   - type: AWS_LAMBDA
@@ -147,3 +152,7 @@ dataSources:
     name: updateSchedulerQuotaFunction
     config:
       functionName: updateSchedulerQuota
+  - type: AWS_LAMBDA
+    name: rechargeQuotaFunction
+    config:
+      functionName: rechargeQuota
