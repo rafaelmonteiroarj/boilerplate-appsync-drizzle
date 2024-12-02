@@ -26,9 +26,8 @@ export const validationActivateUserSchema = Joi.object().keys({
 });
 
 export const validationGetUserQuotaSchema = Joi.object().keys({
-  userEmail: Joi.string()
-    .email()
-    .required()
-    .message("O e-mail deve ser valido."),
-  isActive: Joi.bool().required().message("Usuário deve estar ativo."),
+  userEmail: Joi.string().email().required(),
+  // .message("O e-mail deve ser valido."),
+  // isActive: Joi.bool().required(),
+  // .message("Usuário deve estar ativo."),
 });

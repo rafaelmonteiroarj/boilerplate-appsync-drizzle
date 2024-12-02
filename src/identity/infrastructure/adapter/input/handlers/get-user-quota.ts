@@ -26,9 +26,6 @@ export const handler = async (event: AppSyncEvent) => {
         if (e.path.includes("userEmail")) {
           throw new ValidationRequestError("O e-mail deve ser válido.");
         }
-        if (e.path.includes("isActive")) {
-          throw new ValidationRequestError("Usuário deve estar ativo.");
-        }
       });
     }
 
@@ -45,7 +42,7 @@ export const handler = async (event: AppSyncEvent) => {
 
     const response = await getQuotaUseCase.execute({
       sessionUserEmail: decodedJwt.email,
-      email: payload["email"],
+      email: payload["userEmail"],
     });
 
     return response;

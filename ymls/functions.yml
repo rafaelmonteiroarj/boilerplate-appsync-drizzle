@@ -48,8 +48,15 @@ Authorizer:
     EXPIRATION_TIME: ${file(./ymls/environment.yml):EXPIRATION_TIME}
     URI_GENIA_COE: ${file(./ymls/environment.yml):${opt:stage}.URI_GENIA_COE}
 
-GetUsersQuota:
+GetUserQuota:
   handler: dist/identity/infrastructure/adapter/input/handlers/get-user-quota.handler
   name: ${self:service}-${self:provider.stage}-getUserQuota
+  vpc:
+    securityGroupIds:
+      - sg-076416d2ec61e48b2
+    subnetIds:
+      - subnet-09d5cac19c3d5da6a
   environment:
     DYNAMODB_TABLE: { "Ref": "UserTable" }
+    REDIS_HOST: ${file(./ymls/environment.yml):REDIS_HOST}
+    REDIS_PORT: ${file(./ymls/environment.yml):REDIS_PORT}

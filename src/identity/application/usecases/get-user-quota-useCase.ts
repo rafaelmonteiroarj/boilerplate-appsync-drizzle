@@ -56,7 +56,7 @@ export class GetUserQuotaUseCase {
       email: user.email,
       isAdmin: user.isAdmin,
       questionlimitQuota: user.questionlimitQuota,
-      remainingQuota: Number(quota) - user.questionlimitQuota,
+      remainingQuota: user.questionlimitQuota - Number(quota),
       usedQuota: Number(quota),
     };
 

@@ -76,6 +76,10 @@ mappingTemplates:
 
 dataSources:
   - type: AWS_LAMBDA
+    name: getUserQuotaFunction
+    config:
+      functionName: getUserQuota
+  - type: AWS_LAMBDA
     name: chatGeniaFunction
     config:
       lambdaFunctionArn: arn:aws:lambda:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:function:click-alert-serverless-${self:provider.stage}-chatGenia

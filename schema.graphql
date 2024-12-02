@@ -9,7 +9,7 @@ type Query {
   getAlerts: [GeniaTrendsAlert!]! @aws_lambda
   getFeedbacks: [GeniaTrendsFeedback!]! @aws_lambda
   getAnswers: [Answers!]! @aws_lambda
-  getUserQuota(input: UserEmailInput!): [GetUserQuota!]! @aws_lambda
+  getUserQuota(input: UserEmailInput!): UserQuota! @aws_lambda
 }
 
 type Mutation {
@@ -114,11 +114,10 @@ type Answers @aws_lambda {
   createdAt: String
 }
 
-type GetUserQuota @aws_api_key @aws_lambda {
+type UserQuota @aws_api_key @aws_lambda {
   id: String
   name: String
   email: String
-  isAdmin: String
   isAdmin: Boolean
   questionlimitQuota: Int
   remainingQuota: Int
