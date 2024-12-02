@@ -31,3 +31,9 @@ export const validationGetUserQuotaSchema = Joi.object().keys({
   // isActive: Joi.bool().required(),
   // .message("Usuário deve estar ativo."),
 });
+
+export const validationUpdateScheduleQuotaSchema = Joi.object().keys({
+  hour: Joi.string()
+    .required()
+    .pattern(new RegExp("/^(?:[01]d|2[0-3]):[0-5]d:[0-5]d$/")),
+});

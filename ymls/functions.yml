@@ -60,3 +60,9 @@ GetUserQuota:
     DYNAMODB_TABLE: { "Ref": "UserTable" }
     REDIS_HOST: ${file(./ymls/environment.yml):REDIS_HOST}
     REDIS_PORT: ${file(./ymls/environment.yml):REDIS_PORT}
+
+UpdateSchedulerQuota:
+  handler: dist/identity/infrastructure/adapter/input/handlers/update-scheduler-quota.handler
+  name: ${self:service}-${self:provider.stage}-update-scheduler-quota
+  environment:
+    DYNAMODB_TABLE: { "Ref": "UserTable" }

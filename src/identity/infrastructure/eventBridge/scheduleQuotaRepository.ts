@@ -5,9 +5,11 @@ const {
   UpdateScheduleCommand,
 } = require("@aws-sdk/client-scheduler");
 
-const client = new EventBridgeSchedulerClient({ region: "us-east-1" }); // Altere para sua região
-
 class ScheduleQuotaRepository implements IScheduleQuotaRepository {
+  private client;
+  constructor() {
+    this.client = new EventBridgeSchedulerClient({ region: "us-east-1" }); // Altere para sua região
+  }
   async scheduleQuota(cron: string): Promise<boolean> {
     try {
       const params = {
@@ -17,7 +19,7 @@ class ScheduleQuotaRepository implements IScheduleQuotaRepository {
       };
 
       const command = new UpdateScheduleCommand(params);
-      const response = await client.send(command);
+      const response = await this.client.send(command);
       console.log("Agendamento atualizado com sucesso:", response);
       if (!response) {
         return false;

@@ -2,32 +2,29 @@ import { AppSyncEvent } from "../../../../../@common/types/appsync-event";
 import { CustomJwtPayload } from "../../../../../@common/types/jwt.types";
 import { DynamoRepository } from "../../../dynamodb/UserRepository";
 import { decode } from "jsonwebtoken";
-import { validationGetUserQuotaSchema } from "../../validations";
+import { validationActivateUserSchema } from "../../validations";
 import { ValidationRequestError } from "../../../../../@common/errors/ValidationRequestError";
 import { getToken } from "../../../../../@common/utils/functions";
-import { GetUserQuotaUseCase } from "../../../../application/usecases/get-user-quota-useCase";
-import RedisRepository from "../../../redis/RedisRepository";
+import { UpdateScheduleQuotaUseCase } from "../../../../application/usecases/update-schedule-quota-useCase";
+import { ScheduleQuotaRepository } from "../../../eventBridge/scheduleQuotaRepository";
 
 export const handler = async (event: AppSyncEvent) => {
   try {
     const userRepository = new DynamoRepository(
       `${process.env.DYNAMODB_TABLE}`,
     );
-    const redisRepository = new RedisRepository();
 
+    const eventRepository = new ScheduleQuotaRepository();
     const payload = event["arguments"]["input"];
 
     const token = getToken(event);
 
-    const { error } = validationGetUserQuotaSchema.validate(payload);
+    const { error } = validationActivateUserSchema.validate(payload);
 
     if (error) {
       error.details.forEach((e) => {
-        if (e.path.includes("userEmail")) {
-          throw new ValidationRequestError("O e-mail deve ser válido.");
-        }
-        if (e.path.includes("isActive")) {
-          throw new ValidationRequestError("Usuário deve estar ativo.");
+        if (e.path.includes("hour")) {
+          throw new ValidationRequestError("Hora inválida");
         }
       });
     }
@@ -38,14 +35,14 @@ export const handler = async (event: AppSyncEvent) => {
       throw new Error("Invalid token payload");
     }
 
-    const getQuotaUseCase = new GetUserQuotaUseCase(
+    const updateSchedulerUseCase = new UpdateScheduleQuotaUseCase(
+      eventRepository,
       userRepository,
-      redisRepository,
     );
 
-    const response = await getQuotaUseCase.execute({
+    const response = await updateSchedulerUseCase.execute({
       sessionUserEmail: decodedJwt.email,
-      email: payload["email"],
+      hours: payload["hour"],
     });
 
     return response;

@@ -23,6 +23,7 @@ type Mutation {
   login(input: SessionInput!): Session! @aws_api_key
   removeChatSession(input: RemoveChatSessionInput!): String! @aws_lambda
   chatGenia: ChatGeniaResponse! @aws_lambda
+  updateSchedulerQuota(input: SchedulerQuotaInput!): String @aws_lambda
 }
 
 type Subscription {
@@ -179,4 +180,8 @@ input RemoveChatSessionInput {
 }
 input UserEmailInput {
   userEmail: String
+}
+
+input SchedulerQuotaInput {
+  hour: String
 }

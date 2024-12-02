@@ -73,6 +73,11 @@ mappingTemplates:
     dataSource: removeChatSessionFunction
     request: false
     response: click-alert/response.vtl
+  - type: Mutation
+    field: updateSchedulerQuota
+    dataSource: updateSchedulerQuotaFunction
+    request: false
+    response: false
 
 dataSources:
   - type: AWS_LAMBDA
@@ -138,3 +143,7 @@ dataSources:
     config:
       tableName: click-alert-serverless-${self:provider.stage}-answers
       region: us-east-1
+  - type: AWS_LAMBDA
+    name: updateSchedulerQuotaFunction
+    config:
+      functionName: updateSchedulerQuota
