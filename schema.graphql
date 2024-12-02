@@ -1,166 +1,183 @@
 schema {
-    query: Query
-    mutation: Mutation
-    subscription: Subscription
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
 }
 
 type Query {
-    getUsers: [User!]! @aws_lambda
-    getAlerts: [GeniaTrendsAlert!]! @aws_lambda
-    getFeedbacks: [GeniaTrendsFeedback!]! @aws_lambda
-    getAnswers: [Answers!]! @aws_lambda
+  getUsers: [User!]! @aws_lambda
+  getAlerts: [GeniaTrendsAlert!]! @aws_lambda
+  getFeedbacks: [GeniaTrendsFeedback!]! @aws_lambda
+  getAnswers: [Answers!]! @aws_lambda
+  getUserQuota(input: UserEmailInput!): [GetUserQuota!]! @aws_lambda
 }
 
 type Mutation {
-    answers(input: ChatInput!): Answers! @aws_lambda
-    addUser(input: UserInput!): User! @aws_api_key @aws_subscribe(mutations: ["addUser"])
-    updateQuotaUser(input: QuotaUserInput!): User! @aws_lambda
-    activateUser(input: ActivateUserInput!): User! @aws_lambda
-    addFeedback(input: FeedbackInput!): GeniaTrendsFeedback! @aws_lambda
-    login(input: SessionInput!): Session! @aws_api_key
-    removeChatSession(input: RemoveChatSessionInput!): String! @aws_lambda
-    chatGenia: ChatGeniaResponse! @aws_lambda
+  answers(input: ChatInput!): Answers! @aws_lambda
+  addUser(input: UserInput!): User!
+    @aws_api_key
+    @aws_subscribe(mutations: ["addUser"])
+  updateQuotaUser(input: QuotaUserInput!): User! @aws_lambda
+  activateUser(input: ActivateUserInput!): User! @aws_lambda
+  addFeedback(input: FeedbackInput!): GeniaTrendsFeedback! @aws_lambda
+  login(input: SessionInput!): Session! @aws_api_key
+  removeChatSession(input: RemoveChatSessionInput!): String! @aws_lambda
+  chatGenia: ChatGeniaResponse! @aws_lambda
 }
 
 type Subscription {
-    onAddUser: User @aws_api_key @aws_subscribe(mutations: ["addUser"])
+  onAddUser: User @aws_api_key @aws_subscribe(mutations: ["addUser"])
 }
 
 type ChatGeniaResponse @aws_lambda {
-    message: String!
+  message: String!
 }
 
 type GeniaTrendsAlert @aws_api_key @aws_lambda {
-    id: ID
-    dtRef: String
-    chatId: String
-    userId: String
-    advertiser: String
-    city: String
-    createdAt: String
-    message: String
-    speed: String
-    type: String
-    answers: Answers
+  id: ID
+  dtRef: String
+  chatId: String
+  userId: String
+  advertiser: String
+  city: String
+  createdAt: String
+  message: String
+  speed: String
+  type: String
+  answers: Answers
 }
 
 type GeniaTrendsFeedback @aws_api_key @aws_lambda {
-    id: ID
-    chatId: String
-    questionId: String
-    question: String
-    answer: String
-    feedback: Boolean
-    comment: String
-    createdAt: String
-    userId: String
-    userName: String
-    typeApplication: String
+  id: ID
+  chatId: String
+  questionId: String
+  question: String
+  answer: String
+  feedback: Boolean
+  comment: String
+  createdAt: String
+  userId: String
+  userName: String
+  typeApplication: String
 }
 
 type User @aws_api_key @aws_lambda {
-    id: ID
-    name: String
-    email: String
-    active: Boolean
-    isAdmin: Boolean
-    questionlimitQuota: Int
-    createdAt: AWSDateTime
-    updatedAt: AWSDateTime
+  id: ID
+  name: String
+  email: String
+  active: Boolean
+  isAdmin: Boolean
+  questionlimitQuota: Int
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
 }
 
 type Session @aws_api_key {
-    token: String
-    user: User
+  token: String
+  user: User
 }
 
 type Reasoning {
-    action: String
-    observation: String
+  action: String
+  observation: String
 }
 
 type Costs {
-    totalTokens: Int
-    promptTokens: Int
-    completionTokens: Int
-    totalCost: Float
-    totalCostBRL: String
-    totalRequests: Int
-    dolarExchange: String
-    usagePerModel: [ModelUsage]
+  totalTokens: Int
+  promptTokens: Int
+  completionTokens: Int
+  totalCost: Float
+  totalCostBRL: String
+  totalRequests: Int
+  dolarExchange: String
+  usagePerModel: [ModelUsage]
 }
 
 type ModelUsage {
-	modelName: String
-	totalTokens: Int
-	promptTokens: Int
-	completionTokens: Int
-	totalCost: Float
-	totalCostBRL: String
-	totalRequests: Int
+  modelName: String
+  totalTokens: Int
+  promptTokens: Int
+  completionTokens: Int
+  totalCost: Float
+  totalCostBRL: String
+  totalRequests: Int
 }
 
 type Answers @aws_lambda {
-    id: String
-    query: String
-    response: String
-    reasoning: [Reasoning]
-    costs: Costs
-    chatId: String
-    userId: String
-    createdAt: String
+  id: String
+  query: String
+  response: String
+  reasoning: [Reasoning]
+  costs: Costs
+  chatId: String
+  userId: String
+  createdAt: String
 }
 
-input SessionInput  {
-    email: String
-    password: String
+type GetUserQuota @aws_api_key @aws_lambda {
+  id: String
+  name: String
+  email: String
+  isAdmin: String
+  isAdmin: Boolean
+  questionlimitQuota: Int
+  remainingQuota: Int
+  usedQuota: Int
+}
+
+input SessionInput {
+  email: String
+  password: String
 }
 
 input AlertInput {
-    dtRef: String
-    advertiser: String
-    city: String
-    message: String
-    speed: String
-    typeAlert: String
+  dtRef: String
+  advertiser: String
+  city: String
+  message: String
+  speed: String
+  typeAlert: String
 }
 
 input QuotaUserInput {
-    userEmail: String
-    questionlimitQuota: Int
+  userEmail: String
+  questionlimitQuota: Int
 }
 
 input FeedbackInput {
-    chatId: String
-    questionId: String
-    question: String
-    answer: String
-    feedback: Boolean
-    comment: String
-    userId: String
-    userName: String
-    typeApplication: String
+  chatId: String
+  questionId: String
+  question: String
+  answer: String
+  feedback: Boolean
+  comment: String
+  userId: String
+  userName: String
+  typeApplication: String
 }
 
 input UserInput {
-    name: String
-    email: String
-    password: String
+  name: String
+  email: String
+  password: String
 }
 
 input ActivateUserInput {
-    userEmail: String
-    isActive: Boolean
+  userEmail: String
+  isActive: Boolean
 }
 
 input ChatInput {
-    chatId: String
-    userId: String
-    query: String
-    typeChat: String
-    additionalInformation: Boolean
+  chatId: String
+  userId: String
+  query: String
+  typeChat: String
+  additionalInformation: Boolean
 }
 
 input RemoveChatSessionInput {
-    threadId: String
+  threadId: String
+}
+input UserEmailInput {
+  userEmail: String
 }

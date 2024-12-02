@@ -6,7 +6,6 @@ lambdaAuthorizerConfig:
   lambdaFunctionArn: arn:aws:lambda:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:function:${self:service}-${self:provider.stage}-authorizer
   authorizerResultTtlInSeconds: 0
 
-
 mappingTemplates:
   - type: Query
     field: getUsers
@@ -28,6 +27,11 @@ mappingTemplates:
     dataSource: getAnswersDynamo
     request: click-alert/dynamo/request.vtl
     response: click-alert/dynamo/response.vtl
+  - type: Query
+    field: getUserQuota
+    dataSource: getUserQuotaFunction
+    request: false
+    response: false
 
   - type: Mutation
     field: chatGenia

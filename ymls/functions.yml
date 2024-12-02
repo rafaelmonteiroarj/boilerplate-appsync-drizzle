@@ -2,34 +2,34 @@ GetUsers:
   handler: dist/identity/infrastructure/adapter/input/handlers/get-users.handler
   name: ${self:service}-${self:provider.stage}-getUsers
   environment:
-    DYNAMODB_TABLE: { "Ref": "UserTable"}
+    DYNAMODB_TABLE: { "Ref": "UserTable" }
 
 AddUser:
   handler: dist/identity/infrastructure/adapter/input/handlers/add-user.handler
   name: ${self:service}-${self:provider.stage}-addUser
   environment:
-    DYNAMODB_TABLE: { "Ref": "UserTable"}
+    DYNAMODB_TABLE: { "Ref": "UserTable" }
     JWT_SECRET: "Tel@-Vermelh@-pet"
 
 ActivateUser:
   handler: dist/identity/infrastructure/adapter/input/handlers/activate-user.handler
   name: ${self:service}-${self:provider.stage}-activateUser
   environment:
-    DYNAMODB_TABLE: { "Ref": "UserTable"}
+    DYNAMODB_TABLE: { "Ref": "UserTable" }
     JWT_SECRET: ${file(./ymls/environment.yml):${opt:stage}.JWT_SECRET}
 
 UpdateQuotaUser:
   handler: dist/identity/infrastructure/adapter/input/handlers/update-quota-user.handler
   name: ${self:service}-${self:provider.stage}-update-quota-user
   environment:
-    DYNAMODB_TABLE: { "Ref": "UserTable"}
+    DYNAMODB_TABLE: { "Ref": "UserTable" }
     JWT_SECRET: ${file(./ymls/environment.yml):${opt:stage}.JWT_SECRET}
 
 Login:
   handler: dist/identity/infrastructure/adapter/input/handlers/login.handler
   name: ${self:service}-${self:provider.stage}-login
   environment:
-    DYNAMODB_TABLE: { "Ref": "UserTable"}
+    DYNAMODB_TABLE: { "Ref": "UserTable" }
     JWT_SECRET: ${file(./ymls/environment.yml):${opt:stage}.JWT_SECRET}
 
 Authorizer:
@@ -42,8 +42,14 @@ Authorizer:
       - subnet-09d5cac19c3d5da6a
   environment:
     JWT_SECRET: ${file(./ymls/environment.yml):${opt:stage}.JWT_SECRET}
-    DYNAMODB_TABLE: { "Ref": "UserTable"}
+    DYNAMODB_TABLE: { "Ref": "UserTable" }
     REDIS_HOST: ${file(./ymls/environment.yml):REDIS_HOST}
     REDIS_PORT: ${file(./ymls/environment.yml):REDIS_PORT}
     EXPIRATION_TIME: ${file(./ymls/environment.yml):EXPIRATION_TIME}
     URI_GENIA_COE: ${file(./ymls/environment.yml):${opt:stage}.URI_GENIA_COE}
+
+GetUsersQuota:
+  handler: dist/identity/infrastructure/adapter/input/handlers/get-user-quota.handler
+  name: ${self:service}-${self:provider.stage}-getUserQuota
+  environment:
+    DYNAMODB_TABLE: { "Ref": "UserTable" }

@@ -4,10 +4,11 @@ import { DynamoRepository } from "../dynamodb/UserRepository";
 import { ValidationRequestError } from "../../../@common/errors/ValidationRequestError";
 import { CustomJwtPayload } from "../adapter/types";
 import { User } from "../../domain/entities/user.entity";
+import { IRedisRepository } from "../../domain/repositories/redis.repository";
 
 dotenv.config();
 
-class RedisRepository {
+class RedisRepository implements IRedisRepository {
   private _conn: Redis | null = null;
 
   connect(): Redis {
