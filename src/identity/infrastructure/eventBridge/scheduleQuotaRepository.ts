@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import {
   SchedulerClient,
   UpdateScheduleCommand,
+  UpdateScheduleCommandInput,
 } from "@aws-sdk/client-scheduler"; // ES Modules import
 
 // const {
@@ -37,7 +38,7 @@ class ScheduleQuotaRepository implements IScheduleQuotaRepository {
           Arn: targetArn,
           RoleArn: roleArn,
         },
-      } as any;
+      } as UpdateScheduleCommandInput;
 
       const command = new UpdateScheduleCommand(params);
       const response = await this.client.send(command);
