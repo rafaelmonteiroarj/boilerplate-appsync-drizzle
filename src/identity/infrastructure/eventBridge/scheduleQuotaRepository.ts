@@ -19,19 +19,29 @@ class ScheduleQuotaRepository implements IScheduleQuotaRepository {
   }
   async scheduleQuota(cron: string): Promise<boolean> {
     try {
+      const targetArn =
+        process.env.SCHEDULE_QUOTA_ARN ||
+        "arn:aws:lambda:us-east-1:769533000303:function:tela-vermelha-pet-updateRechargeQuota";
+      const roleArn =
+        process.env.SCHEDULE_QUOTA_ROLE_ARN ||
+        "arn:aws:iam::769533000303:role/service-role/Amazon_EventBridge_Scheduler_LAMBDA_770fb4690a";
+      const nameSchedule =
+        process.env.SCHEDULE_QUOTA_NAME ||
+        "tela-vermelha-pet-recharge-user-quota";
+
       const params = {
-        Name: "tela-vermelha-pet-recharge-user-quota",
+        Name: nameSchedule,
         ScheduleExpression: cron,
         FlexibleTimeWindow: { Mode: "OFF" },
         Target: {
-          Arn: process.env.SCHEDULE_QUOTA_ARN,
-          RoleArn: process.env.SCHEDULE_QUOTA_ROLE_ARN,
+          Arn: targetArn,
+          RoleArn: roleArn,
         },
       } as any;
 
       const command = new UpdateScheduleCommand(params);
       const response = await this.client.send(command);
-      console.log("Agendamento atualizado com sucesso:", response);
+
       if (!response) {
         return false;
       }

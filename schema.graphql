@@ -23,7 +23,8 @@ type Mutation {
   login(input: SessionInput!): Session! @aws_api_key
   removeChatSession(input: RemoveChatSessionInput!): String! @aws_lambda
   chatGenia: ChatGeniaResponse! @aws_lambda
-  updateSchedulerQuota(input: SchedulerQuotaInput!): String @aws_lambda
+  updateSchedulerQuota(input: SchedulerQuotaInput!): UpdateSchedulerQuota
+    @aws_lambda
   rechargeQuota: String @aws_api_key
 }
 
@@ -124,6 +125,10 @@ type UserQuota @aws_api_key @aws_lambda {
   questionlimitQuota: Int
   remainingQuota: Int
   usedQuota: Int
+}
+
+type UpdateSchedulerQuota @aws_api_key @aws_lambda {
+  message: String
 }
 
 input SessionInput {

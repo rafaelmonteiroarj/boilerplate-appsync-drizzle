@@ -38,7 +38,8 @@ export class UpdateScheduleQuotaUseCase {
     // transform string to cron
     const cronExpression = timeToCron(hours);
     console.log(`transforming hours:${hours} to cron: ${cronExpression}`);
-    const result = this.scheduleQuotaRepository.scheduleQuota(cronExpression);
+    const result =
+      await this.scheduleQuotaRepository.scheduleQuota(cronExpression);
 
     console.log(result);
 
