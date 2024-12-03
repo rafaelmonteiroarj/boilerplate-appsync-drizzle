@@ -42,7 +42,6 @@ export const handler = async (event: AppSyncEvent) => {
 
     const response = await getQuotaUseCase.execute({
       sessionUserEmail: decodedJwt.email,
-      email: payload["userEmail"],
     });
 
     return response;

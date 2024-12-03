@@ -17,7 +17,7 @@ export class GetUserQuotaUseCase {
     this.redisRepository = redisRepository;
   }
 
-  async execute({ email, sessionUserEmail }: UserQuotaDTO): Promise<UserQuota> {
+  async execute({ sessionUserEmail }: UserQuotaDTO): Promise<UserQuota> {
     const sessionUser = await this.userRepository.getByEmail(sessionUserEmail);
 
     if (!sessionUser?.active) {
@@ -26,19 +26,11 @@ export class GetUserQuotaUseCase {
       );
     }
 
-    if (!sessionUser?.isAdmin) {
-      throw new ValidationRequestError(
-        "O usuário não possui permissão suficiente para realizar essa operação",
-      );
-    }
-
-    const user = await this.userRepository.getByEmail(email);
-
-    if (!user) {
+    if (!sessionUser) {
       throw new ValidationRequestError("Usuário não encontrado.");
     }
 
-    const key = `question_limit_quota${user.id}`;
+    const key = `question_limit_quota${sessionUser.id}`;
     this.redisRepository.connect();
 
     const userQuota = await this.redisRepository.get(key);
@@ -51,12 +43,12 @@ export class GetUserQuotaUseCase {
     const quota = userQuota ? Number(userQuota) : 0;
 
     const response: UserQuota = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      questionlimitQuota: user.questionlimitQuota,
-      remainingQuota: user.questionlimitQuota - Number(quota),
+      id: sessionUser.id,
+      name: sessionUser.name,
+      email: sessionUser.email,
+      isAdmin: sessionUser.isAdmin,
+      questionlimitQuota: sessionUser.questionlimitQuota,
+      remainingQuota: sessionUser.questionlimitQuota - Number(quota),
       usedQuota: Number(quota),
     };
 

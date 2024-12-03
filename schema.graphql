@@ -9,7 +9,7 @@ type Query {
   getAlerts: [GeniaTrendsAlert!]! @aws_lambda
   getFeedbacks: [GeniaTrendsFeedback!]! @aws_lambda
   getAnswers: [Answers!]! @aws_lambda
-  getUserQuota(input: UserEmailInput!): UserQuota! @aws_lambda
+  getUserQuota: UserQuota! @aws_lambda
 }
 
 type Mutation {
@@ -183,9 +183,6 @@ input ChatInput {
 
 input RemoveChatSessionInput {
   threadId: String
-}
-input UserEmailInput {
-  userEmail: String
 }
 
 input SchedulerQuotaInput {
