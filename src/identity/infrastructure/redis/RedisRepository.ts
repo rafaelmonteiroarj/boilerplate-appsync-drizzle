@@ -95,7 +95,7 @@ class RedisRepository implements IRedisRepository {
       const rdCurrentQuota = await this.get(key);
 
       // if user equal 0 is ilimited
-      if (rdCurrentQuota && Number(rdCurrentQuota) === 0) {
+      if (rdCurrentQuota && user.questionlimitQuota === 0) {
         return {
           isAuthorized: true,
         };
