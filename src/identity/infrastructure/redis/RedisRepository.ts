@@ -93,7 +93,8 @@ class RedisRepository implements IRedisRepository {
       await this.connect();
 
       const rdCurrentQuota = await this.get(key);
-
+      console.log(`rdCurrentQuota: ${rdCurrentQuota}`);
+      console.log(`user.questionlimitQuota: ${user.questionlimitQuota}`);
       // if user equal 0 is ilimited
       if (rdCurrentQuota && user.questionlimitQuota === 0) {
         return {
@@ -101,6 +102,8 @@ class RedisRepository implements IRedisRepository {
         };
       }
 
+      console.log(`user.questionlimitQuota: ${user.questionlimitQuota}`);
+      console.log(`rdCurrentQuota: ${rdCurrentQuota}`);
       // Check current quota user daily
       if (rdCurrentQuota && Number(rdCurrentQuota) >= user.questionlimitQuota) {
         return {
@@ -112,7 +115,7 @@ class RedisRepository implements IRedisRepository {
       }
 
       const currentQuota = await this._conn!.incr(key);
-
+      console.log(`currentQuota+1: ${currentQuota}`);
       if (currentQuota === 1) {
         await this._conn!.expire(key, EXPIRATION_TIME);
       }
