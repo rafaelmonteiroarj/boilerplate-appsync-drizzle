@@ -163,3 +163,43 @@ npx sls invoke local --function UpdateQuotaUser \
 }' \
 --stage pet
 ```
+
+## [UTILS] Update data new field dynamo
+
+define new field and value
+
+```sh
+TABLE_NAME="click-alert-serverless-pet-feedbacks"        # Nome da sua tabela DynamoDB
+NOVO_CAMPO="typeApplication"        # Nome do campo a 
+ser adicionado
+VALOR_DEFAULT="trends"  # Valor default para o novo campo
+```
+
+got to local folder
+
+```bash
+cd scripts
+```
+
+Grant permission file
+
+```sh
+chmod +x updateNewFieldFull.sh
+```
+
+execute file second plan
+
+```sh
+./updateNewFieldFull.sh 2>&1 | ts '[%Y-%m-%d %H:%M:%S]' > output.log &
+
+ou
+
+./updateNewFieldFull.sh > output.log 2>&1
+
+```
+
+verify execution
+
+```sh
+ps aux | grep meuscript.sh
+```

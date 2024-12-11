@@ -24,34 +24,72 @@ Resources:
           AttributeType: N
         - AttributeName: updatedAt
           AttributeType: S
-        - AttributeName: origin
-          AttributeType: S # AD or Trends
-        - AttributeName: grantAccess
-          AttributeType: S # {coe:true, trends:false}
+        # - AttributeName: origin
+        #   AttributeType: S # AD or Trends
+        # - AttributeName: grantAccess
+        #   AttributeType: S # {coe:true, trends:false}
       BillingMode: PAY_PER_REQUEST
       TableName: ${self:service}-${self:provider.stage}-users
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
       GlobalSecondaryIndexes:
-        - IndexName: email
+        - IndexName: EmailIndex
           KeySchema:
             - AttributeName: email
               KeyType: HASH
           Projection:
             ProjectionType: ALL
-        - IndexName: active
-          KeySchema:
-            - AttributeName: active
-              KeyType: HASH
-          Projection:
-            ProjectionType: ALL
-        - IndexName: isAdmin
-          KeySchema:
-            - AttributeName: isAdmin
-              KeyType: HASH
-          Projection:
-            ProjectionType: ALL
-        - IndexName: createdAt
-          KeySchema:
-            - AttributeName: createdAt
-              KeyType: HASH
-          Projection:
-            ProjectionType: ALL
+      #   - IndexName: active
+      #     KeySchema:
+      #       - AttributeName: active
+      #         KeyType: HASH
+      #     Projection:
+      #       ProjectionType: ALL
+      #   - IndexName: isAdmin
+      #     KeySchema:
+      #       - AttributeName: isAdmin
+      #         KeyType: HASH
+      #     Projection:
+      #       ProjectionType: ALL
+      #   - IndexName: createdAt
+      #     KeySchema:
+      #       - AttributeName: createdAt
+      #         KeyType: HASH
+      #     Projection:
+      #       ProjectionType: ALL
+      #   - IndexName: updatedAt
+      #     KeySchema:
+      #       - AttributeName: updatedAt
+      #         KeyType: HASH
+      #     Projection:
+      #       ProjectionType: ALL
+      #   - IndexName: origin
+      #     KeySchema:
+      #       - AttributeName: origin
+      #         KeyType: HASH
+      #     Projection:
+      #       ProjectionType: ALL
+      #   - IndexName: grantAccess
+      #     KeySchema:
+      #       - AttributeName: grantAccess
+      #         KeyType: HASH
+      #     Projection:
+      #       ProjectionType: ALL
+      #   - IndexName: name
+      #     KeySchema:
+      #       - AttributeName: name
+      #         KeyType: HASH
+      #     Projection:
+      #       ProjectionType: ALL
+      #   - IndexName: questionlimitQuota
+      #     KeySchema:
+      #       - AttributeName: questionLimitQuota
+      #         KeyType: HASH
+      #     Projection:
+      #       ProjectionType: ALL
+      #   - IndexName: password
+      #     KeySchema:
+      #       - AttributeName: password
+      #         KeyType: HASH
+      #     Projection:
+      #       ProjectionType: ALL
