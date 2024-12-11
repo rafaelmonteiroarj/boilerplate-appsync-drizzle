@@ -8,5 +8,50 @@ Resources:
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: S
+        - AttributeName: active
+          AttributeType: BOOL
+        - AttributeName: createdAt
+          AttributeType: S
+        - AttributeName: email
+          AttributeType: S
+        - AttributeName: isAdmin
+          AttributeType: BOOL
+        - AttributeName: name
+          AttributeType: S
+        - AttributeName: password
+          AttributeType: S
+        - AttributeName: questionLimitQuota
+          AttributeType: N
+        - AttributeName: updatedAt
+          AttributeType: S
+        - AttributeName: origin
+          AttributeType: S # AD or Trends
+        - AttributeName: grantAccess
+          AttributeType: S # {coe:true, trends:false}
       BillingMode: PAY_PER_REQUEST
       TableName: ${self:service}-${self:provider.stage}-users
+      GlobalSecondaryIndexes:
+        - IndexName: email
+          KeySchema:
+            - AttributeName: email
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+        - IndexName: active
+          KeySchema:
+            - AttributeName: active
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+        - IndexName: isAdmin
+          KeySchema:
+            - AttributeName: isAdmin
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+        - IndexName: createdAt
+          KeySchema:
+            - AttributeName: createdAt
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL

@@ -6,11 +6,6 @@ import {
   UpdateScheduleCommandInput,
 } from "@aws-sdk/client-scheduler"; // ES Modules import
 
-// const {
-//   EventBridgeSchedulerClient,
-//   UpdateScheduleCommand,
-// } = require("@aws-sdk/client-scheduler");
-
 dotenv.config();
 class ScheduleQuotaRepository implements IScheduleQuotaRepository {
   private client: SchedulerClient;
