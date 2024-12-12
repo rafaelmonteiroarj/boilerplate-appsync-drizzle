@@ -29,15 +29,14 @@ export class LoginUserUseCase {
           ["trends", false],
         ]),
       });
-      // if (created) {
-      //   return await this.userRepository.login(email, password);
-      // }
+
+      return await this.userRepository.loginCoe(email);
     }
 
     // create signature never expires
     // if (user && user.origin === "coe") {
     //   console.log("create signature never expires");
     // }
-    return await this.userRepository.login(email, password, origin);
+    return await this.userRepository.login(email, password);
   }
 }
