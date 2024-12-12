@@ -8,4 +8,6 @@ export interface User {
   isAdmin: boolean;
   createdAt: Date;
   updatedAt: Date;
+  origin: string;
+  grantAccessGenia: Map<string, boolean>;
 }

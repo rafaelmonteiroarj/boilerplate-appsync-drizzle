@@ -8,7 +8,31 @@ export class LoginUserUseCase {
     this.userRepository = userRepository;
   }
 
-  async execute(email: string, password: string): Promise<Session> {
+  async execute(
+    email: string,
+    password: string,
+    origin: string,
+  ): Promise<Session> {
+    const user = await this.userRepository.getByEmail(email);
+    if (!user && origin === "coe") {
+      const created = await this.userRepository.create({
+        name: email.split("@")[0],
+        email: email,
+        password: password,
+        origin: origin,
+        grantAccessGenia: new Map<string, boolean>([
+          ["coe", true],
+          ["trends", false],
+        ]),
+      });
+      if (created) {
+        return await this.userRepository.login(email, password);
+      }
+    }
+    // create signature never expires
+    // if (user && user.origin === "coe") {
+    //   console.log("create signature never expires");
+    // }
     return await this.userRepository.login(email, password);
   }
 }

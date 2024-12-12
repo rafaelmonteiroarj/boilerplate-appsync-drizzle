@@ -71,6 +71,8 @@ export class DynamoRepository implements IUserRepository {
         },
         createdAt: { S: new Date().toISOString() },
         updatedAt: { S: new Date().toISOString() },
+        origin: { S: user.origin },
+        grantAccessGenia: { S: JSON.stringify(user.grantAccessGenia) },
       },
     });
 
@@ -87,26 +89,26 @@ export class DynamoRepository implements IUserRepository {
   async login(email: string, password: string): Promise<Session> {
     const user = await this.getByEmail(email);
 
-    if (user) {
-      const bytes = CryptoJS.AES.decrypt(user.password, process.env.JWT_SECRET);
-      const originalText = bytes.toString(CryptoJS.enc.Utf8);
-
-      if (originalText === password) {
-        const token = sign(user, process.env.JWT_SECRET, { expiresIn: "30m" });
-
-        if (user.active === false) {
-          throw new ValidationRequestError(
-            "Usuário inativo. Entre em contato com o Administrador.",
-          );
-        }
-
-        return { token, user };
-      } else {
-        throw new ValidationRequestError("Usuário ou senha inválidos.");
-      }
-    } else {
+    if (!user) {
       throw new ValidationRequestError("Usuário ou senha não encontrado.");
     }
+
+    const bytes = CryptoJS.AES.decrypt(user.password, process.env.JWT_SECRET);
+    const originalText = bytes.toString(CryptoJS.enc.Utf8);
+
+    if (originalText !== password) {
+      throw new ValidationRequestError("Usuário ou senha inválidos.");
+    }
+
+    if (!user.active) {
+      throw new ValidationRequestError(
+        "Usuário inativo. Entre em contato com o Administrador.",
+      );
+    }
+
+    const token = sign(user, process.env.JWT_SECRET, { expiresIn: "30m" });
+
+    return { token, user };
   }
 
   async updateActive(

@@ -2,6 +2,8 @@ import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import { User } from "../../../domain/entities/user.entity";
 
 export const userMapper = (item: Record<string, AttributeValue>): User => {
+  const grantAccessGenia = JSON.parse(item.grantAccessGenia.S!);
+  console.log(grantAccessGenia);
   return {
     id: item.id.S!,
     name: item.name.S!,
@@ -12,5 +14,9 @@ export const userMapper = (item: Record<string, AttributeValue>): User => {
     questionlimitQuota: Number(item.questionlimitQuota.N!),
     createdAt: new Date(item.createdAt.S!),
     updatedAt: new Date(item.updatedAt.S!),
+    origin: item.origin.S!,
+    grantAccessGenia: new Map<string, boolean>(
+      Object.entries(grantAccessGenia),
+    ),
   };
 };
