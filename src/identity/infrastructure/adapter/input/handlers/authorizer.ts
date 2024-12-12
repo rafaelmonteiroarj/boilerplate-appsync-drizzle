@@ -39,14 +39,15 @@ export const withPostHandlerMiddleware = (
     try {
       const response = await handler(event);
 
+      // todo sera removido na nova genia //
       const allowedOrigins =
         process.env.URI_GENIA_COE?.split(",").map((origin) => origin.trim()) ||
         [];
-
       if (allowedOrigins.includes(String(event.requestHeaders?.origin))) {
         console.debug("Origin is Genia Coe");
         return response;
       }
+      // todo sera removido na nova genia //
 
       const token = event.authorizationToken?.split(" ")[1];
       if (!token) {

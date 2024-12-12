@@ -1,3 +1,4 @@
+import { Origin } from "../../../@common/types/enums";
 import { generateRandomString } from "../../../@common/utils/functions";
 import { Session } from "../../domain/entities/session.entity";
 import { IUserRepository } from "../../domain/repositories/user.repository";
@@ -16,7 +17,7 @@ export class LoginUserUseCase {
   ): Promise<Session> {
     const user = await this.userRepository.getByEmail(email);
 
-    if (!user && origin === "coe") {
+    if (!user && origin === Origin.COE) {
       // generate random password
       password = generateRandomString(10);
       await this.userRepository.create({

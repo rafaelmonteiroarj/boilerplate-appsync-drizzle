@@ -3,6 +3,7 @@ import { AppSyncEvent } from "./../../../../../@common/types/appsync-event";
 import { ValidationRequestError } from "./../../../../../@common/errors/ValidationRequestError";
 import { validationRegisterSchema } from "../../validations";
 import { AddUserUseCase } from "../../../../application/usecases/add-user.useCase";
+import { Origin } from "../../../../../@common/types/enums";
 
 export const handler = async (event: AppSyncEvent) => {
   try {
@@ -39,6 +40,11 @@ export const handler = async (event: AppSyncEvent) => {
       name: payload["name"],
       email: payload["email"],
       password: payload["password"],
+      origin: Origin.TRENDS,
+      grantAccessGenia: new Map<string, boolean>([
+        ["coe", false],
+        ["trends", true],
+      ]),
     });
   } catch (error) {
     if (error instanceof ValidationRequestError) {
