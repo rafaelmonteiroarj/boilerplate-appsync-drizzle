@@ -21,3 +21,15 @@ export const timeToCron = (timeString: string) => {
   // O CRON do EventBridge não suporta segundos, apenas minutos e horas
   return `cron(${minutes} ${hours} * * ? *)`;
 };
+
+export const generateRandomString = (length: number) => {
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()-_=+[]{}<>?";
+  let result = "";
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    result += characters[randomIndex];
+  }
+
+  return result;
+};

@@ -86,7 +86,19 @@ export class DynamoRepository implements IUserRepository {
     return userCreated;
   }
 
+  async loginCoe(email: string) {
+    console.log("Login Coe" + email);
+    const user = await this.getByEmail(email);
+
+    if (!user) {
+      throw new ValidationRequestError("Usuário ou senha não encontrado.");
+    }
+    const token = sign(user, process.env.JWT_SECRET, { expiresIn: "30m" });
+
+    return { token, user };
+  }
   async login(email: string, password: string): Promise<Session> {
+    console.log("Login Trends" + email);
     const user = await this.getByEmail(email);
 
     if (!user) {

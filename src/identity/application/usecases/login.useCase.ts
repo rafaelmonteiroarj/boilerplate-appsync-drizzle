@@ -1,3 +1,4 @@
+import { generateRandomString } from "../../../@common/utils/functions";
 import { Session } from "../../domain/entities/session.entity";
 import { IUserRepository } from "../../domain/repositories/user.repository";
 
@@ -14,8 +15,11 @@ export class LoginUserUseCase {
     origin: string,
   ): Promise<Session> {
     const user = await this.userRepository.getByEmail(email);
+
     if (!user && origin === "coe") {
-      const created = await this.userRepository.create({
+      // generate random password
+      password = generateRandomString(10);
+      await this.userRepository.create({
         name: email.split("@")[0],
         email: email,
         password: password,
@@ -25,14 +29,15 @@ export class LoginUserUseCase {
           ["trends", false],
         ]),
       });
-      if (created) {
-        return await this.userRepository.login(email, password);
-      }
+      // if (created) {
+      //   return await this.userRepository.login(email, password);
+      // }
     }
+
     // create signature never expires
     // if (user && user.origin === "coe") {
     //   console.log("create signature never expires");
     // }
-    return await this.userRepository.login(email, password);
+    return await this.userRepository.login(email, password, origin);
   }
 }
