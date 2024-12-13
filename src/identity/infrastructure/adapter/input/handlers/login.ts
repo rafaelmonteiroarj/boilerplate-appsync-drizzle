@@ -14,12 +14,16 @@ export const handler = async (event: AppSyncEvent) => {
     const loginUserUseCase = new LoginUserUseCase(userRepository);
 
     if (error) {
+      const errorMessage = error.details.map((e) => e.message);
+
       throw new ValidationRequestError(
-        "Usuário ou senha inválidos. Verifique os dados e tente novamente.",
+        errorMessage.join(", "),
+        // "Usuário ou senha inválidos. Verifique os dados e tente novamente.",
       );
     }
 
     const result = await loginUserUseCase.execute(
+      payload["name"],
       payload["email"],
       payload["password"],
       payload["origin"],

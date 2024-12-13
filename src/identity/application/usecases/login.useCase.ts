@@ -11,6 +11,7 @@ export class LoginUserUseCase {
   }
 
   async execute(
+    name: string,
     email: string,
     password: string,
     origin: string,
@@ -21,7 +22,7 @@ export class LoginUserUseCase {
       // generate random password
       password = generateRandomString(10);
       await this.userRepository.create({
-        name: email.split("@")[0],
+        name: name,
         email: email,
         password: password,
         origin: origin,

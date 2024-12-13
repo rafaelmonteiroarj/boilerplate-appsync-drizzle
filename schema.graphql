@@ -134,6 +134,7 @@ type UpdateSchedulerQuota @aws_api_key @aws_lambda {
 }
 
 input SessionInput {
+  name: String
   email: String
   password: String
   origin: String

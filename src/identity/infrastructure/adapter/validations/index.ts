@@ -1,4 +1,5 @@
 import { Joi } from "celebrate";
+import { Origin } from "../../../../@common/types/enums";
 
 export const validationRegisterSchema = Joi.object().keys({
   name: Joi.string().required(),
@@ -15,10 +16,28 @@ export const validationRegisterSchema = Joi.object().keys({
 });
 
 export const validationLoginSchema = Joi.object().keys({
-  email: Joi.string().email().required(),
+  name: Joi.string().when("origin", {
+    is: Origin.COE,
+    then: Joi.string().min(1).required().messages({
+      "string.empty":
+        "O campo 'name' não pode ser vazio quando a origem for 'coe'.",
+    }),
+    otherwise: Joi.string().allow(""),
+  }),
+  email: Joi.string().email().required().messages({
+    "string.email": "O e-mail deve ter um formato válido.",
+    "any.required": "O campo e-mail é obrigatório.",
+  }),
   // email: Joi.string().email().pattern(new RegExp('^[a-zA-Z0-9._%+-]+@(claro.com.br|globalhitss.com.br)$')).required(),
   password: Joi.string().required(),
-  origin: Joi.string().required(),
+  origin: Joi.string()
+    .valid(...Object.values(Origin))
+    .required()
+    .messages({
+      "any.required": "O campo 'origin' é obrigatório.",
+      "any.only":
+        "O campo 'origin' deve ser um dos seguintes valores: coe ou trends.",
+    }),
 });
 
 export const validationActivateUserSchema = Joi.object().keys({
