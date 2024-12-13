@@ -93,7 +93,9 @@ export class DynamoRepository implements IUserRepository {
     if (!user) {
       throw new ValidationRequestError("Usuário ou senha não encontrado.");
     }
-    const token = sign(user, process.env.JWT_SECRET); // remove expiration time
+    const token = sign(user, process.env.JWT_SECRET, {
+      ignoreExpiration: true,
+    }); // remove expiration time
 
     return { token, user };
   }
