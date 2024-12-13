@@ -26,4 +26,6 @@ export interface CustomJwtPayload extends JwtPayload {
   questionlimitQuota: number;
   createdAt: string;
   updatedAt: string;
+  origin: string;
+  grantAccessGenia: string;
 }
