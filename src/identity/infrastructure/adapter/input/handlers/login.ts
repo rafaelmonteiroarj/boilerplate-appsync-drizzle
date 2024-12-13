@@ -22,6 +22,7 @@ export const handler = async (event: AppSyncEvent) => {
     const result = await loginUserUseCase.execute(
       payload["email"],
       payload["password"],
+      payload["origin"],
     );
     return result;
   } catch (error) {
