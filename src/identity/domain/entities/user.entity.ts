@@ -9,5 +9,5 @@ export interface User {
   createdAt: Date;
   updatedAt: Date;
   origin: string;
-  grantAccessGenia: Map<string, boolean>;
+  grantAccessGenia: string;
 }

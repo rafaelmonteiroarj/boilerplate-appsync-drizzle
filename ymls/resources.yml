@@ -2,43 +2,44 @@ Resources:
   UserTable:
     Type: "AWS::DynamoDB::Table"
     Properties:
+      BillingMode: PAY_PER_REQUEST
+      TableName: ${self:service}-${self:provider.stage}-users
       KeySchema:
         - AttributeName: id
           KeyType: HASH
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: S
-        - AttributeName: active
-          AttributeType: BOOL
-        - AttributeName: createdAt
-          AttributeType: S
-        - AttributeName: email
-          AttributeType: S
-        - AttributeName: isAdmin
-          AttributeType: BOOL
-        - AttributeName: name
-          AttributeType: S
-        - AttributeName: password
-          AttributeType: S
-        - AttributeName: questionLimitQuota
-          AttributeType: N
-        - AttributeName: updatedAt
-          AttributeType: S
-        - AttributeName: origin
-          AttributeType: S # AD or Trends
-        - AttributeName: grantAccessGenia
-          AttributeType: S # {coe:true, trends:false}
-      BillingMode: PAY_PER_REQUEST
-      TableName: ${self:service}-${self:provider.stage}-users
-      StreamSpecification:
-        StreamViewType: NEW_IMAGE
-      GlobalSecondaryIndexes:
-        - IndexName: EmailIndex
-          KeySchema:
-            - AttributeName: email
-              KeyType: HASH
-          Projection:
-            ProjectionType: ALL
+      #   - AttributeName: active
+      #     AttributeType: BOOL
+      #   - AttributeName: createdAt
+      #     AttributeType: S
+      #   - AttributeName: email
+      #     AttributeType: S
+      #   - AttributeName: isAdmin
+      #     AttributeType: BOOL
+      #   - AttributeName: name
+      #     AttributeType: S
+      #   - AttributeName: password
+      #     AttributeType: S
+      #   - AttributeName: questionLimitQuota
+      #     AttributeType: N
+      #   - AttributeName: updatedAt
+      #     AttributeType: S
+      #   - AttributeName: origin
+      #     AttributeType: S # AD or Trends
+      #   - AttributeName: grantAccessGenia
+      #     AttributeType: S # {coe:true, trends:false}
+
+      # StreamSpecification:
+      #   StreamViewType: NEW_IMAGE
+      # GlobalSecondaryIndexes:
+      #   - IndexName: EmailIndex
+      #     KeySchema:
+      #       - AttributeName: email
+      #         KeyType: HASH
+      #     Projection:
+      #       ProjectionType: ALL
       #   - IndexName: active
       #     KeySchema:
       #       - AttributeName: active

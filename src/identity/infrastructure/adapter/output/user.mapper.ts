@@ -15,8 +15,9 @@ export const userMapper = (item: Record<string, AttributeValue>): User => {
     createdAt: new Date(item.createdAt.S!),
     updatedAt: new Date(item.updatedAt.S!),
     origin: item.origin.S!,
-    grantAccessGenia: new Map<string, boolean>(
-      Object.entries(grantAccessGenia),
-    ),
+    grantAccessGenia: item.grantAccessGenia.S!,
+    // grantAccessGenia: new Map<string, boolean>(
+    //   Object.entries(grantAccessGenia),
+    // ),
   };
 };

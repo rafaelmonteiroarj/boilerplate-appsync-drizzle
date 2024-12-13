@@ -60,7 +60,7 @@ export class DynamoRepository implements IUserRepository {
         id: { S: id },
         name: { S: user.name },
         email: { S: user.email },
-        active: { BOOL: false },
+        active: { BOOL: user.origin === "coe" ? true : false },
         questionlimitQuota: { N: "20" },
         isAdmin: { BOOL: false },
         password: {
@@ -72,7 +72,9 @@ export class DynamoRepository implements IUserRepository {
         createdAt: { S: new Date().toISOString() },
         updatedAt: { S: new Date().toISOString() },
         origin: { S: user.origin },
-        grantAccessGenia: { S: JSON.stringify(user.grantAccessGenia) },
+        grantAccessGenia: {
+          S: JSON.stringify(Object.fromEntries(user.grantAccessGenia)),
+        },
       },
     });
 
@@ -93,9 +95,7 @@ export class DynamoRepository implements IUserRepository {
     if (!user) {
       throw new ValidationRequestError("Usuário ou senha não encontrado.");
     }
-    const token = sign(user, process.env.JWT_SECRET, {
-      ignoreExpiration: true,
-    }); // remove expiration time
+    const token = sign(user, process.env.JWT_SECRET); // remove expiration time
 
     return { token, user };
   }

@@ -18,6 +18,7 @@ export const validationLoginSchema = Joi.object().keys({
   email: Joi.string().email().required(),
   // email: Joi.string().email().pattern(new RegExp('^[a-zA-Z0-9._%+-]+@(claro.com.br|globalhitss.com.br)$')).required(),
   password: Joi.string().required(),
+  origin: Joi.string().required(),
 });
 
 export const validationActivateUserSchema = Joi.object().keys({

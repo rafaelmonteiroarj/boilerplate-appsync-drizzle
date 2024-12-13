@@ -73,6 +73,8 @@ type User @aws_api_key @aws_lambda {
   questionlimitQuota: Int
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
+  origin: String
+  grantAccessGenia: String
 }
 
 type Session @aws_api_key {
@@ -134,6 +136,7 @@ type UpdateSchedulerQuota @aws_api_key @aws_lambda {
 input SessionInput {
   email: String
   password: String
+  origin: String
 }
 
 input AlertInput {
