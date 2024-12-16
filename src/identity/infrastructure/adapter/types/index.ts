@@ -28,4 +28,6 @@ export interface CustomJwtPayload extends JwtPayload {
   updatedAt: string;
   origin: string;
   grantAccessGenia: string;
+
+  originLogin: string;
 }
