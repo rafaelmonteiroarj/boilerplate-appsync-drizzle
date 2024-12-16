@@ -13,6 +13,7 @@ import { userMapper } from "../adapter/output/user.mapper";
 import { Session } from "../../domain/entities/session.entity";
 import { ValidationRequestError } from "../../../@common/errors/ValidationRequestError";
 import { marshall } from "@aws-sdk/util-dynamodb";
+import { Origin } from "../../../@common/types/enums";
 
 const CryptoJS = require("crypto-js");
 const { sign } = require("jsonwebtoken");
@@ -60,7 +61,7 @@ export class DynamoRepository implements IUserRepository {
         id: { S: id },
         name: { S: user.name },
         email: { S: user.email },
-        active: { BOOL: user.origin === "coe" ? true : false },
+        active: { BOOL: user.origin === Origin.COE ? true : false },
         questionlimitQuota: { N: "20" },
         isAdmin: { BOOL: false },
         password: {
@@ -95,7 +96,10 @@ export class DynamoRepository implements IUserRepository {
     if (!user) {
       throw new ValidationRequestError("Usuário ou senha não encontrado.");
     }
-    const token = sign({ ...user, originLogin: "coe" }, process.env.JWT_SECRET); // remove expiration time
+    const token = sign(
+      { ...user, originLogin: Origin.COE },
+      process.env.JWT_SECRET,
+    ); // remove expiration time
 
     return { token, user };
   }
