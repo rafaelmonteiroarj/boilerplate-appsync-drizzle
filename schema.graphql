@@ -21,6 +21,7 @@ type Mutation {
   activateUser(input: ActivateUserInput!): User! @aws_lambda
   addFeedback(input: FeedbackInput!): GeniaTrendsFeedback! @aws_lambda
   login(input: SessionInput!): Session! @aws_api_key
+  loginByAD(input: SessionInputAD!): Session! @aws_api_key
   removeChatSession(input: RemoveChatSessionInput!): String! @aws_lambda
   chatGenia: ChatGeniaResponse! @aws_lambda
   updateSchedulerQuota(input: SchedulerQuotaInput!): UpdateSchedulerQuota
@@ -134,10 +135,13 @@ type UpdateSchedulerQuota @aws_api_key @aws_lambda {
 }
 
 input SessionInput {
-  name: String
   email: String
   password: String
-  origin: String
+}
+
+input SessionInputAD {
+  email: String
+  name: String
 }
 
 input AlertInput {

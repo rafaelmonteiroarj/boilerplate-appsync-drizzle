@@ -64,6 +64,11 @@ mappingTemplates:
     request: false
     response: false
   - type: Mutation
+    field: loginByAD
+    dataSource: loginByADFunction
+    request: false
+    response: false
+  - type: Mutation
     field: answers
     dataSource: answersFunction
     request: false
@@ -113,6 +118,10 @@ dataSources:
     name: loginFunction
     config:
       functionName: login
+  - type: AWS_LAMBDA
+    name: loginByADFunction
+    config:
+      functionName: loginByAD
   - type: AWS_LAMBDA
     name: authorizerFunction
     config:

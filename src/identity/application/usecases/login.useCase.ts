@@ -1,5 +1,3 @@
-import { Origin } from "../../../@common/types/enums";
-import { generateRandomString } from "../../../@common/utils/functions";
 import { Session } from "../../domain/entities/session.entity";
 import { IUserRepository } from "../../domain/repositories/user.repository";
 
@@ -10,33 +8,11 @@ export class LoginUserUseCase {
     this.userRepository = userRepository;
   }
 
-  async execute(
-    name: string,
-    email: string,
-    password: string,
-    origin: string,
-  ): Promise<Session> {
-    const user = await this.userRepository.getByEmail(email);
-
-    if (!user && origin === Origin.COE) {
-      // generate random password
-      password = generateRandomString(10);
-      await this.userRepository.create({
-        name: name,
-        email: email,
-        password: password,
-        origin: origin,
-        grantAccessGenia: new Map<string, boolean>([
-          ["coe", true],
-          ["trends", false],
-        ]),
-      });
-    }
-
-    if (Origin.COE === origin) {
-      return await this.userRepository.loginCoe(email);
-    }
-
+  async execute(email: string, password: string): Promise<Session> {
     return await this.userRepository.login(email, password);
+  }
+
+  async executeByAD(email: string, name: string): Promise<Session> {
+    return await this.userRepository.loginByAD(email, name);
   }
 }

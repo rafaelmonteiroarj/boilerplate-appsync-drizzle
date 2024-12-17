@@ -32,6 +32,13 @@ Login:
     DYNAMODB_TABLE: { "Ref": "UserTable" }
     JWT_SECRET: ${file(./ymls/environment.yml):${opt:stage}.JWT_SECRET}
 
+LoginByAD:
+  handler: dist/identity/infrastructure/adapter/input/handlers/login-by-ad.handler
+  name: ${self:service}-${self:provider.stage}-login-by-ad
+  environment:
+    DYNAMODB_TABLE: { "Ref": "UserTable" }
+    JWT_SECRET: ${file(./ymls/environment.yml):${opt:stage}.JWT_SECRET}
+
 Authorizer:
   handler: dist/identity/infrastructure/adapter/input/handlers/authorizer.handler
   name: ${self:service}-${self:provider.stage}-authorizer

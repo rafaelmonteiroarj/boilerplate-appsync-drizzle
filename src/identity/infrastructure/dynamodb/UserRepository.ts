@@ -61,7 +61,7 @@ export class DynamoRepository implements IUserRepository {
         id: { S: id },
         name: { S: user.name },
         email: { S: user.email },
-        active: { BOOL: user.origin === Origin.COE ? true : false },
+        active: { BOOL: false },
         questionlimitQuota: { N: "20" },
         isAdmin: { BOOL: false },
         password: {
@@ -89,22 +89,7 @@ export class DynamoRepository implements IUserRepository {
     return userCreated;
   }
 
-  async loginCoe(email: string) {
-    console.log("Login Coe" + email);
-    const user = await this.getByEmail(email);
-
-    if (!user) {
-      throw new ValidationRequestError("Usuário ou senha não encontrado.");
-    }
-    const token = sign(
-      { ...user, originLogin: Origin.COE },
-      process.env.JWT_SECRET,
-    ); // remove expiration time
-
-    return { token, user };
-  }
   async login(email: string, password: string): Promise<Session> {
-    console.log("Login Trends" + email);
     const user = await this.getByEmail(email);
 
     if (!user) {
@@ -127,6 +112,78 @@ export class DynamoRepository implements IUserRepository {
     const token = sign(user, process.env.JWT_SECRET, { expiresIn: "30m" });
 
     return { token, user };
+  }
+
+  async loginByAD(email: string, name: string): Promise<Session> {
+    try {
+      const user = await this.getByEmail(email);
+      console.debug("user", user);
+
+      if (user) {
+        if (user.active === false) {
+          throw new ValidationRequestError(
+            "Usuário inativo. Entre em contato com o Administrador.",
+          );
+        }
+
+        const token = sign(user, process.env.JWT_SECRET, { expiresIn: "30m" });
+        return { token, user };
+      } else {
+        const id = uuidv4();
+
+        console.debug("id", id);
+
+        const putCommand = new PutItemCommand({
+          TableName: this.tableName,
+          Item: {
+            id: { S: id },
+            name: { S: name },
+            email: { S: email },
+            active: { BOOL: true },
+            questionlimitQuota: { N: "20" },
+            isAdmin: { BOOL: false },
+            password: {
+              S: CryptoJS.AES.encrypt(
+                email + process.env.JWT_SECRET,
+                process.env.JWT_SECRET,
+              ).toString(),
+            },
+            origin: { S: Origin.COE },
+            grantAccessGenia: {
+              S: JSON.stringify({
+                coe: true,
+                trends: false,
+              }),
+            },
+            createdAt: { S: new Date().toISOString() },
+            updatedAt: { S: new Date().toISOString() },
+          },
+        });
+
+        await this.dynamoDBClient.send(putCommand);
+
+        const userCreated = await this.getByEmail(email);
+
+        if (!userCreated)
+          throw new Error("Não foi possível se autenticar via AD.");
+
+        console.debug("userCreated", userCreated);
+
+        const token = sign(userCreated, process.env.JWT_SECRET, {
+          expiresIn: "30m",
+        });
+
+        console.debug("token", token);
+        return { token, user: userCreated };
+      }
+    } catch (error) {
+      console.error("Error loginByAD", error);
+      throw new ValidationRequestError(
+        error instanceof ValidationRequestError
+          ? error.message
+          : "Erro ao se autenticar via AD.",
+      );
+    }
   }
 
   async updateActive(
