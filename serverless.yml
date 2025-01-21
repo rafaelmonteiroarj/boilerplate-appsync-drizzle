@@ -1,13 +1,13 @@
-service: poc-appsync
+service: tela-vermelha-appsync-
 
 build:
   esbuild:
     bundle: true
     minify: false
     external:
-      - "@aws-sdk/client-s3" # Módulos que você realmente quer excluir do bundle
+      - "@aws-sdk/client-s3"
     exclude:
-      - "@aws-sdk/*" # Não exclua módulos que você precisa no bundle
+      - "@aws-sdk/*"
     sourcemap:
       type: linked
       setNodeOptions: true
@@ -17,7 +17,7 @@ plugins:
 
 package:
   exclude:
-    - "**" # Exclui tudo por padrão
+    - "**"
   include:
     - dist/**
   individually: true

@@ -2,222 +2,225 @@
 
 O projeto Tela Vermelha é uma aplicação serverless desenvolvida com o objetivo de fornecer uma API GraphQL robusta e escalável, utilizando a arquitetura hexagonal para promover a separação de preocupações e a manutenção facilitada. Este projeto faz uso de uma série de tecnologias e ferramentas modernas para garantir a eficiência, qualidade de código e melhores práticas de desenvolvimento.
 
-### Stacks Utilizadas
-- **TypeScript:** Linguagem de programação tipada que compila para JavaScript.
-- **Node.js:** Ambiente de execução para JavaScript server-side.
-- **Serverless Framework:** Framework para desenvolvimento e implantação de aplicações serverless.
-- **AppSync GraphQL:** Serviço da AWS para construção de APIs GraphQL.
-- **Lambda Functions:** Funções serverless usadas para lógica de backend.
-- **DynamoDB:** Banco de dados NoSQL gerenciado pela AWS.
-- **JWT Authorizer:** Autorizações baseadas em JSON Web Tokens para controle de acesso.
-- **Husky:** Ferramenta para gerenciamento de hooks de Git.
-- **Arquitetura Hexagonal:** Padrão de design que promove a separação de preocupações.
-- **Prettier:** Ferramenta de formatação de código.
-- **ESLint:** Ferramenta de análise estática de código.
+## Tecnologias Principais
 
-### Funcionalidades
-- **APIs GraphQL com Resolvers em AWS Lambda:** A integração com o AppSync permite a criação de resolvers eficientes utilizando funções Lambda.
-- **Autenticação e Autorização com JWT:** Implementação de autenticação segura com tokens JWT.
-- **Banco de Dados DynamoDB:** Armazenamento de dados de maneira eficiente e escalável.
-- **Ferramentas de Qualidade de Código:** Uso de ESLint e Prettier para manter a qualidade e consistência do código.
-- **Desenvolvimento Colaborativo:** Utilização de Husky para garantir que os hooks de Git sejam executados, promovendo melhores práticas de desenvolvimento.
+- **TypeScript:** Linguagem de programação tipada que compila para JavaScript
+- **Serverless Framework:** Framework para desenvolvimento e implantação de aplicações serverless
+- **AppSync GraphQL:** Serviço da AWS para construção de APIs GraphQL
+- **Lambda Functions:** Funções serverless usadas para lógica de backend
+- **JWT Authorizer:** Autorizações baseadas em JSON Web Tokens para controle de acesso
+- **Drizzle ORM:** ORM moderno para TypeScript com foco em type safety e developer experience
+- **Husky:** Ferramenta para gerenciamento de hooks de Git
+- **Prettier:** Ferramenta de formatação de código
+- **ESLint:** Ferramenta de análise estática de código
 
-### Configurar ambiente local do projeto
+## Drizzle ORM
 
-**1. Instale o Node.js Usando NVM**
+O Drizzle é um ORM TypeScript-first que oferece:
 
-Para garantir que você esteja utilizando a versão correta do Node.js, siga os passos abaixo para instalar o Node Version Manager (nvm):
+- Type safety completo
+- Migrations automatizadas
+- Query builder intuitivo
+- Performance otimizada
+- Suporte a múltiplos bancos de dados
 
-#### Instalação do NVM no Linux
+### Arquivos do Drizzle
 
+- `schema.ts`: Define a estrutura das tabelas e relacionamentos
+- `migrate.ts`: Script para execução de migrations
+- `seed.ts`: Script para população inicial do banco de dados
+- `migrations/`: Diretório contendo os arquivos de migration
+
+### Comandos do Drizzle
+
+- `db:generate`: Gera as migrations baseadas nas alterações do schema
+- `db:migrate`: Executa as migrations pendentes no banco de dados
+- `db:seed`: Popula o banco de dados com dados iniciais
+- `db:studio`: Inicia o Drizzle Studio para visualização e gestão do banco de dados
+
+## Scripts Disponíveis
+
+- **start**: `sls offline start --stage pet`
+  - Inicia a aplicação localmente usando o Serverless Offline
+  - O parâmetro `--stage pet` define o ambiente de desenvolvimento
+
+- **db:generate**: `drizzle-kit generate`
+  - Gera arquivos de migration baseados nas alterações do schema
+  - Útil após modificações nas definições das tabelas
+
+- **db:migrate**: `tsx -r dotenv/config src/shared/module/drizzle/db/migrate.ts`
+  - Executa as migrations pendentes no banco de dados
+  - Carrega variáveis de ambiente do arquivo .env
+
+- **db:seed**: `tsx -r dotenv/config src/shared/module/drizzle/db/seed.ts`
+  - Popula o banco de dados com dados iniciais
+  - Importante para ambiente de desenvolvimento e testes
+
+- **db:studio**: `pnpm drizzle-kit studio`
+  - Inicia o Drizzle Studio para gestão visual do banco de dados
+  - Permite visualizar e modificar dados facilmente
+
+- **build**: `rimraf ./dist && tsc`
+  - Remove a pasta dist existente
+  - Compila o código TypeScript para JavaScript
+
+- **lint**: `eslint src/**/*.ts`
+  - Executa a verificação de código com ESLint
+  - Identifica problemas de código e estilo
+
+- **lint:fix**: `pnpm run lint --fix`
+  - Corrige automaticamente os problemas encontrados pelo ESLint
+  - Ajusta formatação e problemas simples de código
+
+- **format**: `prettier --write 'src/**/*.ts'`
+  - Formata o código seguindo as regras do Prettier
+  - Mantém consistência no estilo do código
+
+- **prepare**: `husky`
+  - Configura os hooks do Git com Husky
+  - Garante que verificações sejam executadas antes dos commits
+
+- **deploy**: `pnpm run build && sls deploy --stage pet`
+  - Realiza o build da aplicação
+  - Deploy na AWS usando o Serverless Framework
+  - O parâmetro `--stage pet` define o ambiente de implantação
+
+- **destroy**: `sls destroy --stage pet`
+  - Remove toda a infraestrutura criada na AWS
+  - Útil para limpeza de recursos quando necessário
+
+## Arquitetura do Projeto
+
+O projeto segue a Arquitetura Hexagonal (também conhecida como Ports and Adapters), dividida em camadas bem definidas:
+
+### Business Logic (Lógica de Negócio)
+- **core:** Contém a lógica de negócio central da aplicação
+  - `use-cases`: Casos de uso que implementam a lógica de negócio
+  - `model`: Modelos de dados da aplicação
+
+### Supporting Infrastructure / Adapters (Infraestrutura de Suporte)
+- **http:** Adaptadores para comunicação HTTP
+  - `handlers`: Handlers para processamento de requisições
+  - `dto`: Objetos de transferência de dados
+  - `validation`: Validações de entrada de dados
+
+- **persistence:** Camada de persistência
+  - `repository`: Repositórios para acesso e manipulação de dados
+
+### Shared (Compartilhada)
+- **core:** Bibliotecas e utilitários compartilhados
+  - `model`: Modelos de dados padrão da aplicação
+  - `types`: Definições de tipos globais
+  - `exception`: Tratamento centralizado de exceções
+- **modules:** Módulos compartilhados
+  - `drizzle`: Configurações do banco de dados
+  - `logging`: Sistema de logs
+  - `monitoring`: Monitoramento da aplicação
+
+## Estrutura de Pastas
+
+```
+src/
+├── core/                  # Lógica de negócio central
+│   ├── model/            # Modelos de domínio
+│   ├── use-cases/        # Implementações dos casos de uso
+│
+├── http/                 # Configurações HTTP
+│   ├── handlers/         # Handlers de requisições
+│   ├── dtos/            # Objetos de transferência de dados
+│   └── validations/      # Validações de entrada
+│
+├── persistence/          # Camada de persistência
+│   └── repository/       # Repositórios de dados
+│
+├── shared/              # Recursos compartilhados
+│   ├── core/
+│   │   ├── exception/   # Tratamento de exceções
+│   │   ├── model/      # Modelos compartilhados
+│   │   └── types/      # Tipos globais
+│   └── modules/
+│       └── drizzle/     # Configurações do Drizzle ORM
+│           └── db/
+│               ├── migrations/  # Arquivos de migration
+│               ├── schema.ts   # Definição do schema
+│               ├── seed.ts     # Dados iniciais
+│               └── migrate.ts  # Script de migração
+```
+
+## Ambiente de Desenvolvimento
+
+### Pré-requisitos
+
+- Node.js v20.11.0 ou superior
+- NPM ou PNPM
+- Postgres (para desenvolvimento local)
+
+### Configurando o Ambiente
+
+1. **Instale o Node.js usando NVM**
+
+#### Linux
 ```sh
-# Instalação do NVM
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-
-# Reinicie seu terminal ou execute o seguinte comando para carregar o nvm:
 source ~/.nvm/nvm.sh
 ```
 
-#### Instalação do NVM no macOS
-
+#### macOS
 ```sh
-# Instalação do NVM
 brew update
 brew install nvm
-
-# Crie o diretório do nvm:
 mkdir ~/.nvm
 
-# Adicione o nvm ao seu perfil do shell (por exemplo, .zshrc ou .bash_avatar):
+# Adicione ao seu .zshrc ou .bash_profile:
 export NVM_DIR="$HOME/.nvm"
 [ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"
 [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && \. "/usr/local/opt/nvm/etc/bash_completion"
 
-# Reinicie seu terminal ou execute o seguinte comando para carregar o nvm:
 source ~/.nvm/nvm.sh
 ```
 
-**2. Instale a versão necessária do Node.js (exemplo com a versão v20.11.0):**
+2. **Instale a versão correta do Node.js**
 ```sh
 nvm install v20.11.0
 nvm use v20.11.0
 ```
 
-**3. Verifique a instalação:**
+3. **Verifique a instalação**
 ```sh
 node -v
 npm -v
 ```
 
-### Scripts do Projeto
-
-Os seguintes scripts estão disponíveis para execução de diferentes tarefas no projeto:
-
-```json
-"scripts": {
-    "build": "rimraf ./dist && tsc",
-    "deploy": "npm run build && sls deploy --stage pet",
-    "lint": "eslint src/**/*.ts",
-    "lint:fix": "npm run lint --fix",
-    "format": "prettier --write 'src/**/*.ts'",
-    "prepare": "husky"
-}
-```
-
-### Descrição dos Scripts
-- **build:** Remove a pasta dist e compila o código TypeScript.
-- **deploy:** Compila o código e realiza o deploy da aplicação utilizando o Serverless Framework.
-- **lint:** Executa o ESLint para verificar a qualidade do código.
-- **lint:fix:** Executa o ESLint e corrige automaticamente os problemas encontrados.
-- **format:** Formata o código fonte utilizando o Prettier.
-- **prepare:** Configura os hooks do Husky.
-
-### Instalar dependencias do projeto.
-
+4. **Instale as dependências do projeto**
 ```sh
 npm install
 ```
 
-### Realizar o build do projeto
+5. **Configure as variáveis de ambiente**
+   - Copie o arquivo `.env.example` para `.env`
+   - Preencha as variáveis necessárias
 
+## Comandos para Teste Local
+
+### Listar Todos os Usuários
 ```sh
-npm build
+npx sls invoke local --function getUsers --stage pet
 ```
 
-###  Comandos para Invocar Funções para Testes
-
-_Listar Todos os Usuários_
-
+### Efetuar Login
 ```sh
-npx sls invoke local --function GetUsers --stage pet
+npx sls invoke local --function login --data '{ "arguments": { "input": { "email": "exemplo@email.com", "password": "senha123" }}}' --stage pet
 ```
 
-_Efetuar Login_
-
+### Adicionar um novo Usuário
 ```sh
-npx sls invoke local --function Login --data '{ "arguments": { "input": { "email": "rafael.arjonas@claro.com.br", "password": "F@zer250" }}}' --stage pet
+npx sls invoke local --function addUser --data '{ "arguments": { "input": { "name": "Nome", "email": "novo@email.com", "password": "senha123" }}}' --stage pet
 ```
 
-_Adicionar um novo Usuário_
+## Como Contribuir
 
-```sh
-npx sls invoke local --function AddUser --data '{ "arguments": { "input": { "name": "Jubileu", "email": "test@gmail.com", "password": "Jubileu@123" }}}' --stage pet
-```
-
-_Ativar Usuário_
-
-```sh
-npx sls invoke local --function ActivateUser \
---data '{
-  "arguments": {
-    "input": {
-      "isActive": true,
-      "userEmail": "francisco.rosa@claro.com.br"
-    }
-  },
-  "request": {
-    "headers": {
-      "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZTBlOTM5LWRmYzMtNDE0ZS1iZDUxLWU4YzA4MWE2OGFhZSIsIm5hbWUiOiJSYWZhZWwgTW9udGVpcm8gQXJqb25hcyIsImVtYWlsIjoicmFmYWVsLmFyam9uYXNAY2xhcm8uY29tLmJyIiwiYWN0aXZlIjp0cnVlLCJpc0FkbWluIjp0cnVlLCJwYXNzd29yZCI6IlUyRnNkR1ZrWDEvMyt1Z1hqQnk2dUJtSytpT1p5WHIrcXBnU1haRHVoK2M9IiwicXVlc3Rpb25saW1pdFF1b3RhIjoyMCwiY3JlYXRlZEF0IjoiMjAyNC0xMS0xNFQyMDo1Nzo1MS43MTFaIiwidXBkYXRlZEF0IjoiMjAyNC0xMS0xNFQyMDo1Nzo1MS43MTFaIiwiaWF0IjoxNzMxNzIwNjA5LCJleHAiOjE3MzE3MjI0MDl9.66ZfJ7Vwrk87nYeGz3dDRbaiaWT5A-7fA5ut1-Us6Iw"
-    }
-  }
-}' \
---stage pet
-```
-
-_Aumentar cota de perguntas do usuário_
-
-```sh
-npx sls invoke local --function UpdateQuotaUser \
---data '{
-  "arguments": {
-    "input": {
-      "questionlimitQuota": 30,
-      "userEmail": "francisco.rosa@claro.com.br"
-    }
-  },
-  "request": {
-    "headers": {
-      "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZTBlOTM5LWRmYzMtNDE0ZS1iZDUxLWU4YzA4MWE2OGFhZSIsIm5hbWUiOiJSYWZhZWwgTW9udGVpcm8gQXJqb25hcyIsImVtYWlsIjoicmFmYWVsLmFyam9uYXNAY2xhcm8uY29tLmJyIiwiYWN0aXZlIjp0cnVlLCJpc0FkbWluIjp0cnVlLCJwYXNzd29yZCI6IlUyRnNkR1ZrWDEvMyt1Z1hqQnk2dUJtSytpT1p5WHIrcXBnU1haRHVoK2M9IiwicXVlc3Rpb25saW1pdFF1b3RhIjoyMCwiY3JlYXRlZEF0IjoiMjAyNC0xMS0xNFQyMDo1Nzo1MS43MTFaIiwidXBkYXRlZEF0IjoiMjAyNC0xMS0xNFQyMDo1Nzo1MS43MTFaIiwiaWF0IjoxNzMxNzI1MzIzLCJleHAiOjE3MzE3MjcxMjN9.TtGIlQA32m3DN4AxeKriUhYaisfKftYKtAZYsyxW6kI"
-    }
-  }
-}' \
---stage pet
-```
-
-## [UTILS] Update data new field dynamo
-
-define new field and value
-
-```sh
-TABLE_NAME="click-alert-serverless-pet-feedbacks"        # Nome da sua tabela DynamoDB
-NOVO_CAMPO="typeApplication"        # Nome do campo a
-ser adicionado
-VALOR_DEFAULT="trends"  # Valor default para o novo campo
-```
-
-got to local folder
-
-```bash
-cd scripts
-```
-
-Grant permission file
-
-```sh
-chmod +x updateNewFieldFull.sh
-```
-
-execute file second plan
-
-```sh
-./updateNewFieldFull.sh 2>&1 | ts '[%Y-%m-%d %H:%M:%S]' > output.log &
-
-ou
-
-./updateNewFieldFull.sh > output.log 2>&1
-
-```
-
-verify execution
-
-```sh
-ps aux | grep meuscript.sh
-```
-
-
-src/
-├── core/
-│   └── model/
-│       └── user.model.ts   // Model do usuário
-│
-├── repository/
-│   └── user.repository.ts  // Repositório que interage com a tabela users
-│
-├── usecases/
-│   └── get-user.usecase.ts // Casos de uso, como GetUserUseCase
-│
-├── shared/
-│   └── module/
-│       └── drizzle/
-│           └── db/
-│               └── schema.ts  // Definições do schema para o drizzle
+1. Faça um fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
+3. Faça commit das suas mudanças (`git commit -m 'Adiciona nova feature'`)
+4. Faça push para a branch (`git push origin feature/nova-feature`)
+5. Abra um Pull Request
