@@ -48,7 +48,7 @@ brew install nvm
 # Crie o diretório do nvm:
 mkdir ~/.nvm
 
-# Adicione o nvm ao seu perfil do shell (por exemplo, .zshrc ou .bash_profile):
+# Adicione o nvm ao seu perfil do shell (por exemplo, .zshrc ou .bash_avatar):
 export NVM_DIR="$HOME/.nvm"
 [ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"
 [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && \. "/usr/local/opt/nvm/etc/bash_completion"
@@ -170,7 +170,7 @@ define new field and value
 
 ```sh
 TABLE_NAME="click-alert-serverless-pet-feedbacks"        # Nome da sua tabela DynamoDB
-NOVO_CAMPO="typeApplication"        # Nome do campo a 
+NOVO_CAMPO="typeApplication"        # Nome do campo a
 ser adicionado
 VALOR_DEFAULT="trends"  # Valor default para o novo campo
 ```
@@ -203,3 +203,21 @@ verify execution
 ```sh
 ps aux | grep meuscript.sh
 ```
+
+
+src/
+├── core/
+│   └── model/
+│       └── user.model.ts   // Model do usuário
+│
+├── repository/
+│   └── user.repository.ts  // Repositório que interage com a tabela users
+│
+├── usecases/
+│   └── get-user.usecase.ts // Casos de uso, como GetUserUseCase
+│
+├── shared/
+│   └── module/
+│       └── drizzle/
+│           └── db/
+│               └── schema.ts  // Definições do schema para o drizzle

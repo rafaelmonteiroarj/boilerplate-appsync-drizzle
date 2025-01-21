@@ -5,194 +5,55 @@ schema {
 }
 
 type Query {
-  getUsers: [User!]! @aws_lambda
-  getAlerts: [GeniaTrendsAlert!]! @aws_lambda
-  getFeedbacks: [GeniaTrendsFeedback!]! @aws_lambda
-  getAnswers: [Answers!]! @aws_lambda
-  getUserQuota: UserQuota! @aws_lambda
+  getUsers(pagination: PaginationInput): [User]! @aws_lambda
 }
 
 type Mutation {
-  answers(input: ChatInput!): Answers! @aws_lambda
   addUser(input: UserInput!): User!
     @aws_api_key
     @aws_subscribe(mutations: ["addUser"])
-  updateQuotaUser(input: QuotaUserInput!): User! @aws_lambda
-  activateUser(input: ActivateUserInput!): User! @aws_lambda
-  addFeedback(input: FeedbackInput!): GeniaTrendsFeedback! @aws_lambda
   login(input: SessionInput!): Session! @aws_api_key
   loginByAD(input: SessionInputAD!): Session! @aws_api_key
-  removeChatSession(input: RemoveChatSessionInput!): String! @aws_lambda
-  chatGenia: ChatGeniaResponse! @aws_lambda
-  updateSchedulerQuota(input: SchedulerQuotaInput!): UpdateSchedulerQuota
-    @aws_lambda
-  rechargeQuota: String @aws_api_key
 }
 
 type Subscription {
   onAddUser: User @aws_api_key @aws_subscribe(mutations: ["addUser"])
 }
 
-type ChatGeniaResponse @aws_lambda {
-  message: String!
-}
-
-type GeniaTrendsAlert @aws_api_key @aws_lambda {
-  id: ID
-  dtRef: String
-  chatId: String
-  userId: String
-  advertiser: String
-  city: String
-  createdAt: String
-  message: String
-  speed: String
-  type: String
-  answers: Answers
-}
-
-type GeniaTrendsFeedback @aws_api_key @aws_lambda {
-  id: ID
-  chatId: String
-  questionId: String
-  question: String
-  answer: String
-  feedback: Boolean
-  comment: String
-  createdAt: String
-  userId: String
-  userName: String
-  typeApplication: String
-}
-
 type User @aws_api_key @aws_lambda {
-  id: ID
+  id: String
   name: String
   email: String
-  active: Boolean
+  isActive: Boolean
   isAdmin: Boolean
+  avatar: String
   questionlimitQuota: Int
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
-  origin: String
-  grantAccessGenia: String
 }
 
 type Session @aws_api_key {
-  token: String
-  user: User
-}
-
-type Reasoning {
-  action: String
-  observation: String
-}
-
-type Costs {
-  totalTokens: Int
-  promptTokens: Int
-  completionTokens: Int
-  totalCost: Float
-  totalCostBRL: String
-  totalRequests: Int
-  dolarExchange: String
-  usagePerModel: [ModelUsage]
-}
-
-type ModelUsage {
-  modelName: String
-  totalTokens: Int
-  promptTokens: Int
-  completionTokens: Int
-  totalCost: Float
-  totalCostBRL: String
-  totalRequests: Int
-}
-
-type Answers @aws_lambda {
-  id: String
-  query: String
-  response: String
-  reasoning: [Reasoning]
-  costs: Costs
-  chatId: String
-  userId: String
-  createdAt: String
-}
-
-type UserQuota @aws_api_key @aws_lambda {
-  id: String
-  name: String
-  email: String
-  isAdmin: Boolean
-  questionlimitQuota: Int
-  remainingQuota: Int
-  usedQuota: Int
-}
-
-type UpdateSchedulerQuota @aws_api_key @aws_lambda {
-  message: String
-}
-
-input SessionInput {
-  email: String
-  password: String
-}
-
-input SessionInputAD {
-  email: String
-  name: String
-}
-
-input AlertInput {
-  dtRef: String
-  advertiser: String
-  city: String
-  message: String
-  speed: String
-  typeAlert: String
-}
-
-input QuotaUserInput {
-  userEmail: String
-  questionlimitQuota: Int
-}
-
-input FeedbackInput {
-  chatId: String
-  questionId: String
-  question: String
-  answer: String
-  feedback: Boolean
-  comment: String
-  userId: String
-  userName: String
-  typeApplication: String
+  token: String!
+  user: User!
 }
 
 input UserInput {
-  name: String
-  email: String
-  password: String
+  name: String!
+  email: String!
+  password: String!
 }
 
-input ActivateUserInput {
-  userEmail: String
-  isActive: Boolean
+input PaginationInput {
+  page: Int = 1
+  limit: Int = 10
 }
 
-input ChatInput {
-  chatId: String
-  userId: String
-  query: String
-  typeChat: String
-  additionalInformation: Boolean
+input SessionInput {
+  email: String!
+  password: String!
 }
 
-input RemoveChatSessionInput {
-  threadId: String
-}
-
-input SchedulerQuotaInput {
-  hour: String
+input SessionInputAD {
+  email: String!
+  name: String!
 }

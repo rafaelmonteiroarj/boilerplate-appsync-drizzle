@@ -12,52 +12,12 @@ mappingTemplates:
     dataSource: getUsersFunction
     request: false
     response: false
-  - type: Query
-    field: getAlerts
-    dataSource: getAlertsDynamo
-    request: click-alert/dynamo/alerts/request.vtl
-    response: click-alert/dynamo/response.vtl
-  - type: Query
-    field: getFeedbacks
-    dataSource: getFeedbacksDynamo
-    request: click-alert/dynamo/request.vtl
-    response: click-alert/dynamo/response.vtl
-  - type: Query
-    field: getAnswers
-    dataSource: getAnswersDynamo
-    request: click-alert/dynamo/request.vtl
-    response: click-alert/dynamo/response.vtl
-  - type: Query
-    field: getUserQuota
-    dataSource: getUserQuotaFunction
-    request: false
-    response: false
 
-  - type: Mutation
-    field: chatGenia
-    dataSource: chatGeniaFunction
-    request: false
-    response: false
   - type: Mutation
     field: addUser
     dataSource: addUserFunction
     request: false
     response: false
-  - type: Mutation
-    field: activateUser
-    dataSource: activateUserFunction
-    request: false
-    response: false
-  - type: Mutation
-    field: updateQuotaUser
-    dataSource: updateQuotaUserFunction
-    request: false
-    response: false
-  - type: Mutation
-    field: addFeedback
-    dataSource: addFeedbackFunction
-    request: false
-    response: click-alert/response.vtl
   - type: Mutation
     field: login
     dataSource: loginFunction
@@ -68,36 +28,9 @@ mappingTemplates:
     dataSource: loginByADFunction
     request: false
     response: false
-  - type: Mutation
-    field: answers
-    dataSource: answersFunction
-    request: false
-    response: click-alert/response.vtl
-  - type: Mutation
-    field: removeChatSession
-    dataSource: removeChatSessionFunction
-    request: false
-    response: click-alert/response.vtl
-  - type: Mutation
-    field: updateSchedulerQuota
-    dataSource: updateSchedulerQuotaFunction
-    request: false
-    response: false
-  - type: Mutation
-    field: rechargeQuota
-    dataSource: rechargeQuotaFunction
-    request: false
-    response: false
+
 
 dataSources:
-  - type: AWS_LAMBDA
-    name: getUserQuotaFunction
-    config:
-      functionName: getUserQuota
-  - type: AWS_LAMBDA
-    name: chatGeniaFunction
-    config:
-      lambdaFunctionArn: arn:aws:lambda:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:function:click-alert-serverless-${self:provider.stage}-chatGenia
   - type: AWS_LAMBDA
     name: getUsersFunction
     config:
@@ -107,14 +40,6 @@ dataSources:
     config:
       functionName: addUser
   - type: AWS_LAMBDA
-    name: activateUserFunction
-    config:
-      functionName: activateUser
-  - type: AWS_LAMBDA
-    name: updateQuotaUserFunction
-    config:
-      functionName: updateQuotaUser
-  - type: AWS_LAMBDA
     name: loginFunction
     config:
       functionName: login
@@ -122,46 +47,4 @@ dataSources:
     name: loginByADFunction
     config:
       functionName: loginByAD
-  - type: AWS_LAMBDA
-    name: authorizerFunction
-    config:
-      functionName: authorizer
-  - type: AWS_LAMBDA
-    name: addAlertFunction
-    config:
-      lambdaFunctionArn: arn:aws:lambda:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:function:click-alert-serverless-${self:provider.stage}-addAlert
-  - type: AWS_LAMBDA
-    name: addFeedbackFunction
-    config:
-      lambdaFunctionArn: arn:aws:lambda:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:function:click-alert-serverless-${self:provider.stage}-addFeedback
-  - type: AWS_LAMBDA
-    name: answersFunction
-    config:
-      lambdaFunctionArn: arn:aws:lambda:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:function:click-alert-serverless-${self:provider.stage}-chat
-  - type: AWS_LAMBDA
-    name: removeChatSessionFunction
-    config:
-      lambdaFunctionArn: arn:aws:lambda:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:function:click-alert-serverless-${self:provider.stage}-remove-session-chat
-  - type: AMAZON_DYNAMODB
-    name: getAlertsDynamo
-    config:
-      tableName: click-alert-serverless-${self:provider.stage}-alerts
-      region: us-east-1
-  - type: AMAZON_DYNAMODB
-    name: getFeedbacksDynamo
-    config:
-      tableName: click-alert-serverless-${self:provider.stage}-feedbacks
-      region: us-east-1
-  - type: AMAZON_DYNAMODB
-    name: getAnswersDynamo
-    config:
-      tableName: click-alert-serverless-${self:provider.stage}-answers
-      region: us-east-1
-  - type: AWS_LAMBDA
-    name: updateSchedulerQuotaFunction
-    config:
-      functionName: updateSchedulerQuota
-  - type: AWS_LAMBDA
-    name: rechargeQuotaFunction
-    config:
-      functionName: rechargeQuota
+

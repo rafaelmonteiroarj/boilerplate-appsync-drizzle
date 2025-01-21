@@ -7,8 +7,6 @@ statements:
       - "dynamodb:GetItem"
       - "dynamodb:Scan"
       - "lambda:InvokeFunction"
-      - "scheduler:UpdateSchedule"
-      - "iam:PassRole"
       - "logs:CreateLogGroup"
       - "logs:CreateLogStream"
       - "logs:PutLogEvents"

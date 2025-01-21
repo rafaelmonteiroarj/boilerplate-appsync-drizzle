@@ -1,21 +1,11 @@
 prd:
   STAGE: "prd"
-  JWT_SECRET: "Tel@-Vermelh@-pet"
-  URI_GENIA_COE: "https://geniax.poc.coedigital.clarobrasil.mobi, http://localhost:3000"
-  SCHEDULE_QUOTA_ARN: ""
-  SCHEDULE_QUOTA_ROLE_ARN: ""
-  SCHEDULE_QUOTA_NAME: "tela-vermelha-prd-recharge-user-quota"
+  JWT_SECRET: "C0deHer0es-prd"
+  DATABASE_URL: "postgresql://neondb_owner:p7RQFbLUg9kM@ep-tight-dew-a50ipcsw.us-east-2.aws.neon.tech/neondb?sslmode=require"
 pet:
   STAGE: "pet"
-  JWT_SECRET: "Tel@-Vermelh@-pet"
-  URI_GENIA_COE: "https://geniax.poc.coedigital.clarobrasil.mobi, http://localhost:3000"
-  SCHEDULE_QUOTA_ARN: "arn:aws:lambda:us-east-1:769533000303:function:tela-vermelha-pet-updateRechargeQuota"
-  SCHEDULE_QUOTA_ROLE_ARN: "arn:aws:iam::769533000303:role/service-role/Amazon_EventBridge_Scheduler_LAMBDA_770fb4690a"
-  SCHEDULE_QUOTA_NAME: "tela-vermelha-pet-recharge-user-quota"
+  JWT_SECRET: "C0deHer0es-pet"
+  DATABASE_URL: "postgresql://neondb_owner:p7RQFbLUg9kM@ep-tight-dew-a50ipcsw.us-east-2.aws.neon.tech/neondb?sslmode=require"
 
 REGION: "us-east-1"
-ACCOUNT_ID: "769533000303"
-
-REDIS_HOST: "redis.dev.coedigital.clarobrasil.mobi"
-REDIS_PORT: "6379"
-EXPIRATION_TIME: 12086400
+ACCOUNT_ID: "125993934816"

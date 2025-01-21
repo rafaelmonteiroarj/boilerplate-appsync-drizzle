@@ -1,87 +1,34 @@
-GetUsers:
-  handler: dist/identity/infrastructure/adapter/input/handlers/get-users.handler
-  name: ${self:service}-${self:provider.stage}-getUsers
-  environment:
-    DYNAMODB_TABLE: { "Ref": "UserTable" }
-
-AddUser:
-  handler: dist/identity/infrastructure/adapter/input/handlers/add-user.handler
-  name: ${self:service}-${self:provider.stage}-addUser
-  environment:
-    DYNAMODB_TABLE: { "Ref": "UserTable" }
-    JWT_SECRET: "Tel@-Vermelh@-pet"
-
-ActivateUser:
-  handler: dist/identity/infrastructure/adapter/input/handlers/activate-user.handler
-  name: ${self:service}-${self:provider.stage}-activateUser
-  environment:
-    DYNAMODB_TABLE: { "Ref": "UserTable" }
-    JWT_SECRET: ${file(./ymls/environment.yml):${opt:stage}.JWT_SECRET}
-
-UpdateQuotaUser:
-  handler: dist/identity/infrastructure/adapter/input/handlers/update-quota-user.handler
-  name: ${self:service}-${self:provider.stage}-update-quota-user
-  environment:
-    DYNAMODB_TABLE: { "Ref": "UserTable" }
-    JWT_SECRET: ${file(./ymls/environment.yml):${opt:stage}.JWT_SECRET}
-
-Login:
-  handler: dist/identity/infrastructure/adapter/input/handlers/login.handler
+login:
+  handler: dist/identity/http/handlers/login.handler
   name: ${self:service}-${self:provider.stage}-login
   environment:
-    DYNAMODB_TABLE: { "Ref": "UserTable" }
+    DATABASE_URL: ${file(./ymls/environment.yml):${opt:stage}.DATABASE_URL}
     JWT_SECRET: ${file(./ymls/environment.yml):${opt:stage}.JWT_SECRET}
 
-LoginByAD:
-  handler: dist/identity/infrastructure/adapter/input/handlers/login-by-ad.handler
-  name: ${self:service}-${self:provider.stage}-login-by-ad
+loginByAD:
+  handler: dist/identity/http/handlers/login-by-ad.handler
+  name: ${self:service}-${self:provider.stage}-loginByAD
   environment:
-    DYNAMODB_TABLE: { "Ref": "UserTable" }
+    DATABASE_URL: ${file(./ymls/environment.yml):${opt:stage}.DATABASE_URL}
     JWT_SECRET: ${file(./ymls/environment.yml):${opt:stage}.JWT_SECRET}
 
-Authorizer:
-  handler: dist/identity/infrastructure/adapter/input/handlers/authorizer.handler
+authorizer:
+  handler: dist/identity/http/handlers/authorizer.handler
   name: ${self:service}-${self:provider.stage}-authorizer
-  vpc:
-    securityGroupIds:
-      - sg-076416d2ec61e48b2
-    subnetIds:
-      - subnet-09d5cac19c3d5da6a
   environment:
     JWT_SECRET: ${file(./ymls/environment.yml):${opt:stage}.JWT_SECRET}
-    DYNAMODB_TABLE: { "Ref": "UserTable" }
-    REDIS_HOST: ${file(./ymls/environment.yml):REDIS_HOST}
-    REDIS_PORT: ${file(./ymls/environment.yml):REDIS_PORT}
-    EXPIRATION_TIME: ${file(./ymls/environment.yml):EXPIRATION_TIME}
-    URI_GENIA_COE: ${file(./ymls/environment.yml):${opt:stage}.URI_GENIA_COE}
 
-GetUserQuota:
-  handler: dist/identity/infrastructure/adapter/input/handlers/get-user-quota.handler
-  name: ${self:service}-${self:provider.stage}-getUserQuota
-  vpc:
-    securityGroupIds:
-      - sg-076416d2ec61e48b2
-    subnetIds:
-      - subnet-09d5cac19c3d5da6a
+addUser:
+  handler: dist/identity/http/handlers/add-user.handler
+  name: ${self:service}-${self:provider.stage}-addUser
   environment:
-    DYNAMODB_TABLE: { "Ref": "UserTable" }
-    REDIS_HOST: ${file(./ymls/environment.yml):REDIS_HOST}
-    REDIS_PORT: ${file(./ymls/environment.yml):REDIS_PORT}
+    DATABASE_URL: ${file(./ymls/environment.yml):${opt:stage}.DATABASE_URL}
+    JWT_SECRET: ${file(./ymls/environment.yml):${opt:stage}.JWT_SECRET}
 
-UpdateSchedulerQuota:
-  handler: dist/identity/infrastructure/adapter/input/handlers/update-scheduler-quota.handler
-  name: ${self:service}-${self:provider.stage}-updateSchedulerQuota
+getUsers:
+  handler: dist/identity/http/handlers/get-users.handler
+  name: ${self:service}-${self:provider.stage}-getUsers
   environment:
-    DYNAMODB_TABLE: { "Ref": "UserTable" }
+    DATABASE_URL: ${file(./ymls/environment.yml):${opt:stage}.DATABASE_URL}
 
-RechargeQuota:
-  handler: dist/identity/infrastructure/adapter/input/handlers/update-recharge-quota.handler
-  name: ${self:service}-${self:provider.stage}-updateRechargeQuota
-  vpc:
-    securityGroupIds:
-      - sg-076416d2ec61e48b2
-    subnetIds:
-      - subnet-09d5cac19c3d5da6a
-  environment:
-    REDIS_HOST: ${file(./ymls/environment.yml):REDIS_HOST}
-    REDIS_PORT: ${file(./ymls/environment.yml):REDIS_PORT}
+

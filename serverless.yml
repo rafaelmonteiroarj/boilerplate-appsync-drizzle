@@ -1,53 +1,26 @@
-service: tela-vermelha
+service: poc-appsync
 
 build:
   esbuild:
-  # Enable or Disable bundling the function code and dependencies. (Default: true)
-  bundle: true
-  # Enable minifying function code. (Default: false)
-  minify: false
-  # NPM packages to not be bundled
-  external:
-    - "@aws-sdk/client-s3"
-  # NPM packages to not be bundled, as well as not included in node_modules
-  # in the zip file uploaded to Lambda. By default this will be set to aws-sdk
-  # if the runtime is set to nodejs16.x or lower or set to @aws-sdk/* if set to nodejs18.x or higher.
-  exclude:   
-    - "@aws-sdk/*"
-  # The packages config, this can be set to override the behavior of external
-  # If this is set then all dependencies will be treated as external and not bundled.
-  packages: external
-  # By default Framework will attempt to build and package all functions concurrently.
-  # This property can bet set to a different number if you wish to limit the
-  # concurrency of those operations.
-  buildConcurrency: 3
-  # Enable or configure sourcemaps, can be set to true or to an object with further configuration.
-  sourcemap:
-    # The sourcemap type to use, options are (inline, linked, or external)
-    type: linked
-    # Whether to set the NODE_OPTIONS on functions to enable sourcemaps on Lambda
-    setNodeOptions: true
+    bundle: true
+    minify: false
+    external:
+      - "@aws-sdk/client-s3" # Módulos que você realmente quer excluir do bundle
+    exclude:
+      - "@aws-sdk/*" # Não exclua módulos que você precisa no bundle
+    sourcemap:
+      type: linked
+      setNodeOptions: true
 
 plugins:
    - serverless-appsync-plugin
 
 package:
   exclude:
-    # - node_modules/**
-    - docs/**
-    - iac/**
-    - src/**
-    - README.md
-    - package.json
-    - package-lock.json
-    - .git/**
-    - .gitignore
-    - notebooks/**
-    - static/**
-    - .env
-    - .gitignore
-    - serverless.env.yml
-    - ymls/**
+    - "**" # Exclui tudo por padrão
+  include:
+    - dist/**
+  individually: true
 
 provider:
   name: aws
@@ -79,4 +52,4 @@ custom:
 
 functions: ${file(ymls/functions.yml)}
 
-resources: ${file(ymls/resources.yml)}
+# resources: ${file(ymls/resources.yml)}
